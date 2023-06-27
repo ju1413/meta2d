@@ -6,7 +6,7 @@ import { reactive } from "vue";
  * @Description:
  * @Author: G
  * @Date: 2021-10-13 11:23:17
- * @LastEditTime: 2023-06-25 16:20:48
+ * @LastEditTime: 2023-06-26 17:02:06
  */
 export const icons = [
   {
@@ -58,6 +58,14 @@ export const icons = [
       hiddenText:false,
       keepDecimal:'',
       image:'',
+      disableInput: false,
+      disableRotate:false,
+      disableSize:false,
+      disableAnchor:false,
+      animateCycle:'',
+      nextAnimate: '',
+      autoPlay: false,
+      events:[],
       // title: '# 矩形',
     },
   },
