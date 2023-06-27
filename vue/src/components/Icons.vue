@@ -61,9 +61,11 @@ const updateMouse = (e: MouseEvent) => {
   horizontalOffset.value = pricex.value[0].textLeft
   verticalOffset.value = pricex.value[0].textTop
   textareadata.value = pricex.value[0].text
-
+  cyclesNumber.value = pricex.value[0].animateCycle
+  autoPlaydata.value = pricex.value[0].autoPlay
   console.log(pricex.value[0]);
-  // console.log(penXX.value);
+
+  penid.value = pricex.value[0].id
   
 };
 onMounted(() => {
@@ -129,6 +131,9 @@ const horizontalOffset = ref()
 
 const verticalOffset = ref()
 
+const penid = ref()
+
+
 const mqttconnect = ()=>{
    let params = {
      mqtt:mqtturl,
@@ -157,6 +162,7 @@ const activeNamefour = ref(["1", "2", "3", "4", "5", "6"]);
 const activeNamefive = ref([]);
 const activeNamesix = ref(["1", "2"]);
 const activeNameseven = ref(["1", "2"]);
+const activeNameEvent = ref(["1"])
 
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   console.log(tab, event);
@@ -232,13 +238,11 @@ const lockAspectRatiob = ()=>{
       id:pricex.value[0].id,
       radio:true,
     })
-    console.log(pricex.value[0].radio);
   }else{
     meta2d.setValue({
       id:pricex.value[0].id,
       radio:false,
     })
-    console.log(pricex.value[0].radio);
   }
 }
 //垂直进度
@@ -646,6 +650,271 @@ const retainDecimals = () => {
       keepDecimal:retainDecimalsdata.value
     })
 }
+
+const inhibitInput = ref(false)
+const inhibitInputsw =() => {
+    if(inhibitInput.value === true){
+      meta2d.setValue({
+        id:pricex.value[0].id,
+        disableInput:true
+      })
+    }else{
+      meta2d.setValue({
+        id:pricex.value[0].id,
+        disableInput:false
+      })
+    }
+}
+
+const prohibitRotation = ref(false)
+const prohibitRotationsw = () => {
+      if(prohibitRotation.value === true){
+        meta2d.setValue({
+          id:pricex.value[0].id,
+          disableRotate:true
+        })
+      }else{
+        meta2d.setValue({
+          id:pricex.value[0].id,
+          disableRotate:false
+        })
+      }
+}
+
+const prohibitScaling = ref(false)
+const prohibitScalingsw = () => {
+  if(prohibitScaling.value === true){
+        meta2d.setValue({
+          id:pricex.value[0].id,
+          disableSize:true
+        })
+      }else{
+        meta2d.setValue({
+          id:pricex.value[0].id,
+          disableSize:false
+        })
+      }
+}
+
+const prohibitAnchor = ref(false)
+const prohibitAnchorsw = () => {
+  if(prohibitAnchor.value === true){
+        meta2d.setValue({
+          id:pricex.value[0].id,
+          disableAnchor:true
+        })
+      }else{
+        meta2d.setValue({
+          id:pricex.value[0].id,
+          disableAnchor:false
+        })
+      }
+}
+const value = ref('')
+const animateOptions =[{
+          value: 0,
+          label: "上下跳动",
+        },
+        {
+          value: 1,
+          label: "左右跳动",
+        },
+        {
+          value: 2,
+          label: "左右偏移",
+        },
+        {
+          value: 3,
+          label: "心跳",
+        },
+        {
+          value: 4,
+          label: "成功",
+        },
+        {
+          value: 5,
+          label: "进度",
+        }]
+
+const Linearplaybackvalue = ref('')
+const Linearplayback =[
+  {
+    Linearplaybackvalue:0,
+    label:"是",
+  },
+  {
+    Linearplaybackvalue:1,
+    label:"否",
+  }
+]
+
+const animateSelect=(e)=>{
+  if (e == 0) {
+        //上下跳动
+        let arr = []
+        for(let i=0;i<5;i++){
+          arr = [...arr,...[
+          {
+            duration: 100,
+            y: 20,
+          },
+          {
+            duration: 100,
+            y: -20,
+          },
+        ]]
+        }
+        pricex.value[0].frames = arr;
+      }
+      if (e == 1) {
+        //左右跳动
+        let arr = []
+        for(let i=0;i<5;i++){
+          arr = [...arr,...[
+          {
+            duration: 100,
+            x: 20,
+          },
+          {
+            duration: 100,
+            x: -20,
+          },
+        ]]
+        }
+        pricex.value[0].frames = arr;
+      }
+      if (e == 2) {
+        //左右跳动
+        let arr = []
+        for(let i=0;i<5;i++){
+          arr = [...arr,...[
+          {
+            duration: 100,
+            rotate: 20,
+          },
+          {
+            duration: 200,
+            rotate: -20,
+          },
+        ]]
+        }
+        pricex.value[0].frames = arr;
+      }
+      if (e == 3) {
+        //左右跳动
+        let arr = []
+        for(let i=0;i<5;i++){
+          arr = [...arr,...[
+          {
+            duration: 500,
+            scale: 0.8,
+          },
+          {
+            duration: 1000,
+            scale: 1.2,
+          },
+        ]]
+        }
+        pricex.value[0].frames = arr;
+      }
+      if (e == 4) {
+        //成功
+        let arr = []
+        for(let i=0;i<5;i++){
+          arr = [...arr,...[
+          {
+            duration: 500,
+            background:"green",
+            globalAlpha:0.1
+          },
+          {
+            duration: 1000,
+            scale: 1.2,
+          },
+        ]]
+        }
+        pricex.value[0].frames = arr;
+      }
+      if (e == 5) {
+        //进度
+        let arr = []
+        for(let i=0;i<5;i++){
+          arr = [...arr,...[
+          {
+            duration: 1000,
+            progress: 0,
+          },
+          {
+            duration: 2000,
+            progress: 1,
+          },
+        ]]
+        }
+        pricex.value[0].frames = arr;
+      }
+}
+
+
+const PlayAnimation =() => {
+  meta2d.startAnimate(pricex.value[0].id);
+}
+
+const PauseAnimation =() => {
+  meta2d.pauseAnimate(pricex.value[0].id);
+}
+
+const StopAnimation =() => {
+  meta2d.stopAnimate(pricex.value[0].id);
+}
+
+const cyclesNumber = ref(Infinity)
+const cyclesNumberin = () => {
+  meta2d.setValue({
+    id:pricex.value[0].id,
+    animateCycle:cyclesNumber.value
+  })
+}
+
+const nextAnimatedata = ref()
+const nextAnimatein = () => {
+  meta2d.setValue({
+    id:pricex.value[0].id,
+    nextAnimate:nextAnimatedata.value
+  })
+}
+
+const autoPlaydata = ref(false)
+const autoPlaydatasw= () => {
+  if(autoPlaydata.value === true){
+    meta2d.setValue({
+    id:pricex.value[0].id,
+    autoPlay:true
+  })
+  }else{
+    meta2d.setValue({
+    id:pricex.value[0].id,
+    autoPlay:false
+  })
+  }
+}
+let eventlist :any =[]
+
+
+const addEvent =() => {
+  eventlist.push({
+      pendeid:pricex.value[0].id,
+      eventtypes:'',
+      eventbehavior:'',
+      Triggerconditions:'',
+    })
+   pricex.value[0].events = eventlist
+   for(let i:number = 0 ; i<eventlist.length; i++){
+    console.log(eventlist[i]);
+   }
+  //  console.log(eventlist.value[0].pendeid === penid.value);
+   
+}
+
 
 const rIcons = ref(icons);
 axios.get("/T型开关A -C.svg").then((res) => {
@@ -1396,29 +1665,41 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <!-- 禁用输入 -->
             <el-row>
               <el-col :span="12">禁用输入</el-col>
-              <el-col :span="12"><el-switch v-model="inhibitInput"/></el-col>
+              <el-col :span="12"><el-switch v-model="inhibitInput" @click="inhibitInputsw"/></el-col>
             </el-row>
              <!-- 禁用旋转 -->
              <el-row>
               <el-col :span="12">禁用旋转</el-col>
-              <el-col :span="12"><el-switch v-model="prohibitRotation"/></el-col>
+              <el-col :span="12"><el-switch v-model="prohibitRotation" @click="prohibitRotationsw"/></el-col>
             </el-row>
              <!-- 禁用缩放 -->
              <el-row>
               <el-col :span="12">禁用缩放</el-col>
-              <el-col :span="12"><el-switch v-model="prohibitScaling"/></el-col>
+              <el-col :span="12"><el-switch v-model="prohibitScaling" @click="prohibitScalingsw"/></el-col>
             </el-row>
              <!-- 禁用锚点 -->
              <el-row>
               <el-col :span="12">禁用锚点</el-col>
-              <el-col :span="12"><el-switch v-model="prohibitAnchor "/></el-col>
+              <el-col :span="12"><el-switch v-model="prohibitAnchor" @click="prohibitAnchorsw"/></el-col>
             </el-row>
           </el-collapse-item>
         </el-collapse>
       </el-tab-pane>
 
       <!-- 事件 -->
-      <el-tab-pane label="事件" name="second"> </el-tab-pane>
+      <el-tab-pane label="事件" name="second">
+        <div>
+          <el-button type="primary" icon="el-icon-plus" @click="addEvent" style="width:220px;margin-left:15px;">添加事件</el-button>
+        </div>
+       
+      <template v-for="(itme,index) in eventlist" :key="index" >
+        <el-collapse v-model="activeNameEvent">
+          <el-collapse-item >
+                    
+          </el-collapse-item>
+        </el-collapse>
+      </template>
+      </el-tab-pane>
 
       <!-- 动效 -->
       <el-tab-pane label="动效" name="third">
@@ -1431,9 +1712,9 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <el-row>
               <el-col :span="12">动画效果</el-col>
               <el-col :span="12">
-                <el-select v-model="value" class="m-2" placeholder="Select">
+                <el-select v-model="value" class="m-2" placeholder="请选择" @change="animateSelect">
                   <el-option
-                    v-for="item in options"
+                    v-for="item in animateOptions"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -1443,15 +1724,15 @@ axios.get("/T型开关A -C.svg").then((res) => {
             </el-row>
             <el-row>
               <el-col :span="12">循环次数</el-col>
-              <el-col :span="12"><el-input v-model="value1"/></el-col>
+              <el-col :span="12"><el-input v-model="cyclesNumber " @input="cyclesNumberin"/></el-col>
             </el-row>
             <el-row>
               <el-col :span="12">下一个动画</el-col>
-              <el-col :span="12"><el-input v-model="value1"/></el-col>
+              <el-col :span="12"><el-input v-model="nextAnimatedata" @input="nextAnimatein"/></el-col>
             </el-row>
             <el-row>
               <el-col :span="12">自动播放</el-col>
-              <el-col :span="12"><el-switch v-model="value1" /></el-col>
+              <el-col :span="12"><el-switch v-model="autoPlaydata" @click="autoPlaydatasw"/></el-col>
             </el-row>
             <el-row>
               <el-col :span="12">保持动画状态</el-col>
@@ -1460,9 +1741,9 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <el-row>
               <el-col :span="12">线性播放</el-col>
               <el-col :span="12">
-                <el-select v-model="value" class="m-2" placeholder="Select">
+                <el-select v-model="Linearplaybackvalue" class="m-2" placeholder="Select">
                   <el-option
-                    v-for="item in options"
+                    v-for="item in Linearplayback"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -1471,9 +1752,9 @@ axios.get("/T型开关A -C.svg").then((res) => {
               </el-col>
             </el-row>
             <el-row justify="space-evenly">
-              <el-col :span="7"><el-button type="primary">播放</el-button></el-col>
-              <el-col :span="7"><el-button type="primary">暂停</el-button></el-col>
-              <el-col :span="7"><el-button type="primary">停止</el-button></el-col>
+              <el-col :span="7"><el-button type="primary" @click="PlayAnimation">播放</el-button></el-col>
+              <el-col :span="7"><el-button type="primary" @click="PauseAnimation">暂停</el-button></el-col>
+              <el-col :span="7"><el-button type="primary" @click="StopAnimation">停止</el-button></el-col>
             </el-row>
           </el-collapse-item>
           <el-collapse-item title="鼠标提示" name="2">
