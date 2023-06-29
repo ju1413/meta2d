@@ -1030,204 +1030,8 @@ axios.get("/T型开关A -C.svg").then((res) => {
       </div>
     </div>
   </div>
-  <div class="beyond" v-if="lengthx === 0">
-    <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-      <!-- 图纸 -->
-      <el-tab-pane name="first" label="图纸" class="tab-pane">
-        <el-collapse v-model="activeNameone">
-          <el-collapse-item title="文件" name="1">
-            <el-row>
-              <el-col :span="12">文件名</el-col>
-              <el-col :span="12">
-                <el-input
-                  v-model="input"
-                  placeholder="文件名"
-                  style="height: 25px"
-                />
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">文件夹</el-col>
-              <el-col :span="12">
-                <el-select v-model="value" class="m-2" placeholder="">
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">分类</el-col>
-              <el-col :span="12">
-                <el-select v-model="value" class="m-2" placeholder="">
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
-              </el-col>
-            </el-row>
-          </el-collapse-item>
-          <el-collapse-item title="画布" name="2">
-            <el-row>
-              <el-col :span="12">背景网格</el-col>
-              <el-col :span="12"
-                ><el-switch v-model="gridvalue" @click="gridb"
-              /></el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">网格大小</el-col>
-              <el-col :span="12">
-                <el-input v-model="gridsize" placeholder="" />
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">网格角度</el-col>
-              <el-col :span="12">
-                <el-input v-model="gridrotate" placeholder=""
-              /></el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">网格颜色</el-col>
-              <el-col :span="12"
-                ><el-color-picker
-                  v-model="gridcoloro"
-                  @change="gridcoloroevent"
-              /></el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">默认颜色</el-col>
-              <el-col :span="12"><el-color-picker v-model="color2" /></el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">背景颜色</el-col>
-              <el-col :span="12"
-                ><el-color-picker
-                  v-model="backgroundcolor"
-                  @change="backgroundcolorevent"
-              /></el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">标尺</el-col>
-              <el-col :span="12"
-                ><el-switch v-model="rulevalue" @click="ruled"
-              /></el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">标尺颜色</el-col>
-              <el-col :span="12"
-                ><el-color-picker v-model="rulecolor" @change="rulecolorevent"
-              /></el-col>
-            </el-row>
-          </el-collapse-item>
-        </el-collapse>
-      </el-tab-pane>
 
-      <!-- 通信 -->
-      <el-tab-pane label="通信" name="second">
-        <div class="demo-collapse">
-          <el-collapse v-model="activeNametwo">
-            <el-collapse-item title="websocket" name="1">
-              <el-input v-model="websocketurl" />
-            </el-collapse-item>
-            <el-collapse-item title="MQTT" name="2">
-              <el-row>
-                <el-col :span="12"> URL地址 </el-col>
-                <el-col :span="12">
-                  <el-input v-model="mqtturl" placeholder="必须以ws开头" />
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12"> Client ID </el-col>
-                <el-col :span="12">
-                  <el-input
-                    v-model="mqttClientid"
-                    placeholder="唯一ID,可为空"
-                  />
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12"> 自动生成Client ID </el-col>
-                <el-col :span="12">
-                  <el-switch v-model="generateID" />
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12"> 用户名 </el-col>
-                <el-col :span="12">
-                  <el-input v-model="mqttusername" />
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12"> 密码 </el-col>
-                <el-col :span="12">
-                  <el-input v-model="mqttpassword" />
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12"> Topics </el-col>
-                <el-col :span="12">
-                  <el-input v-model="mqttTopics" placeholder="多个用逗号隔开" />
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col
-                  ><el-button type="primary" @click="breakmqtt"
-                    >断开</el-button
-                  ></el-col
-                >
-                <el-col
-                  ><el-button type="primary" @click="mqttconnect"
-                    >连接</el-button
-                  ></el-col
-                >
-              </el-row>
-            </el-collapse-item>
-          </el-collapse>
-        </div>
-      </el-tab-pane>
-
-      <!-- 布局 -->
-      <el-tab-pane label="布局" name="third">
-        <el-collapse v-model="activeNamethere">
-          <el-collapse-item title="布局" name="1">
-            <el-row>
-              <el-col :span="12"> 最大宽度 </el-col>
-              <el-col :span="12">
-                <el-input v-model="layoutwidth" />
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12"> 间距 </el-col>
-              <el-col :span="12">
-                <el-input v-model="spacing" />
-              </el-col>
-            </el-row>
-            <el-row> </el-row>
-            <el-row>
-              <el-col :span="1"></el-col>
-              <el-clo :span="20">
-                <el-button
-                  type="primary"
-                  style="width: 220px"
-                  @click="startlayout"
-                  >开始排版</el-button
-                >
-              </el-clo>
-              <el-col :span="2"></el-col>
-            </el-row>
-          </el-collapse-item>
-        </el-collapse>
-      </el-tab-pane>
-      <el-tab-pane label="结构" name="fourth">Task</el-tab-pane>
-    </el-tabs>
-  </div>
-  <div class="beyond" v-else>
+  <div class="beyond" v-if="lengthx >= 1">
     <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
       <!-- 外观 -->
       <el-tab-pane name="first" label="外观" class="tab-pane">
@@ -2063,6 +1867,203 @@ axios.get("/T型开关A -C.svg").then((res) => {
           <el-collapse-item title="数据" name="2"> </el-collapse-item>
         </el-collapse>
       </el-tab-pane>
+    </el-tabs>
+  </div>
+  <div class="beyond" v-else>
+    <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+      <!-- 图纸 -->
+      <el-tab-pane name="first" label="图纸" class="tab-pane">
+        <el-collapse v-model="activeNameone">
+          <el-collapse-item title="文件" name="1">
+            <el-row>
+              <el-col :span="12">文件名</el-col>
+              <el-col :span="12">
+                <el-input
+                  v-model="input"
+                  placeholder="文件名"
+                  style="height: 25px"
+                />
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">文件夹</el-col>
+              <el-col :span="12">
+                <el-select v-model="value" class="m-2" placeholder="">
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">分类</el-col>
+              <el-col :span="12">
+                <el-select v-model="value" class="m-2" placeholder="">
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
+              </el-col>
+            </el-row>
+          </el-collapse-item>
+          <el-collapse-item title="画布" name="2">
+            <el-row>
+              <el-col :span="12">背景网格</el-col>
+              <el-col :span="12"
+                ><el-switch v-model="gridvalue" @click="gridb"
+              /></el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">网格大小</el-col>
+              <el-col :span="12">
+                <el-input v-model="gridsize" placeholder="" />
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">网格角度</el-col>
+              <el-col :span="12">
+                <el-input v-model="gridrotate" placeholder=""
+              /></el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">网格颜色</el-col>
+              <el-col :span="12"
+                ><el-color-picker
+                  v-model="gridcoloro"
+                  @change="gridcoloroevent"
+              /></el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">默认颜色</el-col>
+              <el-col :span="12"><el-color-picker v-model="color2" /></el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">背景颜色</el-col>
+              <el-col :span="12"
+                ><el-color-picker
+                  v-model="backgroundcolor"
+                  @change="backgroundcolorevent"
+              /></el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">标尺</el-col>
+              <el-col :span="12"
+                ><el-switch v-model="rulevalue" @click="ruled"
+              /></el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">标尺颜色</el-col>
+              <el-col :span="12"
+                ><el-color-picker v-model="rulecolor" @change="rulecolorevent"
+              /></el-col>
+            </el-row>
+          </el-collapse-item>
+        </el-collapse>
+      </el-tab-pane>
+
+      <!-- 通信 -->
+      <el-tab-pane label="通信" name="second">
+        <div class="demo-collapse">
+          <el-collapse v-model="activeNametwo">
+            <el-collapse-item title="websocket" name="1">
+              <el-input v-model="websocketurl" />
+            </el-collapse-item>
+            <el-collapse-item title="MQTT" name="2">
+              <el-row>
+                <el-col :span="12"> URL地址 </el-col>
+                <el-col :span="12">
+                  <el-input v-model="mqtturl" placeholder="必须以ws开头" />
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12"> Client ID </el-col>
+                <el-col :span="12">
+                  <el-input
+                    v-model="mqttClientid"
+                    placeholder="唯一ID,可为空"
+                  />
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12"> 自动生成Client ID </el-col>
+                <el-col :span="12">
+                  <el-switch v-model="generateID" />
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12"> 用户名 </el-col>
+                <el-col :span="12">
+                  <el-input v-model="mqttusername" />
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12"> 密码 </el-col>
+                <el-col :span="12">
+                  <el-input v-model="mqttpassword" />
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12"> Topics </el-col>
+                <el-col :span="12">
+                  <el-input v-model="mqttTopics" placeholder="多个用逗号隔开" />
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col
+                  ><el-button type="primary" @click="breakmqtt"
+                    >断开</el-button
+                  ></el-col
+                >
+                <el-col
+                  ><el-button type="primary" @click="mqttconnect"
+                    >连接</el-button
+                  ></el-col
+                >
+              </el-row>
+            </el-collapse-item>
+          </el-collapse>
+        </div>
+      </el-tab-pane>
+
+      <!-- 布局 -->
+      <el-tab-pane label="布局" name="third">
+        <el-collapse v-model="activeNamethere">
+          <el-collapse-item title="布局" name="1">
+            <el-row>
+              <el-col :span="12"> 最大宽度 </el-col>
+              <el-col :span="12">
+                <el-input v-model="layoutwidth" />
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12"> 间距 </el-col>
+              <el-col :span="12">
+                <el-input v-model="spacing" />
+              </el-col>
+            </el-row>
+            <el-row> </el-row>
+            <el-row>
+              <el-col :span="1"></el-col>
+              <el-clo :span="20">
+                <el-button
+                  type="primary"
+                  style="width: 220px"
+                  @click="startlayout"
+                  >开始排版</el-button
+                >
+              </el-clo>
+              <el-col :span="2"></el-col>
+            </el-row>
+          </el-collapse-item>
+        </el-collapse>
+      </el-tab-pane>
+      <el-tab-pane label="结构" name="fourth">Task</el-tab-pane>
     </el-tabs>
   </div>
 </template>
