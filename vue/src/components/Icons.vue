@@ -63,6 +63,11 @@ const updateMouse = (e: MouseEvent) => {
   console.log(pricex.value[0]);
 
   penid.value = pricex.value[0].id;
+  tags.value = pricex.value[0].tags
+  events.value = pricex.value[0].events
+  nextAnimatedata.value = pricex.value[0].nextAnimate
+  cyclesNumber.value = pricex.value[0].animateCycle
+  value.value = pricex.value[0].Animate
 };
 onMounted(() => {
   document.addEventListener("click", updateMouse);
@@ -699,6 +704,20 @@ const prohibitAnchorsw = () => {
     });
   }
 };
+
+const pentag = ref();
+const tags :any = ref([])
+const addpentag = () => {
+  tags.value.push(
+    pentag.value
+  )
+  pentag.value = ''
+}
+
+const handleClose = (tag : string) => {
+  tags.value.splice(tags.value.indexOf(tag),1)
+}
+
 const value = ref("");
 const animateOptions = [
   {
@@ -759,6 +778,7 @@ const animateSelect = (e) => {
       ];
     }
     pricex.value[0].frames = arr;
+    pricex.value[0].Animate = animateOptions[e].label;
   }
   if (e == 1) {
     //左右跳动
@@ -779,6 +799,7 @@ const animateSelect = (e) => {
       ];
     }
     pricex.value[0].frames = arr;
+    pricex.value[0].Animate = animateOptions[e].label;
   }
   if (e == 2) {
     //左右跳动
@@ -799,6 +820,7 @@ const animateSelect = (e) => {
       ];
     }
     pricex.value[0].frames = arr;
+    pricex.value[0].Animate = animateOptions[e].label;
   }
   if (e == 3) {
     //左右跳动
@@ -819,6 +841,7 @@ const animateSelect = (e) => {
       ];
     }
     pricex.value[0].frames = arr;
+    pricex.value[0].Animate = animateOptions[e].label;
   }
   if (e == 4) {
     //成功
@@ -840,6 +863,7 @@ const animateSelect = (e) => {
       ];
     }
     pricex.value[0].frames = arr;
+    pricex.value[0].Animate = animateOptions[e].label;
   }
   if (e == 5) {
     //进度
@@ -860,6 +884,7 @@ const animateSelect = (e) => {
       ];
     }
     pricex.value[0].frames = arr;
+    pricex.value[0].Animate = animateOptions[e].label;
   }
 };
 
@@ -920,20 +945,16 @@ const autoPlaydatasw = () => {
     });
   }
 };
-let eventlist: any = [];
 
+const events: any = ref([]);
 const addEvent = () => {
-  eventlist.push({
+  events.value.push({
     name: "",
     action: "",
     value: "",
     params: "",
     where: "",
   });
-  pricex.value[0].events = eventlist;
-  for (let i: number = 0; i < eventlist.length; i++) {
-    console.log(eventlist[i]);
-  }
 };
 
 const eventTypeList = [
@@ -1882,7 +1903,7 @@ axios.get("/T型开关A -C.svg").then((res) => {
           >
         </div>
 
-        <template v-for="(item, index) in eventlist" :key="index">
+        <template v-for="(item, index) in events" :key="index">
           <el-collapse v-model="activeNameEvent">
             <el-collapse-item>
               <el-row>
@@ -2013,7 +2034,32 @@ axios.get("/T型开关A -C.svg").then((res) => {
       </el-tab-pane>
       <el-tab-pane label="数据" name="fourth">
         <el-collapse v-model="activeNameseven">
-          <el-collapse-item title="Tag标签" name="1"> </el-collapse-item>
+          <el-row>
+            <el-col :span="12"><span style="font-size: 15px">id</span></el-col>
+            <el-col :span="12"><el-input v-model="penid" /></el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12"
+              ><span style="font-size: 15px">名称</span></el-col
+            >
+            <el-col :span="12"><el-input v-model="penname" /></el-col>
+          </el-row>
+          <el-collapse-item title="Tag标签" name="1">
+            <el-tag
+              v-for="tag in tags"
+              :key="tag.index"
+              class="mx-1"
+              closable
+              @close="handleClose(tag)"
+            >
+              {{ tag }}
+            </el-tag>
+            <el-row>
+              <el-col :span="24">
+                <el-input v-model="pentag" @keyup.enter="addpentag"/>
+              </el-col>
+            </el-row>
+          </el-collapse-item>
           <el-collapse-item title="数据" name="2"> </el-collapse-item>
         </el-collapse>
       </el-tab-pane>
