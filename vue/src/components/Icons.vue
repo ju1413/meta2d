@@ -8,65 +8,61 @@ import type { TabsPaneContext } from "element-plus";
 import { onMounted, onUnmounted } from "vue";
 import { MqttClient } from "mqtt";
 
-
 //鼠标点击切换右边菜单
 const lengthx = ref();
 const pricex = ref();
 const penX = ref();
 const penXX = ref();
 const penY = ref();
-const penWidth = ref()
-const penHeight = ref()
-const contrasta = ref(false)
-const penRotate = ref()
-const penScheduledata = ref()
+const penWidth = ref();
+const penHeight = ref();
+const contrasta = ref(false);
+const penRotate = ref();
+const penScheduledata = ref();
 
 const updateMouse = (e: MouseEvent) => {
-  
   lengthx.value = meta2d.store.active.length;
   pricex.value = meta2d.store.active;
   penXX.value = meta2d.getPenRect(pricex.value[0]);
-  
 
   //设置回显
-  penX.value = penXX.value.x
-  penY.value = penXX.value.y
-  penWidth.value = penXX.value.width
-  penHeight.value = penXX.value.height
-  penRotate.value = pricex.value[0].rotate
-  penScheduledata.value = pricex.value[0].progress
-  penFillet.value = pricex.value[0].borderRadius
-  lockAspectRatio.value = pricex.value[0].radio
-  VerticalProgress.value = pricex.value[0].verticalProgress
-  flipHorizontal.value = pricex.value[0].flipX
-  flipVertical.value = pricex.value[0].flipY
-  pencolordata.value = pricex.value[0].color
-  penScheduleColor.value = pricex.value[0].progressColor
-  penhoverColordata.value = pricex.value[0].hoverColor
-  penactiveColordata.value = pricex.value[0].activeColor
-  backgrounddata.value = pricex.value[0].background
-  hoverBackgrounddata.value = pricex.value[0].hoverBackground
-  activeBackgrounddata.value = pricex.value[0].activeBackground
-  anchorColordata.value = pricex.value[0].anchorColor
-  textColordata.value = pricex.value[0].textColor
-  hoverTextColordata.value = pricex.value[0].hoverTextColor
-  activeTextColordata.value = pricex.value[0].activeTextColor
-  textBackgrounddata.value = pricex.value[0].textBackground
-  const  booleantextBold = pricex.value[0].fontWeight
-  if(booleantextBold === 700){
-    textBold.value = true
-  }else if(booleantextBold === 400){
-    textBold.value = false
+  penX.value = penXX.value.x;
+  penY.value = penXX.value.y;
+  penWidth.value = penXX.value.width;
+  penHeight.value = penXX.value.height;
+  penRotate.value = pricex.value[0].rotate;
+  penScheduledata.value = pricex.value[0].progress;
+  penFillet.value = pricex.value[0].borderRadius;
+  lockAspectRatio.value = pricex.value[0].radio;
+  VerticalProgress.value = pricex.value[0].verticalProgress;
+  flipHorizontal.value = pricex.value[0].flipX;
+  flipVertical.value = pricex.value[0].flipY;
+  pencolordata.value = pricex.value[0].color;
+  penScheduleColor.value = pricex.value[0].progressColor;
+  penhoverColordata.value = pricex.value[0].hoverColor;
+  penactiveColordata.value = pricex.value[0].activeColor;
+  backgrounddata.value = pricex.value[0].background;
+  hoverBackgrounddata.value = pricex.value[0].hoverBackground;
+  activeBackgrounddata.value = pricex.value[0].activeBackground;
+  anchorColordata.value = pricex.value[0].anchorColor;
+  textColordata.value = pricex.value[0].textColor;
+  hoverTextColordata.value = pricex.value[0].hoverTextColor;
+  activeTextColordata.value = pricex.value[0].activeTextColor;
+  textBackgrounddata.value = pricex.value[0].textBackground;
+  const booleantextBold = pricex.value[0].fontWeight;
+  if (booleantextBold === 700) {
+    textBold.value = true;
+  } else if (booleantextBold === 400) {
+    textBold.value = false;
   }
-  horizontalOffset.value = pricex.value[0].textLeft
-  verticalOffset.value = pricex.value[0].textTop
-  textareadata.value = pricex.value[0].text
-  cyclesNumber.value = pricex.value[0].animateCycle
-  autoPlaydata.value = pricex.value[0].autoPlay
+  horizontalOffset.value = pricex.value[0].textLeft;
+  verticalOffset.value = pricex.value[0].textTop;
+  textareadata.value = pricex.value[0].text;
+  cyclesNumber.value = pricex.value[0].animateCycle;
+  autoPlaydata.value = pricex.value[0].autoPlay;
   console.log(pricex.value[0]);
 
-  penid.value = pricex.value[0].id
-  
+  penid.value = pricex.value[0].id;
 };
 onMounted(() => {
   document.addEventListener("click", updateMouse);
@@ -74,8 +70,6 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener("click", updateMouse);
 });
-
-
 
 //网格开关
 const gridvalue = ref(false);
@@ -112,47 +106,46 @@ const InputBox = ref(false);
 //图形X轴
 // const penX = ref();
 //mqtt路径
-const mqtturl = ref('');
+const mqtturl = ref("");
 //mqttid
-const mqttClientid = ref('')
+const mqttClientid = ref("");
 //mqtt用户名
-const mqttusername = ref()
+const mqttusername = ref();
 //mqtt密码
-const mqttpassword = ref()
-const mqttTopics = ref('')
+const mqttpassword = ref();
+const mqttTopics = ref("");
 //透明度
-const transparency = ref()
+const transparency = ref();
 //画笔文本加粗
-const textBold = ref(false)
+const textBold = ref(false);
 
-const rowHeight = ref()
+const rowHeight = ref();
 
-const horizontalOffset = ref()
+const horizontalOffset = ref();
 
-const verticalOffset = ref()
+const verticalOffset = ref();
 
-const penid = ref()
+const penid = ref();
 
-
-const mqttconnect = ()=>{
-   let params = {
-     mqtt:mqtturl,
-     mqttTopics:mqttTopics,
-     mqttOptions:{
-      clientId:mqttClientid,
-      username:mqttusername,
-      password:mqttpassword,
+const mqttconnect = () => {
+  let params = {
+    mqtt: mqtturl,
+    mqttTopics: mqttTopics,
+    mqttOptions: {
+      clientId: mqttClientid,
+      username: mqttusername,
+      password: mqttpassword,
       customClientId: false,
-     }
-   }
-   console.log(params);
-   
-   meta2d.connectMqtt(params);
-}
+    },
+  };
+  console.log(params);
 
-const breakmqtt = ()=>{
+  meta2d.connectMqtt(params);
+};
+
+const breakmqtt = () => {
   meta2d.closeMqtt();
-}
+};
 
 //折叠面板默认打开的栏位
 const activeNameone = ref(["1", "2"]);
@@ -162,7 +155,7 @@ const activeNamefour = ref(["1", "2", "3", "4", "5", "6"]);
 const activeNamefive = ref([]);
 const activeNamesix = ref(["1", "2"]);
 const activeNameseven = ref(["1", "2"]);
-const activeNameEvent = ref(["1"])
+const activeNameEvent = ref(["1"]);
 
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   console.log(tab, event);
@@ -231,107 +224,107 @@ const startlayout = () => {
   meta2d.layout(undefined, width, spac);
 };
 //锁定宽高比
-const lockAspectRatiob = ()=>{
-
-  if(lockAspectRatio.value === true){
+const lockAspectRatiob = () => {
+  if (lockAspectRatio.value === true) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      radio:true,
-    })
-  }else{
+      id: pricex.value[0].id,
+      radio: true,
+    });
+  } else {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      radio:false,
-    })
+      id: pricex.value[0].id,
+      radio: false,
+    });
   }
-}
+};
 //垂直进度
-const VerticalProgressswitch =()=>{
-    if(VerticalProgress.value === true){
-      meta2d.setValue({
-      id:pricex.value[0].id,
-      verticalProgress:true,
-    })
-    }else{
-      meta2d.setValue({
-      id:pricex.value[0].id,
-      verticalProgress:false,
-    })
-    }
-}
+const VerticalProgressswitch = () => {
+  if (VerticalProgress.value === true) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      verticalProgress: true,
+    });
+  } else {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      verticalProgress: false,
+    });
+  }
+};
 //水平翻转
-const flipHorizontalswitch =()=>{
-  if(flipHorizontal.value === true){
+const flipHorizontalswitch = () => {
+  if (flipHorizontal.value === true) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      flipX:true,
-    })
-  }else{
+      id: pricex.value[0].id,
+      flipX: true,
+    });
+  } else {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      flipX:false,
-    })
+      id: pricex.value[0].id,
+      flipX: false,
+    });
   }
-}
+};
 //垂直翻转
-const flipVerticalswitch =()=>{
-  if(flipVertical.value === true){
+const flipVerticalswitch = () => {
+  if (flipVertical.value === true) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      flipY:true,
-    })
-  }else{
+      id: pricex.value[0].id,
+      flipY: true,
+    });
+  } else {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      flipY:false,
-    })
+      id: pricex.value[0].id,
+      flipY: false,
+    });
   }
-}
+};
 
-
-const penFillet = ref()
-const lineWidthdata = ref('')
-const anchorRadiusdata = ref()
-const shadowBlur = ref()
-const shadowX = ref()
-const shadowY = ref()
-const characterSize = ref()
-const characterWidth = ref()
-const characterHeight = ref()
+const penFillet = ref();
+const lineWidthdata = ref("");
+const anchorRadiusdata = ref();
+const shadowBlur = ref();
+const shadowX = ref();
+const shadowY = ref();
+const characterSize = ref();
+const characterWidth = ref();
+const characterHeight = ref();
 //输入框失去焦点触发
-const updateData = ()=>{
-   
-      let X = penX.value;
-      let Y = penY.value
-      let w = penWidth.value
-      let h = penHeight.value
-      console.log(X,Y,w,h);
-      
-      meta2d.setPenRect(pricex.value[0],{x:X,y:Y,width:w,height:h})
-      meta2d.setValue({
-        id:pricex.value[0].id,
-        borderRadius:penFillet.value,
-        globalAlpha:transparency.value,
-        // lineWidth:lineWidthdata.value,
-      })
-      if(pricex.value[0].globalAlpha === '' || pricex.value[0].globalAlpha === null){
-        meta2d.setValue({
-        id:pricex.value[0].id,
-        globalAlpha:"1"
-      })
-      }
+const updateData = () => {
+  let X = penX.value;
+  let Y = penY.value;
+  let w = penWidth.value;
+  let h = penHeight.value;
+  console.log(X, Y, w, h);
 
-      // if(pricex.value[0].lineWidth === '' || pricex.value[0].lineWidth === null){
-      //   meta2d.setValue({
-      //   id:pricex.value[0].id,
-      //   lineWidth:"1"
-      // })
-      // }
-      console.log('penX', penX.value);
-      
-  console.log('更新数据', penX.value, penXX.value);
+  meta2d.setPenRect(pricex.value[0], { x: X, y: Y, width: w, height: h });
+  meta2d.setValue({
+    id: pricex.value[0].id,
+    borderRadius: penFillet.value,
+    globalAlpha: transparency.value,
+    // lineWidth:lineWidthdata.value,
+  });
+  if (
+    pricex.value[0].globalAlpha === "" ||
+    pricex.value[0].globalAlpha === null
+  ) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      globalAlpha: "1",
+    });
+  }
+
+  // if(pricex.value[0].lineWidth === '' || pricex.value[0].lineWidth === null){
+  //   meta2d.setValue({
+  //   id:pricex.value[0].id,
+  //   lineWidth:"1"
+  // })
+  // }
+  console.log("penX", penX.value);
+
+  console.log("更新数据", penX.value, penXX.value);
   meta2d.inactive();
-}
+};
 
 // const updatepenFillet =()=>{
 //   meta2d.setValue({
@@ -354,111 +347,108 @@ const updateData = ()=>{
 //       }
 // }
 
-const updatelineWidthdata=()=>{
+const updatelineWidthdata = () => {
   meta2d.setValue({
-        id:pricex.value[0].id,
-        lineWidth:lineWidthdata.value,
-      })
-      if(pricex.value[0].lineWidth === '' || pricex.value[0].lineWidth === null){
-        meta2d.setValue({
-        id:pricex.value[0].id,
-        lineWidth:"1"
-      })
-      }
-}
+    id: pricex.value[0].id,
+    lineWidth: lineWidthdata.value,
+  });
+  if (pricex.value[0].lineWidth === "" || pricex.value[0].lineWidth === null) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      lineWidth: "1",
+    });
+  }
+};
 
-const updateanchorRadiusdata=() => {
+const updateanchorRadiusdata = () => {
   meta2d.setValue({
-        id:pricex.value[0].id,
-        anchorRadius:anchorRadiusdata.value,
-      })
-}
+    id: pricex.value[0].id,
+    anchorRadius: anchorRadiusdata.value,
+  });
+};
 
-const updateshadowBlur=() => {
+const updateshadowBlur = () => {
   meta2d.setValue({
-        id:pricex.value[0].id,
-        shadowBlur:shadowBlur.value,
-      })
-}
+    id: pricex.value[0].id,
+    shadowBlur: shadowBlur.value,
+  });
+};
 
-const updateshadowX=() => {
+const updateshadowX = () => {
   meta2d.setValue({
-        id:pricex.value[0].id,
-        shadowOffsetX:shadowX.value,
-      })
-}
+    id: pricex.value[0].id,
+    shadowOffsetX: shadowX.value,
+  });
+};
 
-const updateshadowY=() => {
+const updateshadowY = () => {
   meta2d.setValue({
-        id:pricex.value[0].id,
-        shadowOffsetY:shadowY.value,
-      })
-}
+    id: pricex.value[0].id,
+    shadowOffsetY: shadowY.value,
+  });
+};
 
-const updatecharacterSize=() => {
+const updatecharacterSize = () => {
   meta2d.setValue({
-        id:pricex.value[0].id,
-        fontSize:characterSize.value,
-      })
-}
+    id: pricex.value[0].id,
+    fontSize: characterSize.value,
+  });
+};
 
-const updatecharacterWidth=() => {
+const updatecharacterWidth = () => {
   meta2d.setValue({
-        id:pricex.value[0].id,
-        textWidth:characterWidth.value,
-      })
-}
+    id: pricex.value[0].id,
+    textWidth: characterWidth.value,
+  });
+};
 
-const updatecharacterHeight=() => {
+const updatecharacterHeight = () => {
   meta2d.setValue({
-        id:pricex.value[0].id,
-        textHeight:characterHeight.value,
-      })
-}
+    id: pricex.value[0].id,
+    textHeight: characterHeight.value,
+  });
+};
 
-const updatelineHeight=() => {
+const updatelineHeight = () => {
   meta2d.setValue({
-        id:pricex.value[0].id,
-        lineHeight:rowHeight.value
-  })
-}
+    id: pricex.value[0].id,
+    lineHeight: rowHeight.value,
+  });
+};
 
 //进度
-const scheduledata =()=>{
-  
+const scheduledata = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    progress: penScheduledata.value
-  })
-}
-
+    id: pricex.value[0].id,
+    progress: penScheduledata.value,
+  });
+};
 
 //拖动时触发
 const onDragStart = (e: any, data) => {
   e.dataTransfer.setData("Meta2d", JSON.stringify(data));
 };
 //拖动释放触发
-const ondragend  = (e: any, data) =>{
+const ondragend = (e: any, data) => {
   e.dataTransfer.setData("Meta2d", JSON.stringify(data));
   pricex.value = meta2d.store.active;
-  penXX.value = meta2d.getPenRect(pricex.value[0])
-  penX.value = penXX.value.x
-  penY.value = penXX.value.y
-  penWidth.value = penXX.value.width
-  penHeight.value = penXX.value.height
-}
+  penXX.value = meta2d.getPenRect(pricex.value[0]);
+  penX.value = penXX.value.x;
+  penY.value = penXX.value.y;
+  penWidth.value = penXX.value.width;
+  penHeight.value = penXX.value.height;
+};
 
 //旋转
-const penRotatedata = ()=>{
-  console.log('查看旋转属性', penRotate.value, penXX.value);
-  if(penRotate.value != pricex.value[0].rotate)
-  meta2d.setValue({
-    id:pricex.value[0].id,
-    rotate:penRotate.value
-  })
-  console.log("旋转修改",pricex.value[0]);
-  
-}
+const penRotatedata = () => {
+  console.log("查看旋转属性", penRotate.value, penXX.value);
+  if (penRotate.value != pricex.value[0].rotate)
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      rotate: penRotate.value,
+    });
+  console.log("旋转修改", pricex.value[0]);
+};
 
 nextTick(() => {
   // 此处只注册，未将数据放置到工具栏
@@ -468,292 +458,295 @@ nextTick(() => {
 });
 
 //图形颜色
-const pencolordata = ref()
-const pencolor =()=>{
+const pencolordata = ref();
+const pencolor = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    color:pencolordata.value
-  })
-  
-}
+    id: pricex.value[0].id,
+    color: pencolordata.value,
+  });
+};
 
 //进度颜色
-const penScheduleColor = ref()
-const uppenScheduleColor =()=>{
+const penScheduleColor = ref();
+const uppenScheduleColor = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    progressColor:penScheduleColor.value
-  })
-}
+    id: pricex.value[0].id,
+    progressColor: penScheduleColor.value,
+  });
+};
 //浮动颜色
-const penhoverColordata = ref()
-const penhoverColor =()=>{
+const penhoverColordata = ref();
+const penhoverColor = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    hoverColor:penhoverColordata.value
-  })
-}
+    id: pricex.value[0].id,
+    hoverColor: penhoverColordata.value,
+  });
+};
 
 //选中颜色
-const penactiveColordata = ref()
-const penactiveColor=()=>{
+const penactiveColordata = ref();
+const penactiveColor = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    activeColor:penactiveColordata.value
-  })
-}
+    id: pricex.value[0].id,
+    activeColor: penactiveColordata.value,
+  });
+};
 //背景颜色
-const backgrounddata = ref()
-const backgroundco =()=>{
+const backgrounddata = ref();
+const backgroundco = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    background:backgrounddata.value
-  })
-}
+    id: pricex.value[0].id,
+    background: backgrounddata.value,
+  });
+};
 
 //浮动背景颜色
-const hoverBackgrounddata = ref()
-const hoverBackgroundco=()=>{
+const hoverBackgrounddata = ref();
+const hoverBackgroundco = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    hoverBackground:hoverBackgrounddata.value
-  })
-}
+    id: pricex.value[0].id,
+    hoverBackground: hoverBackgrounddata.value,
+  });
+};
 //选中背景颜色
-const activeBackgrounddata = ref()
-const activeBackgroundco=()=>{
+const activeBackgrounddata = ref();
+const activeBackgroundco = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    activeBackground:activeBackgrounddata.value
-  })
-}
+    id: pricex.value[0].id,
+    activeBackground: activeBackgrounddata.value,
+  });
+};
 //锚点颜色
-const anchorColordata = ref()
-const anchorColorpi=()=>{
+const anchorColordata = ref();
+const anchorColorpi = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    anchorColor:anchorColordata.value
-  })
-}
+    id: pricex.value[0].id,
+    anchorColor: anchorColordata.value,
+  });
+};
 //阴影颜色
-const shadowColordata = ref()
-const shadowColordatapi=()=>{
+const shadowColordata = ref();
+const shadowColordatapi = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    shadowColor:shadowColordata.value
-  })
-}
+    id: pricex.value[0].id,
+    shadowColor: shadowColordata.value,
+  });
+};
 
 //文本颜色
-const textColordata = ref()
-const textColorpi = ()=>{
+const textColordata = ref();
+const textColorpi = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    textColor:textColordata.value
-  })
-}
+    id: pricex.value[0].id,
+    textColor: textColordata.value,
+  });
+};
 //文本浮动颜色
-const hoverTextColordata = ref()
-const hoverTextColorpi=()=>{
+const hoverTextColordata = ref();
+const hoverTextColorpi = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    hoverTextColor:hoverTextColordata.value
-  })
-}
+    id: pricex.value[0].id,
+    hoverTextColor: hoverTextColordata.value,
+  });
+};
 //文本选中颜色
-const activeTextColordata = ref()
-const activeTextColorpi=()=>{
+const activeTextColordata = ref();
+const activeTextColorpi = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    activeTextColor:activeTextColordata.value
-  })
-}
+    id: pricex.value[0].id,
+    activeTextColor: activeTextColordata.value,
+  });
+};
 //文本背景颜色
-const textBackgrounddata = ref()
-const textBackgroundpi=()=>{
+const textBackgrounddata = ref();
+const textBackgroundpi = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    textBackground:textBackgrounddata.value
-  })
-}
+    id: pricex.value[0].id,
+    textBackground: textBackgrounddata.value,
+  });
+};
 
 const updatetextLeft = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    textLeft:horizontalOffset.value
-  })
-}
+    id: pricex.value[0].id,
+    textLeft: horizontalOffset.value,
+  });
+};
 
 const updatetextTop = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    textTop:verticalOffset.value
-  })
-}
+    id: pricex.value[0].id,
+    textTop: verticalOffset.value,
+  });
+};
 
-const  textomit = ref(false)
-const omit =() => {
-  if(textomit.value === true){
+const textomit = ref(false);
+const omit = () => {
+  if (textomit.value === true) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      ellipsis:true
-    })
-  }else{
+      id: pricex.value[0].id,
+      ellipsis: true,
+    });
+  } else {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      ellipsis:false
-    })
+      id: pricex.value[0].id,
+      ellipsis: false,
+    });
   }
-}
+};
 
-const textBoldcl =()=>{
-  if(textBold.value === true){
+const textBoldcl = () => {
+  if (textBold.value === true) {
     meta2d.setValue({
-    id:pricex.value[0].id,
-    fontWeight:700
-  })
-  }else{
+      id: pricex.value[0].id,
+      fontWeight: 700,
+    });
+  } else {
     meta2d.setValue({
-    id:pricex.value[0].id,
-    fontWeight:400
-  })
+      id: pricex.value[0].id,
+      fontWeight: 400,
+    });
   }
-}
+};
 
-const hiddenTextdata = ref(false)
-const hiddenTextsw =() => {
-  if(hiddenTextdata.value === true){
-      meta2d.setValue({
-        id:pricex.value[0].id,
-        hiddenText:true
-      })
-  }else{
+const hiddenTextdata = ref(false);
+const hiddenTextsw = () => {
+  if (hiddenTextdata.value === true) {
     meta2d.setValue({
-        id:pricex.value[0].id,
-        hiddenText:false
-      })
+      id: pricex.value[0].id,
+      hiddenText: true,
+    });
+  } else {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      hiddenText: false,
+    });
   }
-}
+};
 
-const textareadata = ref()
+const textareadata = ref();
 const textarea = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    text:textareadata.value
-  })
-}
+    id: pricex.value[0].id,
+    text: textareadata.value,
+  });
+};
 
-const retainDecimalsdata =ref()
+const retainDecimalsdata = ref();
 const retainDecimals = () => {
+  meta2d.setValue({
+    id: pricex.value[0].id,
+    keepDecimal: retainDecimalsdata.value,
+  });
+};
+
+const inhibitInput = ref(false);
+const inhibitInputsw = () => {
+  if (inhibitInput.value === true) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      keepDecimal:retainDecimalsdata.value
-    })
-}
+      id: pricex.value[0].id,
+      disableInput: true,
+    });
+  } else {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      disableInput: false,
+    });
+  }
+};
 
-const inhibitInput = ref(false)
-const inhibitInputsw =() => {
-    if(inhibitInput.value === true){
-      meta2d.setValue({
-        id:pricex.value[0].id,
-        disableInput:true
-      })
-    }else{
-      meta2d.setValue({
-        id:pricex.value[0].id,
-        disableInput:false
-      })
-    }
-}
-
-const prohibitRotation = ref(false)
+const prohibitRotation = ref(false);
 const prohibitRotationsw = () => {
-      if(prohibitRotation.value === true){
-        meta2d.setValue({
-          id:pricex.value[0].id,
-          disableRotate:true
-        })
-      }else{
-        meta2d.setValue({
-          id:pricex.value[0].id,
-          disableRotate:false
-        })
-      }
-}
+  if (prohibitRotation.value === true) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      disableRotate: true,
+    });
+  } else {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      disableRotate: false,
+    });
+  }
+};
 
-const prohibitScaling = ref(false)
+const prohibitScaling = ref(false);
 const prohibitScalingsw = () => {
-  if(prohibitScaling.value === true){
-        meta2d.setValue({
-          id:pricex.value[0].id,
-          disableSize:true
-        })
-      }else{
-        meta2d.setValue({
-          id:pricex.value[0].id,
-          disableSize:false
-        })
-      }
-}
+  if (prohibitScaling.value === true) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      disableSize: true,
+    });
+  } else {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      disableSize: false,
+    });
+  }
+};
 
-const prohibitAnchor = ref(false)
+const prohibitAnchor = ref(false);
 const prohibitAnchorsw = () => {
-  if(prohibitAnchor.value === true){
-        meta2d.setValue({
-          id:pricex.value[0].id,
-          disableAnchor:true
-        })
-      }else{
-        meta2d.setValue({
-          id:pricex.value[0].id,
-          disableAnchor:false
-        })
-      }
-}
-const value = ref('')
-const animateOptions =[{
-          value: 0,
-          label: "上下跳动",
-        },
-        {
-          value: 1,
-          label: "左右跳动",
-        },
-        {
-          value: 2,
-          label: "左右偏移",
-        },
-        {
-          value: 3,
-          label: "心跳",
-        },
-        {
-          value: 4,
-          label: "成功",
-        },
-        {
-          value: 5,
-          label: "进度",
-        }]
-
-const Linearplaybackvalue = ref('')
-const Linearplayback =[
+  if (prohibitAnchor.value === true) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      disableAnchor: true,
+    });
+  } else {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      disableAnchor: false,
+    });
+  }
+};
+const value = ref("");
+const animateOptions = [
   {
-    Linearplaybackvalue:0,
-    label:"是",
+    value: 0,
+    label: "上下跳动",
   },
   {
-    Linearplaybackvalue:1,
-    label:"否",
-  }
-]
+    value: 1,
+    label: "左右跳动",
+  },
+  {
+    value: 2,
+    label: "左右偏移",
+  },
+  {
+    value: 3,
+    label: "心跳",
+  },
+  {
+    value: 4,
+    label: "成功",
+  },
+  {
+    value: 5,
+    label: "进度",
+  },
+];
 
-const animateSelect=(e)=>{
+const Linearplaybackvalue = ref("");
+const Linearplayback = [
+  {
+    Linearplaybackvalue: 0,
+    label: "是",
+  },
+  {
+    Linearplaybackvalue: 1,
+    label: "否",
+  },
+];
+
+const animateSelect = (e) => {
   if (e == 0) {
-        //上下跳动
-        let arr = []
-        for(let i=0;i<5;i++){
-          arr = [...arr,...[
+    //上下跳动
+    let arr = [];
+    for (let i = 0; i < 5; i++) {
+      arr = [
+        ...arr,
+        ...[
           {
             duration: 100,
             y: 20,
@@ -762,15 +755,18 @@ const animateSelect=(e)=>{
             duration: 100,
             y: -20,
           },
-        ]]
-        }
-        pricex.value[0].frames = arr;
-      }
-      if (e == 1) {
-        //左右跳动
-        let arr = []
-        for(let i=0;i<5;i++){
-          arr = [...arr,...[
+        ],
+      ];
+    }
+    pricex.value[0].frames = arr;
+  }
+  if (e == 1) {
+    //左右跳动
+    let arr = [];
+    for (let i = 0; i < 5; i++) {
+      arr = [
+        ...arr,
+        ...[
           {
             duration: 100,
             x: 20,
@@ -779,15 +775,18 @@ const animateSelect=(e)=>{
             duration: 100,
             x: -20,
           },
-        ]]
-        }
-        pricex.value[0].frames = arr;
-      }
-      if (e == 2) {
-        //左右跳动
-        let arr = []
-        for(let i=0;i<5;i++){
-          arr = [...arr,...[
+        ],
+      ];
+    }
+    pricex.value[0].frames = arr;
+  }
+  if (e == 2) {
+    //左右跳动
+    let arr = [];
+    for (let i = 0; i < 5; i++) {
+      arr = [
+        ...arr,
+        ...[
           {
             duration: 100,
             rotate: 20,
@@ -796,15 +795,18 @@ const animateSelect=(e)=>{
             duration: 200,
             rotate: -20,
           },
-        ]]
-        }
-        pricex.value[0].frames = arr;
-      }
-      if (e == 3) {
-        //左右跳动
-        let arr = []
-        for(let i=0;i<5;i++){
-          arr = [...arr,...[
+        ],
+      ];
+    }
+    pricex.value[0].frames = arr;
+  }
+  if (e == 3) {
+    //左右跳动
+    let arr = [];
+    for (let i = 0; i < 5; i++) {
+      arr = [
+        ...arr,
+        ...[
           {
             duration: 500,
             scale: 0.8,
@@ -813,33 +815,39 @@ const animateSelect=(e)=>{
             duration: 1000,
             scale: 1.2,
           },
-        ]]
-        }
-        pricex.value[0].frames = arr;
-      }
-      if (e == 4) {
-        //成功
-        let arr = []
-        for(let i=0;i<5;i++){
-          arr = [...arr,...[
+        ],
+      ];
+    }
+    pricex.value[0].frames = arr;
+  }
+  if (e == 4) {
+    //成功
+    let arr = [];
+    for (let i = 0; i < 5; i++) {
+      arr = [
+        ...arr,
+        ...[
           {
             duration: 500,
-            background:"green",
-            globalAlpha:0.1
+            background: "green",
+            globalAlpha: 0.1,
           },
           {
             duration: 1000,
             scale: 1.2,
           },
-        ]]
-        }
-        pricex.value[0].frames = arr;
-      }
-      if (e == 5) {
-        //进度
-        let arr = []
-        for(let i=0;i<5;i++){
-          arr = [...arr,...[
+        ],
+      ];
+    }
+    pricex.value[0].frames = arr;
+  }
+  if (e == 5) {
+    //进度
+    let arr = [];
+    for (let i = 0; i < 5; i++) {
+      arr = [
+        ...arr,
+        ...[
           {
             duration: 1000,
             progress: 0,
@@ -848,73 +856,124 @@ const animateSelect=(e)=>{
             duration: 2000,
             progress: 1,
           },
-        ]]
-        }
-        pricex.value[0].frames = arr;
-      }
-}
+        ],
+      ];
+    }
+    pricex.value[0].frames = arr;
+  }
+};
 
-
-const PlayAnimation =() => {
+const PlayAnimation = () => {
   meta2d.startAnimate(pricex.value[0].id);
-}
+};
 
-const PauseAnimation =() => {
+const PauseAnimation = () => {
   meta2d.pauseAnimate(pricex.value[0].id);
-}
+};
 
-const StopAnimation =() => {
+const StopAnimation = () => {
   meta2d.stopAnimate(pricex.value[0].id);
-}
+};
 
-const cyclesNumber = ref(Infinity)
+const cyclesNumber = ref(Infinity);
 const cyclesNumberin = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    animateCycle:cyclesNumber.value
-  })
-}
+    id: pricex.value[0].id,
+    animateCycle: cyclesNumber.value,
+  });
+};
 
-const nextAnimatedata = ref()
+const nextAnimatedata = ref();
 const nextAnimatein = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    nextAnimate:nextAnimatedata.value
-  })
-}
+    id: pricex.value[0].id,
+    nextAnimate: nextAnimatedata.value,
+  });
+};
 
-const autoPlaydata = ref(false)
-const autoPlaydatasw= () => {
-  if(autoPlaydata.value === true){
+const keepAnimateStatedata = ref(false);
+const keepAnimateStatesw = () => {
+  if (keepAnimateStatedata.value === true) {
     meta2d.setValue({
-    id:pricex.value[0].id,
-    autoPlay:true
-  })
-  }else{
+      id: pricex.value[0].id,
+      keepAnimateState: true,
+    });
+  } else {
     meta2d.setValue({
-    id:pricex.value[0].id,
-    autoPlay:false
-  })
+      id: pricex.value[0].id,
+      keepAnimateState: false,
+    });
   }
-}
-let eventlist :any =[]
+};
 
+const autoPlaydata = ref(false);
+const autoPlaydatasw = () => {
+  if (autoPlaydata.value === true) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      autoPlay: true,
+    });
+  } else {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      autoPlay: false,
+    });
+  }
+};
+let eventlist: any = [];
 
-const addEvent =() => {
+const addEvent = () => {
   eventlist.push({
-      pendeid:pricex.value[0].id,
-      eventtypes:'',
-      eventbehavior:'',
-      Triggerconditions:'',
-    })
-   pricex.value[0].events = eventlist
-   for(let i:number = 0 ; i<eventlist.length; i++){
+    name: "",
+    action: "",
+    value: "",
+    params: "",
+    where: "",
+  });
+  pricex.value[0].events = eventlist;
+  for (let i: number = 0; i < eventlist.length; i++) {
     console.log(eventlist[i]);
-   }
-  //  console.log(eventlist.value[0].pendeid === penid.value);
-   
-}
+  }
+};
 
+const eventTypeList = [
+  {
+    value: "click",
+    label: "单击",
+  },
+  {
+    value: "dblclick",
+    label: "双击",
+  },
+  {
+    value: "enter",
+    label: "鼠标进入",
+  },
+  {
+    value: "leave",
+    label: "鼠标离开",
+  },
+  {
+    value: "active",
+    label: "选中",
+  },
+  {
+    value: "inactive",
+    label: "取消选中",
+  },
+  {
+    value: "mousedown",
+    label: "鼠标按下",
+  },
+  {
+    value: "mouseup",
+    label: "鼠标抬起",
+  },
+  {
+    value: "valueUpdate",
+    label: "数据更新",
+  },
+];
 
 const rIcons = ref(icons);
 axios.get("/T型开关A -C.svg").then((res) => {
@@ -929,17 +988,14 @@ axios.get("/T型开关A -C.svg").then((res) => {
 </script>
 
 <template>
-
-
-
   <div class="aside">
     <div class="icon-list">
       <div
         v-for="icon in rIcons"
         draggable="true"
         @dragstart="onDragStart($event, icon.data)"
-        @dragend="ondragend ($event, icon.data)"
-        :ondragstart ="icon.title"
+        @dragend="ondragend($event, icon.data)"
+        :ondragstart="icon.title"
         style="width: 100px"
       >
         <i v-if="icon.key" class="iconfont" :class="`icon-${icon.key}`"></i>
@@ -1068,7 +1124,10 @@ axios.get("/T型开关A -C.svg").then((res) => {
               <el-row>
                 <el-col :span="12"> Client ID </el-col>
                 <el-col :span="12">
-                  <el-input v-model="mqttClientid" placeholder="唯一ID,可为空" />
+                  <el-input
+                    v-model="mqttClientid"
+                    placeholder="唯一ID,可为空"
+                  />
                 </el-col>
               </el-row>
               <el-row>
@@ -1092,15 +1151,20 @@ axios.get("/T型开关A -C.svg").then((res) => {
               <el-row>
                 <el-col :span="12"> Topics </el-col>
                 <el-col :span="12">
-                  <el-input
-                    v-model="mqttTopics"
-                    placeholder="多个用逗号隔开"
-                  />
+                  <el-input v-model="mqttTopics" placeholder="多个用逗号隔开" />
                 </el-col>
               </el-row>
               <el-row>
-                <el-col><el-button type="primary" @click="breakmqtt">断开</el-button></el-col>
-                <el-col><el-button type="primary" @click="mqttconnect" >连接</el-button></el-col>
+                <el-col
+                  ><el-button type="primary" @click="breakmqtt"
+                    >断开</el-button
+                  ></el-col
+                >
+                <el-col
+                  ><el-button type="primary" @click="mqttconnect"
+                    >连接</el-button
+                  ></el-col
+                >
               </el-row>
             </el-collapse-item>
           </el-collapse>
@@ -1152,48 +1216,67 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <el-row>
               <el-col :span="12">X</el-col>
               <el-col :span="12"
-                ><el-input v-model.number="penX" placeholder="" @input="updateData"
+                ><el-input
+                  v-model.number="penX"
+                  placeholder=""
+                  @input="updateData"
               /></el-col>
             </el-row>
             <!-- Y -->
             <el-row>
               <el-col :span="12">Y</el-col>
               <el-col :span="12"
-                ><el-input v-model.number="penY" placeholder="" @input="updateData"
+                ><el-input
+                  v-model.number="penY"
+                  placeholder=""
+                  @input="updateData"
               /></el-col>
             </el-row>
             <!-- 宽 -->
             <el-row>
               <el-col :span="12">宽</el-col>
               <el-col :span="12"
-                ><el-input v-model.number="penWidth" placeholder="" @input="updateData"
+                ><el-input
+                  v-model.number="penWidth"
+                  placeholder=""
+                  @input="updateData"
               /></el-col>
             </el-row>
             <!-- 高 -->
             <el-row>
               <el-col :span="12">高</el-col>
               <el-col :span="12"
-                ><el-input v-model.number="penHeight" placeholder="" @input="updateData"
+                ><el-input
+                  v-model.number="penHeight"
+                  placeholder=""
+                  @input="updateData"
               /></el-col>
             </el-row>
             <!-- 锁定宽高比 -->
             <el-row>
               <el-col :span="12">锁定宽高比</el-col>
               <el-col :span="12">
-                <el-switch v-model="lockAspectRatio" @click="lockAspectRatiob"/></el-col>
+                <el-switch v-model="lockAspectRatio" @click="lockAspectRatiob"
+              /></el-col>
             </el-row>
             <!-- 圆角 -->
             <el-row>
               <el-col :span="12">圆角</el-col>
               <el-col :span="12"
-                ><el-input v-model.number="penFillet" placeholder=""  @input="updateData"
+                ><el-input
+                  v-model.number="penFillet"
+                  placeholder=""
+                  @input="updateData"
               /></el-col>
             </el-row>
             <!-- 旋转 -->
             <el-row>
               <el-col :span="12">旋转</el-col>
               <el-col :span="12"
-                ><el-input v-model.number="penRotate" placeholder="" @input="penRotatedata"
+                ><el-input
+                  v-model.number="penRotate"
+                  placeholder=""
+                  @input="penRotatedata"
               /></el-col>
             </el-row>
             <!-- 内边距——左 -->
@@ -1228,34 +1311,45 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <el-row>
               <el-col :span="12">进度</el-col>
               <el-col :span="12"
-                ><el-input v-model="penScheduledata" placeholder="" @input="scheduledata"
+                ><el-input
+                  v-model="penScheduledata"
+                  placeholder=""
+                  @input="scheduledata"
               /></el-col>
             </el-row>
             <!-- 进度颜色 -->
             <el-row>
               <el-col :span="12">进度颜色</el-col>
               <el-col :span="12"
-                ><el-color-picker v-model="penScheduleColor" @change="uppenScheduleColor"
+                ><el-color-picker
+                  v-model="penScheduleColor"
+                  @change="uppenScheduleColor"
               /></el-col>
             </el-row>
             <!-- 垂直进度 -->
             <el-row>
               <el-col :span="12">垂直进度</el-col>
               <el-col :span="12"
-                ><el-switch v-model="VerticalProgress" @click="VerticalProgressswitch"
+                ><el-switch
+                  v-model="VerticalProgress"
+                  @click="VerticalProgressswitch"
               /></el-col>
             </el-row>
             <!-- 水平翻转 -->
             <el-row>
               <el-col :span="12">水平翻转</el-col>
-              <el-col :span="12"><el-switch v-model="flipHorizontal" @click="flipHorizontalswitch"
-                /></el-col>
+              <el-col :span="12"
+                ><el-switch
+                  v-model="flipHorizontal"
+                  @click="flipHorizontalswitch"
+              /></el-col>
             </el-row>
             <!-- 垂直翻转 -->
             <el-row>
               <el-col :span="12">垂直翻转</el-col>
-              <el-col :span="12"><el-switch v-model="flipVertical" @click="flipVerticalswitch"
-                /></el-col>
+              <el-col :span="12"
+                ><el-switch v-model="flipVertical" @click="flipVerticalswitch"
+              /></el-col>
             </el-row>
             <!-- 输入框 -->
             <el-row>
@@ -1323,22 +1417,34 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <!-- 颜色 -->
             <el-row>
               <el-col :span="12">颜色</el-col>
-              <el-col :span="12"><el-color-picker v-model="pencolordata" @change="pencolor"/></el-col>
+              <el-col :span="12"
+                ><el-color-picker v-model="pencolordata" @change="pencolor"
+              /></el-col>
             </el-row>
             <!-- 浮动颜色 -->
             <el-row>
               <el-col :span="12">浮动颜色</el-col>
-              <el-col :span="12"><el-color-picker v-model="penhoverColordata" @change="penhoverColor"/></el-col>
+              <el-col :span="12"
+                ><el-color-picker
+                  v-model="penhoverColordata"
+                  @change="penhoverColor"
+              /></el-col>
             </el-row>
             <!-- 选中颜色 -->
             <el-row>
               <el-col :span="12">选中颜色</el-col>
-              <el-col :span="12"><el-color-picker v-model="penactiveColordata" @change="penactiveColor"/></el-col>
+              <el-col :span="12"
+                ><el-color-picker
+                  v-model="penactiveColordata"
+                  @change="penactiveColor"
+              /></el-col>
             </el-row>
             <!-- 线条宽度 -->
             <el-row>
               <el-col :span="12">线条宽度</el-col>
-              <el-col :span="12"><el-input v-model="lineWidthdata" @input="updateData"/></el-col>
+              <el-col :span="12"
+                ><el-input v-model="lineWidthdata" @input="updateData"
+              /></el-col>
             </el-row>
             <!-- 背景 -->
             <el-row>
@@ -1357,52 +1463,86 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <!-- 背景颜色 -->
             <el-row>
               <el-col :span="12">背景颜色</el-col>
-              <el-col :span="12"><el-color-picker v-model="backgrounddata" @change="backgroundco"/></el-col>
+              <el-col :span="12"
+                ><el-color-picker
+                  v-model="backgrounddata"
+                  @change="backgroundco"
+              /></el-col>
             </el-row>
             <!-- 浮动背景颜色 -->
             <el-row>
               <el-col :span="12">浮动背景颜色</el-col>
-              <el-col :span="12"><el-color-picker v-model="hoverBackgrounddata" @change="hoverBackgroundco"/></el-col>
+              <el-col :span="12"
+                ><el-color-picker
+                  v-model="hoverBackgrounddata"
+                  @change="hoverBackgroundco"
+              /></el-col>
             </el-row>
             <!-- 选中背景颜色 -->
             <el-row>
               <el-col :span="12">选中背景颜色</el-col>
-              <el-col :span="12"><el-color-picker v-model="activeBackgrounddata" @change="activeBackgroundco"/></el-col>
+              <el-col :span="12"
+                ><el-color-picker
+                  v-model="activeBackgrounddata"
+                  @change="activeBackgroundco"
+              /></el-col>
             </el-row>
             <!-- 透明度 -->
             <el-row>
               <el-col :span="12">透明度</el-col>
-              <el-col :span="12"><el-input v-model="transparency" @input="updateData" /></el-col>
+              <el-col :span="12"
+                ><el-input v-model="transparency" @input="updateData"
+              /></el-col>
             </el-row>
             <!-- 锚点颜色 -->
             <el-row>
               <el-col :span="12">锚点颜色</el-col>
-              <el-col :span="12"><el-color-picker v-model="anchorColordata" @change="anchorColorpi"/></el-col>
+              <el-col :span="12"
+                ><el-color-picker
+                  v-model="anchorColordata"
+                  @change="anchorColorpi"
+              /></el-col>
             </el-row>
             <!-- 锚点半径 -->
             <el-row>
               <el-col :span="12">锚点半径</el-col>
-              <el-col :span="12"><el-input v-model="anchorRadiusdata" @input="updateanchorRadiusdata" /></el-col>
+              <el-col :span="12"
+                ><el-input
+                  v-model="anchorRadiusdata"
+                  @input="updateanchorRadiusdata"
+              /></el-col>
             </el-row>
             <!-- 阴影颜色 -->
             <el-row>
               <el-col :span="12">阴影颜色</el-col>
-              <el-col :span="12"><el-color-picker v-model="shadowColordata" @change="shadowColordatapi"/></el-col>
+              <el-col :span="12"
+                ><el-color-picker
+                  v-model="shadowColordata"
+                  @change="shadowColordatapi"
+              /></el-col>
             </el-row>
             <!-- 阴影模糊 -->
             <el-row>
               <el-col :span="12">阴影模糊</el-col>
-              <el-col :span="12"><el-input v-model.number="shadowBlur" @input="updateshadowBlur"/></el-col>
+              <el-col :span="12"
+                ><el-input
+                  v-model.number="shadowBlur"
+                  @input="updateshadowBlur"
+              /></el-col>
             </el-row>
             <!-- 阴影 X 偏移 -->
             <el-row>
               <el-col :span="12">阴影 X 偏移</el-col>
-              <el-col :span="12"><el-input v-model.number="shadowX" @input="updateshadowX"/></el-col>
+              <el-col :span="12"
+                ><el-input v-model.number="shadowX" @input="updateshadowX"
+              /></el-col>
             </el-row>
             <!-- 阴影 Y 偏移 -->
             <el-row>
               <el-col :span="12">阴影 Y 偏移</el-col>
-              <el-col :span="12"><el-input v-model.number="shadowY" @input="updateshadowY"/></el-col>
+              <el-col :span="12"
+                ><el-input v-model.number="shadowY" @input="updateshadowY"
+              /></el-col>
             </el-row>
             <!-- 文字阴影 -->
             <el-row>
@@ -1421,27 +1561,43 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <!-- 字体大小 -->
             <el-row>
               <el-col :span="12">字体大小</el-col>
-              <el-col :span="12"><el-input v-model="characterSize" @input="updatecharacterSize"/></el-col>
+              <el-col :span="12"
+                ><el-input v-model="characterSize" @input="updatecharacterSize"
+              /></el-col>
             </el-row>
             <!-- 文字颜色 -->
             <el-row>
               <el-col :span="12">文字颜色</el-col>
-              <el-col :span="12"><el-color-picker v-model="textColordata" @change="textColorpi"/></el-col>
+              <el-col :span="12"
+                ><el-color-picker v-model="textColordata" @change="textColorpi"
+              /></el-col>
             </el-row>
             <!-- 浮动文字颜色 -->
             <el-row>
               <el-col :span="12">浮动文字颜色</el-col>
-              <el-col :span="12"><el-color-picker v-model="hoverTextColordata" @change="hoverTextColorpi" /></el-col>
+              <el-col :span="12"
+                ><el-color-picker
+                  v-model="hoverTextColordata"
+                  @change="hoverTextColorpi"
+              /></el-col>
             </el-row>
             <!-- 选中文字颜色 -->
             <el-row>
               <el-col :span="12">选中文字颜色</el-col>
-              <el-col :span="12"><el-color-picker v-model="activeTextColordata" @change="activeTextColorpi" /></el-col>
+              <el-col :span="12"
+                ><el-color-picker
+                  v-model="activeTextColordata"
+                  @change="activeTextColorpi"
+              /></el-col>
             </el-row>
             <!-- 文字背景 -->
             <el-row>
               <el-col :span="12">文字背景</el-col>
-              <el-col :span="12"><el-color-picker v-model="textBackgrounddata" @change="textBackgroundpi"/></el-col>
+              <el-col :span="12"
+                ><el-color-picker
+                  v-model="textBackgrounddata"
+                  @change="textBackgroundpi"
+              /></el-col>
             </el-row>
             <!-- 倾斜 -->
             <el-row>
@@ -1461,7 +1617,7 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <el-row>
               <el-col :span="12">加粗</el-col>
               <el-col :span="12">
-                <el-switch v-model="textBold" @click="textBoldcl"/>
+                <el-switch v-model="textBold" @click="textBoldcl" />
               </el-col>
             </el-row>
             <!-- 水平对齐 -->
@@ -1495,7 +1651,9 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <!-- 行高 -->
             <el-row>
               <el-col :span="12">行高</el-col>
-              <el-col :span="12"><el-input v-model="rowHeight" @input="updatelineHeight"/></el-col>
+              <el-col :span="12"
+                ><el-input v-model="rowHeight" @input="updatelineHeight"
+              /></el-col>
             </el-row>
             <!-- 换行 -->
             <el-row>
@@ -1514,12 +1672,20 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <!-- 文字宽度 -->
             <el-row>
               <el-col :span="12">文字宽度</el-col>
-              <el-col :span="12"><el-input v-model.number="characterWidth" @input="updatecharacterWidth"/></el-col>
+              <el-col :span="12"
+                ><el-input
+                  v-model.number="characterWidth"
+                  @input="updatecharacterWidth"
+              /></el-col>
             </el-row>
             <!-- 文字高度 -->
             <el-row>
               <el-col :span="12">文字高度</el-col>
-              <el-col :span="12"><el-input v-model.number="characterHeight"  @input="updatecharacterHeight"/></el-col>
+              <el-col :span="12"
+                ><el-input
+                  v-model.number="characterHeight"
+                  @input="updatecharacterHeight"
+              /></el-col>
             </el-row>
             <!-- 水平偏移 -->
             <el-row>
@@ -1531,24 +1697,30 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <!-- 垂直偏移 -->
             <el-row>
               <el-col :span="12">垂直偏移</el-col>
-              <el-col :span="12"><el-input v-model="verticalOffset" @input="updatetextTop"/></el-col>
+              <el-col :span="12"
+                ><el-input v-model="verticalOffset" @input="updatetextTop"
+              /></el-col>
             </el-row>
             <!-- 超出省略 -->
             <el-row>
               <el-col :span="12">超出省略</el-col>
               <el-col :span="12">
-               <el-switch v-model="textomit" @click="omit"/>
+                <el-switch v-model="textomit" @click="omit" />
               </el-col>
             </el-row>
             <!-- 隐藏文字 -->
             <el-row>
               <el-col :span="12">隐藏文字</el-col>
-              <el-col :span="12"><el-switch v-model="hiddenTextdata" @click="hiddenTextsw"/></el-col>
+              <el-col :span="12"
+                ><el-switch v-model="hiddenTextdata" @click="hiddenTextsw"
+              /></el-col>
             </el-row>
             <!-- 保留小数 -->
             <el-row>
               <el-col :span="12">保留小数</el-col>
-              <el-col :span="12"><el-input v-model="retainDecimalsdata" @input="retainDecimals"/></el-col>
+              <el-col :span="12"
+                ><el-input v-model="retainDecimalsdata" @input="retainDecimals"
+              /></el-col>
             </el-row>
             <!-- 文字内容 -->
             <el-row>
@@ -1665,22 +1837,34 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <!-- 禁用输入 -->
             <el-row>
               <el-col :span="12">禁用输入</el-col>
-              <el-col :span="12"><el-switch v-model="inhibitInput" @click="inhibitInputsw"/></el-col>
+              <el-col :span="12"
+                ><el-switch v-model="inhibitInput" @click="inhibitInputsw"
+              /></el-col>
             </el-row>
-             <!-- 禁用旋转 -->
-             <el-row>
+            <!-- 禁用旋转 -->
+            <el-row>
               <el-col :span="12">禁用旋转</el-col>
-              <el-col :span="12"><el-switch v-model="prohibitRotation" @click="prohibitRotationsw"/></el-col>
+              <el-col :span="12"
+                ><el-switch
+                  v-model="prohibitRotation"
+                  @click="prohibitRotationsw"
+              /></el-col>
             </el-row>
-             <!-- 禁用缩放 -->
-             <el-row>
+            <!-- 禁用缩放 -->
+            <el-row>
               <el-col :span="12">禁用缩放</el-col>
-              <el-col :span="12"><el-switch v-model="prohibitScaling" @click="prohibitScalingsw"/></el-col>
+              <el-col :span="12"
+                ><el-switch
+                  v-model="prohibitScaling"
+                  @click="prohibitScalingsw"
+              /></el-col>
             </el-row>
-             <!-- 禁用锚点 -->
-             <el-row>
+            <!-- 禁用锚点 -->
+            <el-row>
               <el-col :span="12">禁用锚点</el-col>
-              <el-col :span="12"><el-switch v-model="prohibitAnchor" @click="prohibitAnchorsw"/></el-col>
+              <el-col :span="12"
+                ><el-switch v-model="prohibitAnchor" @click="prohibitAnchorsw"
+              /></el-col>
             </el-row>
           </el-collapse-item>
         </el-collapse>
@@ -1689,30 +1873,62 @@ axios.get("/T型开关A -C.svg").then((res) => {
       <!-- 事件 -->
       <el-tab-pane label="事件" name="second">
         <div>
-          <el-button type="primary" icon="el-icon-plus" @click="addEvent" style="width:220px;margin-left:15px;">添加事件</el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-plus"
+            @click="addEvent"
+            style="width: 220px; margin-left: 15px"
+            >添加事件</el-button
+          >
         </div>
-       
-      <template v-for="(itme,index) in eventlist" :key="index" >
-        <el-collapse v-model="activeNameEvent">
-          <el-collapse-item >
-                    
-          </el-collapse-item>
-        </el-collapse>
-      </template>
+
+        <template v-for="(item, index) in eventlist" :key="index">
+          <el-collapse v-model="activeNameEvent">
+            <el-collapse-item>
+              <el-row>
+                <el-col :span="12">事件类型</el-col>
+                <el-col :span="12">
+                  <el-select v-model="item.name" placeholder="请选择">
+                    <el-option
+                      v-for="item in eventTypeList"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    >
+                    </el-option>
+                  </el-select>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">事件行为</el-col>
+                <el-col :span="12"> </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">触发条件</el-col>
+                <el-col :span="12"></el-col>
+              </el-row>
+            </el-collapse-item>
+          </el-collapse>
+        </template>
       </el-tab-pane>
 
       <!-- 动效 -->
       <el-tab-pane label="动效" name="third">
         <el-collapse v-model="activeNamesix">
-          <el-collapse-item title="动画" name="1"> 
+          <el-collapse-item title="动画" name="1">
             <el-row>
               <el-col :span="12">时长</el-col>
-              <el-col :span="12"><el-input v-model.number="value1"/></el-col>
+              <el-col :span="12"><el-input v-model.number="value1" /></el-col>
             </el-row>
             <el-row>
               <el-col :span="12">动画效果</el-col>
               <el-col :span="12">
-                <el-select v-model="value" class="m-2" placeholder="请选择" @change="animateSelect">
+                <el-select
+                  v-model="value"
+                  class="m-2"
+                  placeholder="请选择"
+                  @change="animateSelect"
+                >
                   <el-option
                     v-for="item in animateOptions"
                     :key="item.value"
@@ -1724,37 +1940,63 @@ axios.get("/T型开关A -C.svg").then((res) => {
             </el-row>
             <el-row>
               <el-col :span="12">循环次数</el-col>
-              <el-col :span="12"><el-input v-model="cyclesNumber " @input="cyclesNumberin"/></el-col>
+              <el-col :span="12"
+                ><el-input v-model="cyclesNumber" @input="cyclesNumberin"
+              /></el-col>
             </el-row>
             <el-row>
               <el-col :span="12">下一个动画</el-col>
-              <el-col :span="12"><el-input v-model="nextAnimatedata" @input="nextAnimatein"/></el-col>
+              <el-col :span="12"
+                ><el-input v-model="nextAnimatedata" @input="nextAnimatein"
+              /></el-col>
             </el-row>
             <el-row>
               <el-col :span="12">自动播放</el-col>
-              <el-col :span="12"><el-switch v-model="autoPlaydata" @click="autoPlaydatasw"/></el-col>
+              <el-col :span="12"
+                ><el-switch v-model="autoPlaydata" @click="autoPlaydatasw"
+              /></el-col>
             </el-row>
             <el-row>
               <el-col :span="12">保持动画状态</el-col>
-              <el-col :span="12"><el-switch v-model="value1" /></el-col>
+              <el-col :span="12"
+                ><el-switch
+                  v-model="keepAnimateStatedata"
+                  @click="keepAnimateStatesw"
+              /></el-col>
             </el-row>
             <el-row>
               <el-col :span="12">线性播放</el-col>
               <el-col :span="12">
-                <el-select v-model="Linearplaybackvalue" class="m-2" placeholder="Select">
+                <el-select
+                  v-model="Linearplaybackvalue"
+                  class="m-2"
+                  placeholder="Select"
+                >
                   <el-option
                     v-for="item in Linearplayback"
-                    :key="item.value"
+                    :key="item.label"
                     :label="item.label"
-                    :value="item.value"
+                    :value="item.label"
                   />
                 </el-select>
               </el-col>
             </el-row>
             <el-row justify="space-evenly">
-              <el-col :span="7"><el-button type="primary" @click="PlayAnimation">播放</el-button></el-col>
-              <el-col :span="7"><el-button type="primary" @click="PauseAnimation">暂停</el-button></el-col>
-              <el-col :span="7"><el-button type="primary" @click="StopAnimation">停止</el-button></el-col>
+              <el-col :span="7"
+                ><el-button type="primary" @click="PlayAnimation"
+                  >播放</el-button
+                ></el-col
+              >
+              <el-col :span="7"
+                ><el-button type="primary" @click="PauseAnimation"
+                  >暂停</el-button
+                ></el-col
+              >
+              <el-col :span="7"
+                ><el-button type="primary" @click="StopAnimation"
+                  >停止</el-button
+                ></el-col
+              >
             </el-row>
           </el-collapse-item>
           <el-collapse-item title="鼠标提示" name="2">
