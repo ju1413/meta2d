@@ -7,6 +7,8 @@ import { parseSvg } from "@meta2d/svg";
 import type { TabsPaneContext } from "element-plus";
 import { onMounted, onUnmounted } from "vue";
 import { MqttClient } from "mqtt";
+import { Meta2d, getFromAnchor } from "@meta2d/core";
+import { getToAnchor } from "@meta2d/core";
 
 //鼠标点击切换右边菜单
 const lengthx = ref();
@@ -19,12 +21,13 @@ const penHeight = ref();
 const contrasta = ref(false);
 const penRotate = ref();
 const penScheduledata = ref();
+const pennamevalue = ref();
 
 const updateMouse = (e: MouseEvent) => {
   lengthx.value = meta2d.store.active.length;
   pricex.value = meta2d.store.active;
   penXX.value = meta2d.getPenRect(pricex.value[0]);
-
+  
   //设置回显
   penX.value = penXX.value.x;
   penY.value = penXX.value.y;
@@ -63,11 +66,20 @@ const updateMouse = (e: MouseEvent) => {
   console.log(pricex.value[0]);
 
   penid.value = pricex.value[0].id;
-  tags.value = pricex.value[0].tags
-  events.value = pricex.value[0].events
-  nextAnimatedata.value = pricex.value[0].nextAnimate
-  cyclesNumber.value = pricex.value[0].animateCycle
-  value.value = pricex.value[0].Animate
+  tags.value = pricex.value[0].tags;
+  events.value = pricex.value[0].events;
+  nextAnimatedata.value = pricex.value[0].nextAnimate;
+  cyclesNumber.value = pricex.value[0].animateCycle;
+  value.value = pricex.value[0].Animate;
+  linevalue.value = pricex.value[0].linevalue;
+  lineCapvalue.value = pricex.value[0].lineCapvalue;
+  pennamevalue.value = pricex.value[0].name;
+  startingpointX.value = getFromAnchor(pricex.value[0]).x
+  startingpointY.value = getFromAnchor(pricex.value[0]).y
+  EndX.value = getToAnchor(pricex.value[0]).x
+  EndY.value = getToAnchor(pricex.value[0]).y
+  console.log(pricex.value);
+  
 };
 onMounted(() => {
   document.addEventListener("click", updateMouse);
@@ -706,17 +718,15 @@ const prohibitAnchorsw = () => {
 };
 
 const pentag = ref();
-const tags :any = ref([])
+const tags: any = ref([]);
 const addpentag = () => {
-  tags.value.push(
-    pentag.value
-  )
-  pentag.value = ''
-}
+  tags.value.push(pentag.value);
+  pentag.value = "";
+};
 
-const handleClose = (tag : string) => {
-  tags.value.splice(tags.value.indexOf(tag),1)
-}
+const handleClose = (tag: string) => {
+  tags.value.splice(tags.value.indexOf(tag), 1);
+};
 
 const value = ref("");
 const animateOptions = [
@@ -779,6 +789,7 @@ const animateSelect = (e) => {
     }
     pricex.value[0].frames = arr;
     pricex.value[0].Animate = animateOptions[e].label;
+    duration.value = meta2d.calcAnimateDuration(pricex.value[0]);
   }
   if (e == 1) {
     //左右跳动
@@ -800,6 +811,7 @@ const animateSelect = (e) => {
     }
     pricex.value[0].frames = arr;
     pricex.value[0].Animate = animateOptions[e].label;
+    duration.value = meta2d.calcAnimateDuration(pricex.value[0]);
   }
   if (e == 2) {
     //左右跳动
@@ -821,6 +833,7 @@ const animateSelect = (e) => {
     }
     pricex.value[0].frames = arr;
     pricex.value[0].Animate = animateOptions[e].label;
+    duration.value = meta2d.calcAnimateDuration(pricex.value[0]);
   }
   if (e == 3) {
     //左右跳动
@@ -842,6 +855,7 @@ const animateSelect = (e) => {
     }
     pricex.value[0].frames = arr;
     pricex.value[0].Animate = animateOptions[e].label;
+    duration.value = meta2d.calcAnimateDuration(pricex.value[0]);
   }
   if (e == 4) {
     //成功
@@ -864,6 +878,7 @@ const animateSelect = (e) => {
     }
     pricex.value[0].frames = arr;
     pricex.value[0].Animate = animateOptions[e].label;
+    duration.value = meta2d.calcAnimateDuration(pricex.value[0]);
   }
   if (e == 5) {
     //进度
@@ -885,6 +900,7 @@ const animateSelect = (e) => {
     }
     pricex.value[0].frames = arr;
     pricex.value[0].Animate = animateOptions[e].label;
+    duration.value = meta2d.calcAnimateDuration(pricex.value[0]);
   }
 };
 
@@ -952,7 +968,7 @@ const addEvent = () => {
     name: "",
     action: "",
     value: "",
-    params: "",
+    params: pricex.value[0].id,
     where: "",
   });
 };
@@ -996,7 +1012,373 @@ const eventTypeList = [
   },
 ];
 
+const duration = ref();
+
+const actionTypeList = [
+  {
+    value: 0,
+    label: "打开链接",
+  },
+  {
+    value: 1,
+    label: "设置属性",
+  },
+  {
+    value: 2,
+    label: "播放动画",
+  },
+  {
+    value: 3,
+    label: "暂停动画",
+  },
+  {
+    value: 4,
+    label: "停止动画",
+  },
+  {
+    value: 5,
+    label: "执行函数",
+  },
+];
+const comparisonList = [
+  {
+    value: 0,
+    label: "无",
+  },
+  {
+    value: "comparison",
+    label: "关系运算",
+  },
+];
+
+const linelist = [
+  {
+    value: 0,
+    label: "实线",
+  },
+  {
+    value: 1,
+    label: "虚线",
+  },
+  {
+    value: 2,
+    label: "虚实线",
+  },
+  {
+    value: 3,
+    label: "虚实线2",
+  },
+];
+const linevalue = ref();
+const lineSelect = (e) => {
+  console.log(e);
+  if (e === 0) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      lineDash: [],
+    });
+    pricex.value[0].linevalue = linelist[e].label;
+  }
+  if (e === 1) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      lineDash: [5, 5],
+    });
+    pricex.value[0].linevalue = linelist[e].label;
+  }
+  if (e === 2) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      lineDash: [15, 3, 3, 3],
+    });
+    pricex.value[0].linevalue = linelist[e].label;
+  }
+  if (e === 3) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      lineDash: [20, 3, 3, 3, 3, 3, 3, 3],
+    });
+    pricex.value[0].linevalue = linelist[e].label;
+  }
+};
+
+const lineCap = [
+  {
+    value: 0,
+    label: "默认",
+  },
+  {
+    value: 1,
+    label: "圆形",
+  },
+  {
+    value: 2,
+    label: "方形",
+  },
+];
+const lineCapvalue = ref();
+const lineCapSelect = (e) => {
+  if (e === 0) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      lineCap: "butt",
+    });
+    console.log("末端样式");
+    
+    pricex.value[0].lineCapvalue = lineCap[e].label;
+  }
+  if (e === 1) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      lineCap: "round ",
+    });
+    pricex.value[0].lineCapvalue = lineCap[e].label;
+  }
+  if (e === 2) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      lineCap: "square ",
+    });
+    pricex.value[0].lineCapvalue = lineCap[e].label;
+  }
+};
+
+const gradientFromColors = ref(false);
+const gradientFromColorssw = () => {
+  if (gradientFromColors.value === true) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      gradientFromColorssw: true,
+    });
+  } else {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      gradientFromColorssw: false,
+    });
+  }
+};
+
+const incline = ref(false);
+const inclinesw = () => {};
+
 const rIcons = ref(icons);
+
+
+const startingpointX = ref()
+const startingpointY = ref()
+const EndX =ref()
+const EndY = ref()
+const fromarrowvalue =ref()
+const endArrowSizevalue = ref()
+const fromarrow = [{
+  value:0,
+  label:"默认",
+},{
+  value:1,
+  label:"三角箭头",
+},{
+  value:2,
+  label:"菱形箭头",
+},{
+  value:3,
+  label:"圆箭头",
+},{
+  value:4,
+  label:"箭头1",
+},{
+  value:5,
+  label:"箭头2",
+},{
+  value:6,
+  label:"三角箭头实",
+},{
+  value:7,
+  label:"菱形箭头实",
+},{
+  value:8,
+  label:"圆箭头实",
+},{
+  value:9,
+  label:"普通箭头",
+},
+]
+const fromarrowselect =(e) => {
+  if(e === 0){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      fromArrow:"",
+    })
+    fromarrowvalue.value = fromarrow[e].label
+  }
+  if(e === 1){
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      fromArrow: "triangle",//实三角
+    });
+    fromarrowvalue.value = fromarrow[e].label
+  }
+  if(e === 2){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      fromArrow: "diamond" ,//空三角
+    })
+    fromarrowvalue.value = fromarrow[e].label
+  }
+  if(e === 3){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      fromArrow: "circle" ,//
+    })
+    fromarrowvalue.value = fromarrow[e].label
+  }
+  if(e === 4){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      fromArrow: "lineDown" ,
+    })
+    fromarrowvalue.value = fromarrow[e].label
+  }
+  if(e === 5){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      fromArrow: "lineUp" ,
+    })
+    fromarrowvalue.value = fromarrow[e].label
+  }
+  if(e === 6){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      fromArrow: "triangleSolid" ,
+    })
+    fromarrowvalue.value = fromarrow[e].label
+  }
+  if(e === 7){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      fromArrow: "diamondSolid" ,
+    })
+    fromarrowvalue.value = fromarrow[e].label
+  }
+  if(e === 8){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      fromArrow: "circleSolid",
+    })
+    fromarrowvalue.value = fromarrow[e].label
+  }
+  if(e === 9){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      fromArrow: "line" ,
+    })
+    fromarrowvalue.value = fromarrow[e].label
+  }
+}
+const endarrowselect = (e) => {
+  if(e === 0){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      toArrow:"",
+    })
+    endArrowSizevalue.value = fromarrow[e].label
+  }
+  if(e === 1){
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      toArrow: "triangle",//实三角
+    });
+    endArrowSizevalue.value = fromarrow[e].label
+  }
+  if(e === 2){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      toArrow: "diamond" ,//空三角
+    })
+    endArrowSizevalue.value = fromarrow[e].label
+  }
+  if(e === 3){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      toArrow: "circle" ,//
+    })
+    endArrowSizevalue.value = fromarrow[e].label
+  }
+  if(e === 4){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      toArrow: "lineDown" ,
+    })
+    endArrowSizevalue.value = fromarrow[e].label
+  }
+  if(e === 5){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      toArrow: "lineUp" ,
+    })
+    endArrowSizevalue.value = fromarrow[e].label
+  }
+  if(e === 6){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      toArrow: "triangleSolid" ,
+    })
+    endArrowSizevalue.value = fromarrow[e].label
+  }
+  if(e === 7){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      toArrow: "diamondSolid" ,
+    })
+    endArrowSizevalue.value = fromarrow[e].label
+  }
+  if(e === 8){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      toArrow: "circleSolid",
+    })
+    endArrowSizevalue.value = fromarrow[e].label
+  }
+  if(e === 9){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      toArrow: "line" ,
+    })
+    endArrowSizevalue.value = fromarrow[e].label
+  }
+}
+const fromArrowSizevalue = ref()
+const fromArrowSizein = () => {
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      fromArrowSize:fromArrowSizevalue.value
+    })
+}
+const toArrowSizevalue = ref()
+const toArrowSizein = () => {
+  meta2d.setValue({
+    id:pricex.value[0].id,
+    toArrowSize:toArrowSizevalue.value
+  })
+}
+const fromArrowcolorvalue = ref()
+const endArrowcolorvalue = ref()
+const fromArrowcolor = () => {
+  meta2d.setValue({
+    id:pricex.value[0].id,
+    fromArrowColor:fromArrowcolorvalue.value
+  })
+}
+const endArrowcolor = () => {
+  meta2d.setValue({
+    id:pricex.value[0].id,
+    toArrowColor:endArrowcolorvalue.value
+  })
+}
+
+
+
+
+
 axios.get("/T型开关A -C.svg").then((res) => {
   const data = res.data;
   const pens = parseSvg(data);
@@ -1038,7 +1420,7 @@ axios.get("/T型开关A -C.svg").then((res) => {
         <el-collapse v-model="activeNamefour">
           <el-collapse-item title="位置和大小" name="1">
             <!-- X -->
-            <el-row>
+            <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">X</el-col>
               <el-col :span="12"
                 ><el-input
@@ -1047,8 +1429,20 @@ axios.get("/T型开关A -C.svg").then((res) => {
                   @input="updateData"
               /></el-col>
             </el-row>
+            <el-row v-show="pennamevalue === 'line'">
+              <el-col :span="12">起点X坐标</el-col>
+              <el-col :span="12">
+                <el-input v-model="startingpointX" />
+              </el-col>
+            </el-row>
+            <el-row v-show="pennamevalue === 'line'">
+              <el-col :span="12">终点X坐标</el-col>
+              <el-col :span="12">
+                <el-input v-model="EndX" />
+              </el-col>
+            </el-row>
             <!-- Y -->
-            <el-row>
+            <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">Y</el-col>
               <el-col :span="12"
                 ><el-input
@@ -1057,8 +1451,82 @@ axios.get("/T型开关A -C.svg").then((res) => {
                   @input="updateData"
               /></el-col>
             </el-row>
+            <el-row v-show="pennamevalue === 'line'">
+              <el-col :span="12">起点Y坐标</el-col>
+              <el-col :span="12">
+                <el-input v-model="startingpointY" />
+              </el-col>
+            </el-row>
+            <el-row v-show="pennamevalue === 'line'">
+              <el-col :span="12">终点Y坐标</el-col>
+              <el-col :span="12">
+                <el-input v-model="EndY" />
+              </el-col>
+            </el-row>
+            <el-row v-show="pennamevalue === 'line'">
+              <el-col :span="12">起点箭头</el-col>
+              <el-col :span="12">
+                <el-select v-model="fromarrowvalue" class="m-2" placeholder="Select" @change="fromarrowselect">
+                  <el-option
+                    v-for="item in fromarrow"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
+              </el-col>
+            </el-row>
+            <el-row v-show="pennamevalue === 'line'">
+              <el-col :span="12">起点箭头大小</el-col>
+              <el-col :span="12">
+                <el-input v-model="fromArrowSizevalue" @input="fromArrowSizein"/>
+              </el-col>
+            </el-row>
+            <el-row v-show="pennamevalue === 'line'">
+              <el-col :span="12">起点箭头颜色</el-col>
+              <el-col :span="12">
+                <el-color-picker v-model="fromArrowcolorvalue" @change="fromArrowcolor"/>
+              </el-col>
+            </el-row>
+            <el-row v-show="pennamevalue === 'line'">
+              <el-col :span="12">终点箭头</el-col>
+              <el-col :span="12">
+                <el-select v-model="endArrowSizevalue" class="m-2" placeholder="Select" @change="endarrowselect">
+                  <el-option
+                    v-for="item in fromarrow"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
+              </el-col>
+            </el-row>
+            <el-row v-show="pennamevalue === 'line'">
+              <el-col :span="12">终点箭头大小</el-col>
+              <el-col :span="12">
+                <el-input v-model="toArrowSizevalue"  @input="toArrowSizein"/>
+              </el-col>
+            </el-row>
+            <el-row v-show="pennamevalue === 'line'">
+              <el-col :span="12">终点箭头颜色</el-col>
+              <el-col :span="12">
+                <el-color-picker v-model="endArrowcolorvalue" @change="endArrowcolor"/>
+              </el-col>
+            </el-row>
+            <el-row v-show="pennamevalue === 'line'">
+              <el-col :span="12">起点自动关联</el-col>
+              <el-col :span="12">
+                <el-switch v-model="value1" />
+              </el-col>
+            </el-row>
+            <el-row v-show="pennamevalue === 'line'">
+              <el-col :span="12">终点自动关联</el-col>
+              <el-col :span="12">
+                <el-switch v-model="value1" />
+              </el-col>
+            </el-row>
             <!-- 宽 -->
-            <el-row>
+            <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">宽</el-col>
               <el-col :span="12"
                 ><el-input
@@ -1068,7 +1536,7 @@ axios.get("/T型开关A -C.svg").then((res) => {
               /></el-col>
             </el-row>
             <!-- 高 -->
-            <el-row>
+            <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">高</el-col>
               <el-col :span="12"
                 ><el-input
@@ -1078,14 +1546,14 @@ axios.get("/T型开关A -C.svg").then((res) => {
               /></el-col>
             </el-row>
             <!-- 锁定宽高比 -->
-            <el-row>
+            <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">锁定宽高比</el-col>
               <el-col :span="12">
                 <el-switch v-model="lockAspectRatio" @click="lockAspectRatiob"
               /></el-col>
             </el-row>
             <!-- 圆角 -->
-            <el-row>
+            <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">圆角</el-col>
               <el-col :span="12"
                 ><el-input
@@ -1095,7 +1563,7 @@ axios.get("/T型开关A -C.svg").then((res) => {
               /></el-col>
             </el-row>
             <!-- 旋转 -->
-            <el-row>
+            <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">旋转</el-col>
               <el-col :span="12"
                 ><el-input
@@ -1105,35 +1573,35 @@ axios.get("/T型开关A -C.svg").then((res) => {
               /></el-col>
             </el-row>
             <!-- 内边距——左 -->
-            <el-row>
+            <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">内边距-左</el-col>
               <el-col :span="12"
                 ><el-input v-model.number="paddingLeft" placeholder=""
               /></el-col>
             </el-row>
             <!-- 内边距——右 -->
-            <el-row>
+            <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">内边距-右</el-col>
               <el-col :span="12"
                 ><el-input v-model.number="paddingRight" placeholder=""
               /></el-col>
             </el-row>
             <!-- 内边距——上 -->
-            <el-row>
+            <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">内边距-上</el-col>
               <el-col :span="12"
                 ><el-input v-model.number="paddingUp" placeholder=""
               /></el-col>
             </el-row>
             <!-- 内边距——下 -->
-            <el-row>
+            <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">内边距-下</el-col>
               <el-col :span="12"
                 ><el-input v-model.number="paddingBelow" placeholder=""
               /></el-col>
             </el-row>
             <!-- 进度 -->
-            <el-row>
+            <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">进度</el-col>
               <el-col :span="12"
                 ><el-input
@@ -1143,7 +1611,7 @@ axios.get("/T型开关A -C.svg").then((res) => {
               /></el-col>
             </el-row>
             <!-- 进度颜色 -->
-            <el-row>
+            <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">进度颜色</el-col>
               <el-col :span="12"
                 ><el-color-picker
@@ -1152,7 +1620,7 @@ axios.get("/T型开关A -C.svg").then((res) => {
               /></el-col>
             </el-row>
             <!-- 垂直进度 -->
-            <el-row>
+            <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">垂直进度</el-col>
               <el-col :span="12"
                 ><el-switch
@@ -1161,7 +1629,7 @@ axios.get("/T型开关A -C.svg").then((res) => {
               /></el-col>
             </el-row>
             <!-- 水平翻转 -->
-            <el-row>
+            <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">水平翻转</el-col>
               <el-col :span="12"
                 ><el-switch
@@ -1170,14 +1638,14 @@ axios.get("/T型开关A -C.svg").then((res) => {
               /></el-col>
             </el-row>
             <!-- 垂直翻转 -->
-            <el-row>
+            <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">垂直翻转</el-col>
               <el-col :span="12"
                 ><el-switch v-model="flipVertical" @click="flipVerticalswitch"
               /></el-col>
             </el-row>
             <!-- 输入框 -->
-            <el-row>
+            <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">输入框</el-col>
               <el-col :span="12"><el-switch v-model="InputBox" /></el-col>
             </el-row>
@@ -1187,9 +1655,14 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <el-row>
               <el-col :span="12">线条样式</el-col>
               <el-col :span="12">
-                <el-select v-model="value" class="m-2" placeholder="Select">
+                <el-select
+                  v-model="linevalue"
+                  class="m-2"
+                  placeholder="请选择"
+                  @change="lineSelect"
+                >
                   <el-option
-                    v-for="item in options"
+                    v-for="item in linelist"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -1201,9 +1674,14 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <el-row>
               <el-col :span="12">末端样式</el-col>
               <el-col :span="12">
-                <el-select v-model="value" class="m-2" placeholder="Select">
+                <el-select
+                  v-model="lineCapvalue"
+                  class="m-2"
+                  placeholder="Select"
+                  @change="lineCapSelect"
+                >
                   <el-option
-                    v-for="item in options"
+                    v-for="item in lineCap"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -1229,22 +1707,28 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <el-row>
               <el-col :span="12">线条渐变</el-col>
               <el-col :span="12">
-                <el-select v-model="value" class="m-2" placeholder="Select">
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
+                <el-switch
+                  v-model="gradientFromColors"
+                  @click="gradientFromColorssw"
+                ></el-switch>
               </el-col>
             </el-row>
             <!-- 颜色 -->
-            <el-row>
+            <el-row v-if="gradientFromColors == false">
               <el-col :span="12">颜色</el-col>
               <el-col :span="12"
                 ><el-color-picker v-model="pencolordata" @change="pencolor"
               /></el-col>
+            </el-row>
+            <el-row v-if="gradientFromColors == true">
+              <el-col :span="12">线条渐变色</el-col>
+              <el-col :span="12"
+                ><el-color-picker v-model="color" show-alpha
+              /></el-col>
+            </el-row>
+            <el-row v-if="gradientFromColors == true">
+              <el-col :span="12">平滑度</el-col>
+              <el-col :span="12"><el-input v-model="smoothness" /></el-col>
             </el-row>
             <!-- 浮动颜色 -->
             <el-row>
@@ -1428,14 +1912,7 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <el-row>
               <el-col :span="12">倾斜</el-col>
               <el-col :span="12">
-                <el-select v-model="value" class="m-2" placeholder="Select">
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
+                <el-switch v-model="incline" @click="inclinesw" />
               </el-col>
             </el-row>
             <!-- 加粗 -->
@@ -1707,34 +2184,82 @@ axios.get("/T型开关A -C.svg").then((res) => {
           >
         </div>
 
-        <template v-for="(item, index) in events" :key="index">
-          <el-collapse v-model="activeNameEvent">
-            <el-collapse-item>
-              <el-row>
-                <el-col :span="12">事件类型</el-col>
-                <el-col :span="12">
-                  <el-select v-model="item.name" placeholder="请选择">
-                    <el-option
-                      v-for="item in eventTypeList"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                    >
-                    </el-option>
-                  </el-select>
-                </el-col>
+        <el-collapse
+          v-for="(item, index) in events"
+          :key="index"
+          v-model="activeNameEvent"
+        >
+          <el-collapse-item :title="'事件' + (index + 1)">
+            <el-row>
+              <el-col :span="12">事件类型</el-col>
+              <el-col :span="12">
+                <el-select v-model="item.name" placeholder="请选择">
+                  <el-option
+                    v-for="item in eventTypeList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">事件行为</el-col>
+              <el-col :span="12">
+                <el-select v-model="item.action" placeholder="请选择">
+                  <el-option
+                    v-for="item in actionTypeList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </el-col>
+            </el-row>
+            <el-row v-if="item.action === 0">
+              <el-col :span="12">链接地址</el-col>
+              <el-col :span="12"
+                ><el-input v-model="item.value" placeholder="链接地址URL"
+              /></el-col>
+            </el-row>
+            <el-row v-if="item.action === 1">
+              <el-col :span="12">目标</el-col>
+              <el-col :span="12"
+                ><el-input v-model="item.params" placeholder="默认自身"
+              /></el-col>
+            </el-row>
+            <!-- <el-row v-if="item.action === 1">
+                <el-col :span="11">key</el-col>
+                <el-col :span="11">value</el-col>
+                <el-col :span="2"><el-icon :size="20" @click="addupdate"><CirclePlus /></el-icon></el-col>
               </el-row>
-              <el-row>
-                <el-col :span="12">事件行为</el-col>
-                <el-col :span="12"> </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12">触发条件</el-col>
-                <el-col :span="12"></el-col>
-              </el-row>
-            </el-collapse-item>
-          </el-collapse>
-        </template>
+              <el-row v-for="value in item.value" :key="value">
+
+              </el-row> -->
+            <el-row
+              v-if="item.action === 2 || item.action === 3 || item.action === 4"
+            >
+              <el-col :span="12">动画目标</el-col>
+              <el-col :span="12"><el-input v-model="item.value" /></el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">触发条件</el-col>
+              <el-col :span="12">
+                <el-select v-model="item.type" placeholder="请选择">
+                  <el-option
+                    v-for="item in comparisonList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </el-col>
+            </el-row>
+          </el-collapse-item>
+        </el-collapse>
       </el-tab-pane>
 
       <!-- 动效 -->
@@ -1743,7 +2268,7 @@ axios.get("/T型开关A -C.svg").then((res) => {
           <el-collapse-item title="动画" name="1">
             <el-row>
               <el-col :span="12">时长</el-col>
-              <el-col :span="12"><el-input v-model.number="value1" /></el-col>
+              <el-col :span="12"><el-input v-model.number="duration" /></el-col>
             </el-row>
             <el-row>
               <el-col :span="12">动画效果</el-col>
@@ -1836,6 +2361,7 @@ axios.get("/T型开关A -C.svg").then((res) => {
           </el-collapse-item>
         </el-collapse>
       </el-tab-pane>
+
       <el-tab-pane label="数据" name="fourth">
         <el-collapse v-model="activeNameseven">
           <el-row>
@@ -1860,7 +2386,7 @@ axios.get("/T型开关A -C.svg").then((res) => {
             </el-tag>
             <el-row>
               <el-col :span="24">
-                <el-input v-model="pentag" @keyup.enter="addpentag"/>
+                <el-input v-model="pentag" @keyup.enter="addpentag" />
               </el-col>
             </el-row>
           </el-collapse-item>

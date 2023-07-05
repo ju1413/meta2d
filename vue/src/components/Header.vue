@@ -4,6 +4,7 @@ const isPenActive = ref(false);
 const isPencilActive = ref(false);
 const isMagnifierActive = ref(false);
 const isMinimapActive = ref(false);
+const lockstate = ref(0);
 
 const onCreate = () => {
   window.meta2d.open();
@@ -87,6 +88,26 @@ const onHelp = () => {
   window.open("https://www.yuque.com/alsmile/meta2d/cucep0");
 };
 
+const bun  = ref("编辑")
+
+const iflock = () => {
+  if(lockstate.value === 0){
+    lockstate.value = 1
+    meta2d.lock(1)
+    bun.value = "预览"
+  }else if(lockstate.value === 1){
+    lockstate.value = 2
+    meta2d.lock(2)
+    bun.value = "锁定"
+  }else if(lockstate.value === 2){
+    lockstate.value = 0
+    meta2d.lock(0)
+    bun.value = "编辑"
+  }
+  console.log(lockstate.value);
+  
+}
+
 const onKeyDown = (e) => {
   switch (e.key) {
     case "b":
@@ -152,6 +173,7 @@ onUnmounted(() => {
       <button id="magnifier" :class="{ active: isMagnifierActive }" @click="onToggleMagnifier">放大镜</button>
       <button id="minimap" :class="{ active: isMinimapActive }" @click="onToggleMinimap">缩略图</button>
       <button id="help" @click="onHelp">帮助</button>
+      <button id="lock" :class="{ active: lockstate }" @click="iflock">{{ bun }}</button>
     </div>
   </div>
 </template>

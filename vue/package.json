@@ -7,6 +7,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.1.0",
     "@meta2d/activity-diagram": "^1.0.0",
     "@meta2d/chart-diagram": "^1.0.2",
     "@meta2d/class-diagram": "^1.0.0",
