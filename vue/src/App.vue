@@ -4,6 +4,7 @@
 import Header from './components/Header.vue';
 import Icons from './components/Icons.vue';
 import Meta2d from './components/Meta2d.vue';
+import IconsLeft from './components/IconsLeft.vue'
 // import testttt from './components/Icons.vue';
 
 // const z = testttt().x.value
@@ -13,11 +14,13 @@ import Meta2d from './components/Meta2d.vue';
 
 <template>
   <Header />
+  <IconsLeft/>
   <Icons />
   <Meta2d />
 </template>
 
 <style>
+
 * {
   padding: 0;
   margin: 0;
@@ -31,6 +34,22 @@ html, body, #app {
   width: 100%;
   height: 100%;
 }
+
+ul{
+            list-style: none;
+            width: 237.2px;
+            /* margin: auto; */
+            padding:0;
+            display: flex;
+            flex-wrap: wrap;
+
+        }
+        li{
+            text-align: center;
+            /* width: 133px; */
+            height: 60px;
+            
+        }
 
 input[type=file], /* FF, IE7+, chrome (except button) */
 input[type=file]::-webkit-file-upload-button { /* chromes and blink button */
@@ -103,7 +122,7 @@ i.iconfont {
 }
 
 .aside {
-  width: 101px;
+  width: 237.2px;
   height: calc(100% - 61px);
   float: left;
   border-right: 1px solid #ccc;
@@ -117,8 +136,8 @@ i.iconfont {
 .aside .icon-list > div,
 .aside .link {
   height: 51px;
-  line-height: 50px;
-  text-align: center;
+  /* line-height: 50px; */
+
 }
 
 .aside .icon-list > div i {
@@ -128,9 +147,8 @@ i.iconfont {
 
 .main {
   height: calc(100% - 61px);
-  padding-left: 101px;
+  padding-left: 237.2px;
   padding-right: 277.2px;
- 
 }
 
 #meta2d {
@@ -149,7 +167,7 @@ i.iconfont {
 .demo-tabs  {
   padding-left: 15px;
   /* color: rgb(229, 6, 6); */
-  font-size: 25px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 500;
 }
 </style>

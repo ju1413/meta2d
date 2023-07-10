@@ -8,6 +8,7 @@ declare module 'vue' {
     AModal: typeof import('ant-design-vue/es')['Modal']
     Header: typeof import('./src/components/Header.vue')['default']
     Icons: typeof import('./src/components/Icons.vue')['default']
+    IconsLeft: typeof import('./src/components/IconsLeft.vue')['default']
     Meta2d: typeof import('./src/components/Meta2d.vue')['default']
     Meta2dTwo: typeof import('./src/components/Meta2dTwo.vue')['default']
     Test: typeof import('./src/components/test.vue')['default']

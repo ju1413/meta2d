@@ -1,9 +1,5 @@
 <script setup lang="ts">
 import { nextTick, ref } from "vue";
-import { icons } from "../utils/data";
-import axios from "axios";
-import { parseSvg } from "@meta2d/svg";
-// import { pointInRect } from '@meta2d/core';
 import type { TabsPaneContext } from "element-plus";
 import { onMounted, onUnmounted } from "vue";
 import { MqttClient } from "mqtt";
@@ -23,11 +19,12 @@ const penRotate = ref();
 const penScheduledata = ref();
 const pennamevalue = ref();
 
+
 const updateMouse = (e: MouseEvent) => {
   lengthx.value = meta2d.store.active.length;
   pricex.value = meta2d.store.active;
   penXX.value = meta2d.getPenRect(pricex.value[0]);
-  
+
   //设置回显
   penX.value = penXX.value.x;
   penY.value = penXX.value.y;
@@ -63,7 +60,7 @@ const updateMouse = (e: MouseEvent) => {
   textareadata.value = pricex.value[0].text;
   cyclesNumber.value = pricex.value[0].animateCycle;
   autoPlaydata.value = pricex.value[0].autoPlay;
-  console.log(pricex.value[0]);
+  console.log(pricex.value);
 
   penid.value = pricex.value[0].id;
   tags.value = pricex.value[0].tags;
@@ -74,12 +71,11 @@ const updateMouse = (e: MouseEvent) => {
   linevalue.value = pricex.value[0].linevalue;
   lineCapvalue.value = pricex.value[0].lineCapvalue;
   pennamevalue.value = pricex.value[0].name;
-  startingpointX.value = getFromAnchor(pricex.value[0]).x
-  startingpointY.value = getFromAnchor(pricex.value[0]).y
-  EndX.value = getToAnchor(pricex.value[0]).x
-  EndY.value = getToAnchor(pricex.value[0]).y
-  console.log(pricex.value);
-  
+  startingpointX.value = getFromAnchor(pricex.value[0]).x;
+  startingpointY.value = getFromAnchor(pricex.value[0]).y;
+  EndX.value = getToAnchor(pricex.value[0]).x;
+  EndY.value = getToAnchor(pricex.value[0]).y;
+  console.log(pricex.value[0].id);
 };
 onMounted(() => {
   document.addEventListener("click", updateMouse);
@@ -343,27 +339,6 @@ const updateData = () => {
   meta2d.inactive();
 };
 
-// const updatepenFillet =()=>{
-//   meta2d.setValue({
-//         id:pricex.value[0].id,
-//         borderRadius:penFillet.value,
-//       })
-// }
-
-// const updatetransparency =()=>{
-//   meta2d.setValue({
-//         id:pricex.value[0].id,
-//         globalAlpha:transparency.value,
-//       })
-
-//       if(pricex.value[0].globalAlpha === '' || pricex.value[0].globalAlpha === null){
-//         meta2d.setValue({
-//         id:pricex.value[0].id,
-//         globalAlpha:"1"
-//       })
-//       }
-// }
-
 const updatelineWidthdata = () => {
   meta2d.setValue({
     id: pricex.value[0].id,
@@ -441,20 +416,7 @@ const scheduledata = () => {
   });
 };
 
-//拖动时触发
-const onDragStart = (e: any, data) => {
-  e.dataTransfer.setData("Meta2d", JSON.stringify(data));
-};
-//拖动释放触发
-const ondragend = (e: any, data) => {
-  e.dataTransfer.setData("Meta2d", JSON.stringify(data));
-  pricex.value = meta2d.store.active;
-  penXX.value = meta2d.getPenRect(pricex.value[0]);
-  penX.value = penXX.value.x;
-  penY.value = penXX.value.y;
-  penWidth.value = penXX.value.width;
-  penHeight.value = penXX.value.height;
-};
+
 
 //旋转
 const penRotatedata = () => {
@@ -467,12 +429,7 @@ const penRotatedata = () => {
   console.log("旋转修改", pricex.value[0]);
 };
 
-nextTick(() => {
-  // 此处只注册，未将数据放置到工具栏
-  // data.ts 中配置的最后一项即为该图形库中的内容
-  (window as any).registerToolsNew();
-  // (window as any).meta2dTools = undefined;
-});
+
 
 //图形颜色
 const pencolordata = ref();
@@ -1124,7 +1081,7 @@ const lineCapSelect = (e) => {
       lineCap: "butt",
     });
     console.log("末端样式");
-    
+
     pricex.value[0].lineCapvalue = lineCap[e].label;
   }
   if (e === 1) {
@@ -1161,258 +1118,265 @@ const gradientFromColorssw = () => {
 const incline = ref(false);
 const inclinesw = () => {};
 
-const rIcons = ref(icons);
 
 
-const startingpointX = ref()
-const startingpointY = ref()
-const EndX =ref()
-const EndY = ref()
-const fromarrowvalue =ref()
-const endArrowSizevalue = ref()
-const fromarrow = [{
-  value:0,
-  label:"默认",
-},{
-  value:1,
-  label:"三角箭头",
-},{
-  value:2,
-  label:"菱形箭头",
-},{
-  value:3,
-  label:"圆箭头",
-},{
-  value:4,
-  label:"箭头1",
-},{
-  value:5,
-  label:"箭头2",
-},{
-  value:6,
-  label:"三角箭头实",
-},{
-  value:7,
-  label:"菱形箭头实",
-},{
-  value:8,
-  label:"圆箭头实",
-},{
-  value:9,
-  label:"普通箭头",
-},
-]
-const fromarrowselect =(e) => {
-  if(e === 0){
-    meta2d.setValue({
-      id:pricex.value[0].id,
-      fromArrow:"",
-    })
-    fromarrowvalue.value = fromarrow[e].label
-  }
-  if(e === 1){
+const startingpointX = ref();
+const startingpointY = ref();
+const EndX = ref();
+const EndY = ref();
+const fromarrowvalue = ref();
+const endArrowSizevalue = ref();
+const fromarrow = [
+  {
+    value: 0,
+    label: "默认",
+  },
+  {
+    value: 1,
+    label: "三角箭头",
+  },
+  {
+    value: 2,
+    label: "菱形箭头",
+  },
+  {
+    value: 3,
+    label: "圆箭头",
+  },
+  {
+    value: 4,
+    label: "箭头1",
+  },
+  {
+    value: 5,
+    label: "箭头2",
+  },
+  {
+    value: 6,
+    label: "三角箭头实",
+  },
+  {
+    value: 7,
+    label: "菱形箭头实",
+  },
+  {
+    value: 8,
+    label: "圆箭头实",
+  },
+  {
+    value: 9,
+    label: "普通箭头",
+  },
+];
+const fromarrowselect = (e) => {
+  if (e === 0) {
     meta2d.setValue({
       id: pricex.value[0].id,
-      fromArrow: "triangle",//实三角
+      fromArrow: "",
     });
-    fromarrowvalue.value = fromarrow[e].label
+    fromarrowvalue.value = fromarrow[e].label;
   }
-  if(e === 2){
+  if (e === 1) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      fromArrow: "diamond" ,//空三角
-    })
-    fromarrowvalue.value = fromarrow[e].label
+      id: pricex.value[0].id,
+      fromArrow: "triangle",
+    });
+    fromarrowvalue.value = fromarrow[e].label;
   }
-  if(e === 3){
+  if (e === 2) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      fromArrow: "circle" ,//
-    })
-    fromarrowvalue.value = fromarrow[e].label
+      id: pricex.value[0].id,
+      fromArrow: "diamond",
+    });
+    fromarrowvalue.value = fromarrow[e].label;
   }
-  if(e === 4){
+  if (e === 3) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      fromArrow: "lineDown" ,
-    })
-    fromarrowvalue.value = fromarrow[e].label
+      id: pricex.value[0].id,
+      fromArrow: "circle",
+    });
+    fromarrowvalue.value = fromarrow[e].label;
   }
-  if(e === 5){
+  if (e === 4) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      fromArrow: "lineUp" ,
-    })
-    fromarrowvalue.value = fromarrow[e].label
+      id: pricex.value[0].id,
+      fromArrow: "lineDown",
+    });
+    fromarrowvalue.value = fromarrow[e].label;
   }
-  if(e === 6){
+  if (e === 5) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      fromArrow: "triangleSolid" ,
-    })
-    fromarrowvalue.value = fromarrow[e].label
+      id: pricex.value[0].id,
+      fromArrow: "lineUp",
+    });
+    fromarrowvalue.value = fromarrow[e].label;
   }
-  if(e === 7){
+  if (e === 6) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      fromArrow: "diamondSolid" ,
-    })
-    fromarrowvalue.value = fromarrow[e].label
+      id: pricex.value[0].id,
+      fromArrow: "triangleSolid",
+    });
+    fromarrowvalue.value = fromarrow[e].label;
   }
-  if(e === 8){
+  if (e === 7) {
     meta2d.setValue({
-      id:pricex.value[0].id,
+      id: pricex.value[0].id,
+      fromArrow: "diamondSolid",
+    });
+    fromarrowvalue.value = fromarrow[e].label;
+  }
+  if (e === 8) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
       fromArrow: "circleSolid",
-    })
-    fromarrowvalue.value = fromarrow[e].label
+    });
+    fromarrowvalue.value = fromarrow[e].label;
   }
-  if(e === 9){
-    meta2d.setValue({
-      id:pricex.value[0].id,
-      fromArrow: "line" ,
-    })
-    fromarrowvalue.value = fromarrow[e].label
-  }
-}
-const endarrowselect = (e) => {
-  if(e === 0){
-    meta2d.setValue({
-      id:pricex.value[0].id,
-      toArrow:"",
-    })
-    endArrowSizevalue.value = fromarrow[e].label
-  }
-  if(e === 1){
+  if (e === 9) {
     meta2d.setValue({
       id: pricex.value[0].id,
-      toArrow: "triangle",//实三角
+      fromArrow: "line",
     });
-    endArrowSizevalue.value = fromarrow[e].label
+    fromarrowvalue.value = fromarrow[e].label;
   }
-  if(e === 2){
+};
+const endarrowselect = (e) => {
+  if (e === 0) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      toArrow: "diamond" ,//空三角
-    })
-    endArrowSizevalue.value = fromarrow[e].label
+      id: pricex.value[0].id,
+      toArrow: "",
+    });
+    endArrowSizevalue.value = fromarrow[e].label;
   }
-  if(e === 3){
+  if (e === 1) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      toArrow: "circle" ,//
-    })
-    endArrowSizevalue.value = fromarrow[e].label
+      id: pricex.value[0].id,
+      toArrow: "triangle",
+    });
+    endArrowSizevalue.value = fromarrow[e].label;
   }
-  if(e === 4){
+  if (e === 2) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      toArrow: "lineDown" ,
-    })
-    endArrowSizevalue.value = fromarrow[e].label
+      id: pricex.value[0].id,
+      toArrow: "diamond",
+    });
+    endArrowSizevalue.value = fromarrow[e].label;
   }
-  if(e === 5){
+  if (e === 3) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      toArrow: "lineUp" ,
-    })
-    endArrowSizevalue.value = fromarrow[e].label
+      id: pricex.value[0].id,
+      toArrow: "circle",
+    });
+    endArrowSizevalue.value = fromarrow[e].label;
   }
-  if(e === 6){
+  if (e === 4) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      toArrow: "triangleSolid" ,
-    })
-    endArrowSizevalue.value = fromarrow[e].label
+      id: pricex.value[0].id,
+      toArrow: "lineDown",
+    });
+    endArrowSizevalue.value = fromarrow[e].label;
   }
-  if(e === 7){
+  if (e === 5) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      toArrow: "diamondSolid" ,
-    })
-    endArrowSizevalue.value = fromarrow[e].label
+      id: pricex.value[0].id,
+      toArrow: "lineUp",
+    });
+    endArrowSizevalue.value = fromarrow[e].label;
   }
-  if(e === 8){
+  if (e === 6) {
     meta2d.setValue({
-      id:pricex.value[0].id,
+      id: pricex.value[0].id,
+      toArrow: "triangleSolid",
+    });
+    endArrowSizevalue.value = fromarrow[e].label;
+  }
+  if (e === 7) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      toArrow: "diamondSolid",
+    });
+    endArrowSizevalue.value = fromarrow[e].label;
+  }
+  if (e === 8) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
       toArrow: "circleSolid",
-    })
-    endArrowSizevalue.value = fromarrow[e].label
+    });
+    endArrowSizevalue.value = fromarrow[e].label;
   }
-  if(e === 9){
+  if (e === 9) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      toArrow: "line" ,
-    })
-    endArrowSizevalue.value = fromarrow[e].label
+      id: pricex.value[0].id,
+      toArrow: "line",
+    });
+    endArrowSizevalue.value = fromarrow[e].label;
   }
-}
-const fromArrowSizevalue = ref()
+};
+const fromArrowSizevalue = ref();
 const fromArrowSizein = () => {
-    meta2d.setValue({
-      id:pricex.value[0].id,
-      fromArrowSize:fromArrowSizevalue.value
-    })
-}
-const toArrowSizevalue = ref()
+  meta2d.setValue({
+    id: pricex.value[0].id,
+    fromArrowSize: fromArrowSizevalue.value,
+  });
+};
+const toArrowSizevalue = ref();
 const toArrowSizein = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    toArrowSize:toArrowSizevalue.value
-  })
-}
-const fromArrowcolorvalue = ref()
-const endArrowcolorvalue = ref()
+    id: pricex.value[0].id,
+    toArrowSize: toArrowSizevalue.value,
+  });
+};
+const fromArrowcolorvalue = ref();
+const endArrowcolorvalue = ref();
 const fromArrowcolor = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    fromArrowColor:fromArrowcolorvalue.value
-  })
-}
+    id: pricex.value[0].id,
+    fromArrowColor: fromArrowcolorvalue.value,
+  });
+};
 const endArrowcolor = () => {
   meta2d.setValue({
-    id:pricex.value[0].id,
-    toArrowColor:endArrowcolorvalue.value
-  })
-}
-
-
-
-
-
-axios.get("/T型开关A -C.svg").then((res) => {
-  const data = res.data;
-  const pens = parseSvg(data);
-  rIcons.value.push({
-    svg: "/T型开关A -C.svg",
-    title: "svg",
-    data: pens,
+    id: pricex.value[0].id,
+    toArrowColor: endArrowcolorvalue.value,
   });
-});
+};
+
+const zuhe = ref();
+const combinationbu = () => {
+  zuhe.value = meta2d.combine(pricex.value, 0);
+
+  console.log(zuhe);
+};
+
+const statevalue = ref()
+const state = [
+  {value:0,
+    label:"状态一"
+  },
+  {
+    value:1,
+    label:"状态二"
+  }
+]
+
+const statese = (e) => {
+  if(e === 0){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      showChild:0
+    })
+    console.log(pricex.value[0]);
+    
+  }
+  if(e === 1){
+    meta2d.setValue({
+    id:pricex.value[0].id,
+    showChild:1
+  })}
+}
 </script>
 
 <template>
-  <div class="aside">
-    <div class="icon-list">
-      <div
-        v-for="icon in rIcons"
-        draggable="true"
-        @dragstart="onDragStart($event, icon.data)"
-        @dragend="ondragend($event, icon.data)"
-        :ondragstart="icon.title"
-        style="width: 100px"
-      >
-        <i v-if="icon.key" class="iconfont" :class="`icon-${icon.key}`"></i>
-        <img
-          v-else-if="icon.svg"
-          :src="icon.svg"
-          alt=""
-          srcset=""
-          class="img"
-        />
-      </div>
-    </div>
-  </div>
-
   <div class="beyond" v-if="lengthx >= 1">
     <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
       <!-- 外观 -->
@@ -1466,7 +1430,12 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <el-row v-show="pennamevalue === 'line'">
               <el-col :span="12">起点箭头</el-col>
               <el-col :span="12">
-                <el-select v-model="fromarrowvalue" class="m-2" placeholder="Select" @change="fromarrowselect">
+                <el-select
+                  v-model="fromarrowvalue"
+                  class="m-2"
+                  placeholder="Select"
+                  @change="fromarrowselect"
+                >
                   <el-option
                     v-for="item in fromarrow"
                     :key="item.value"
@@ -1479,19 +1448,30 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <el-row v-show="pennamevalue === 'line'">
               <el-col :span="12">起点箭头大小</el-col>
               <el-col :span="12">
-                <el-input v-model="fromArrowSizevalue" @input="fromArrowSizein"/>
+                <el-input
+                  v-model="fromArrowSizevalue"
+                  @input="fromArrowSizein"
+                />
               </el-col>
             </el-row>
             <el-row v-show="pennamevalue === 'line'">
               <el-col :span="12">起点箭头颜色</el-col>
               <el-col :span="12">
-                <el-color-picker v-model="fromArrowcolorvalue" @change="fromArrowcolor"/>
+                <el-color-picker
+                  v-model="fromArrowcolorvalue"
+                  @change="fromArrowcolor"
+                />
               </el-col>
             </el-row>
             <el-row v-show="pennamevalue === 'line'">
               <el-col :span="12">终点箭头</el-col>
               <el-col :span="12">
-                <el-select v-model="endArrowSizevalue" class="m-2" placeholder="Select" @change="endarrowselect">
+                <el-select
+                  v-model="endArrowSizevalue"
+                  class="m-2"
+                  placeholder="Select"
+                  @change="endarrowselect"
+                >
                   <el-option
                     v-for="item in fromarrow"
                     :key="item.value"
@@ -1504,13 +1484,16 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <el-row v-show="pennamevalue === 'line'">
               <el-col :span="12">终点箭头大小</el-col>
               <el-col :span="12">
-                <el-input v-model="toArrowSizevalue"  @input="toArrowSizein"/>
+                <el-input v-model="toArrowSizevalue" @input="toArrowSizein" />
               </el-col>
             </el-row>
             <el-row v-show="pennamevalue === 'line'">
               <el-col :span="12">终点箭头颜色</el-col>
               <el-col :span="12">
-                <el-color-picker v-model="endArrowcolorvalue" @change="endArrowcolor"/>
+                <el-color-picker
+                  v-model="endArrowcolorvalue"
+                  @change="endArrowcolor"
+                />
               </el-col>
             </el-row>
             <el-row v-show="pennamevalue === 'line'">
@@ -1648,6 +1631,20 @@ axios.get("/T型开关A -C.svg").then((res) => {
             <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">输入框</el-col>
               <el-col :span="12"><el-switch v-model="InputBox" /></el-col>
+            </el-row>
+            <el-row  v-if="pennamevalue == 'combine'">
+              <el-col :span="12">状态</el-col>
+              <el-col :span="12">
+                <el-select v-model="statevalue" class="m-2" placeholder="Select" @change="statese">
+                  <el-option
+                    v-for="item in state"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                    
+                  />
+                </el-select>
+              </el-col>
             </el-row>
           </el-collapse-item>
           <el-collapse-item title="样式" name="2">
@@ -2389,6 +2386,12 @@ axios.get("/T型开关A -C.svg").then((res) => {
                 <el-input v-model="pentag" @keyup.enter="addpentag" />
               </el-col>
             </el-row>
+            <el-row>
+              <el-col :span="12">组合</el-col>
+              <el-col :span="12">
+                <button id="combination" @click="combinationbu">组合</button>
+              </el-col>
+            </el-row>
           </el-collapse-item>
           <el-collapse-item title="数据" name="2"> </el-collapse-item>
         </el-collapse>
@@ -2541,12 +2544,12 @@ axios.get("/T型开关A -C.svg").then((res) => {
                 </el-col>
               </el-row>
               <el-row>
-                <el-col
+                <el-col :span="12"
                   ><el-button type="primary" @click="breakmqtt"
                     >断开</el-button
                   ></el-col
                 >
-                <el-col
+                <el-col :span="12"
                   ><el-button type="primary" @click="mqttconnect"
                     >连接</el-button
                   ></el-col

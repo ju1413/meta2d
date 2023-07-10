@@ -107,6 +107,11 @@ const iflock = () => {
   console.log(lockstate.value);
   
 }
+// const zuhe = ref()
+// const combinationbu = () => {
+//   zuhe.value = meta2d.combine('',0)
+// }
+
 
 const onKeyDown = (e) => {
   switch (e.key) {
@@ -172,8 +177,9 @@ onUnmounted(() => {
       <button id="pencil" :class="{ active: isPencilActive }" @click="onTogglePencil">铅笔</button>
       <button id="magnifier" :class="{ active: isMagnifierActive }" @click="onToggleMagnifier">放大镜</button>
       <button id="minimap" :class="{ active: isMinimapActive }" @click="onToggleMinimap">缩略图</button>
-      <button id="help" @click="onHelp">帮助</button>
+      <!-- <button id="help" @click="onHelp">帮助</button> -->
       <button id="lock" :class="{ active: lockstate }" @click="iflock">{{ bun }}</button>
+      <!-- <button id ="combination"  @click="combinationbu">组合</button> -->
     </div>
   </div>
 </template>
