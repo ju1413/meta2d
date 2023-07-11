@@ -5,6 +5,7 @@ import { onMounted, onUnmounted } from "vue";
 import { MqttClient } from "mqtt";
 import { Meta2d, getFromAnchor } from "@meta2d/core";
 import { getToAnchor } from "@meta2d/core";
+import { reactive } from "vue";
 
 //鼠标点击切换右边菜单
 const lengthx = ref();
@@ -18,7 +19,6 @@ const contrasta = ref(false);
 const penRotate = ref();
 const penScheduledata = ref();
 const pennamevalue = ref();
-
 
 const updateMouse = (e: MouseEvent) => {
   lengthx.value = meta2d.store.active.length;
@@ -75,6 +75,8 @@ const updateMouse = (e: MouseEvent) => {
   startingpointY.value = getFromAnchor(pricex.value[0]).y;
   EndX.value = getToAnchor(pricex.value[0]).x;
   EndY.value = getToAnchor(pricex.value[0]).y;
+  pictureHeight.value = pricex.value[0].iconHeight;
+  pictureWidth.value = pricex.value[0].iconWidth;
   console.log(pricex.value[0].id);
 };
 onMounted(() => {
@@ -141,13 +143,13 @@ const verticalOffset = ref();
 const penid = ref();
 
 const mqttconnect = () => {
-  let params = {
-    mqtt: mqtturl,
-    mqttTopics: mqttTopics,
+  const params = {
+    mqtt: mqtturl.value,
+    mqttTopics: mqttTopics.value,
     mqttOptions: {
-      clientId: mqttClientid,
-      username: mqttusername,
-      password: mqttpassword,
+      clientId: mqttClientid.value,
+      username: mqttusername.value,
+      password: mqttpassword.value,
       customClientId: false,
     },
   };
@@ -416,8 +418,6 @@ const scheduledata = () => {
   });
 };
 
-
-
 //旋转
 const penRotatedata = () => {
   console.log("查看旋转属性", penRotate.value, penXX.value);
@@ -428,8 +428,6 @@ const penRotatedata = () => {
     });
   console.log("旋转修改", pricex.value[0]);
 };
-
-
 
 //图形颜色
 const pencolordata = ref();
@@ -1118,8 +1116,6 @@ const gradientFromColorssw = () => {
 const incline = ref(false);
 const inclinesw = () => {};
 
-
-
 const startingpointX = ref();
 const startingpointY = ref();
 const EndX = ref();
@@ -1348,32 +1344,244 @@ const combinationbu = () => {
   console.log(zuhe);
 };
 
-const statevalue = ref()
+const statevalue = ref();
 const state = [
-  {value:0,
-    label:"状态一"
+  { value: 0, label: "状态一" },
+  {
+    value: 1,
+    label: "状态二",
+  },
+];
+
+const statese = (e) => {
+  if (e === 0) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      showChild: 0,
+    });
+    console.log(pricex.value[0]);
+  }
+  if (e === 1) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      showChild: 1,
+    });
+  }
+};
+
+//图片
+const content = ref();
+const dialogFormVisible = ref(false);
+const dialogFormVisibleif = () => {
+  meta2d.setValue({
+    id: pricex.value[0].id,
+    image: content.value,
+  });
+  pictureUrl.value = content.value;
+  dialogFormVisible.value = false;
+};
+const showImg = (event: any) => {
+  content.value = URL.createObjectURL(event.target.files[0]);
+};
+const pictureUrl = ref();
+
+//背景
+const contentbeij = ref();
+const dialogFormVisiblebeij = ref(false);
+const dialogFormVisiblebeijif = () => {
+  meta2d.setValue({
+    id: pricex.value[0].id,
+    backgroundImage: contentbeij.value,
+  });
+  pictureUrlbeij.value = contentbeij.value;
+  dialogFormVisiblebeij.value = false;
+};
+
+const showImgbeij = (event: any) => {
+  contentbeij.value = URL.createObjectURL(event.target.files[0]);
+};
+const pictureUrlbeij = ref();
+
+//描绘
+const contentmiaoh = ref();
+const dialogFormVisiblemiaoh = ref(false);
+const dialogFormVisiblemiaohif = () => {
+  meta2d.setValue({
+    id: pricex.value[0].id,
+    strokeImage: contentmiaoh.value,
+  });
+  pictureUrlmiaoh.value = contentmiaoh.value;
+  dialogFormVisiblemiaoh.value = false;
+};
+
+const showImgmiaoh = (event: any) => {
+  contentmiaoh.value = URL.createObjectURL(event.target.files[0]);
+};
+const pictureUrlmiaoh = ref();
+
+const pictureWidth = ref();
+const pictureWidthin = () => {
+  meta2d.setValue({
+    id: pricex.value[0].id,
+    iconWidth: pictureWidth.value,
+  });
+};
+const pictureHeight = ref();
+const pictureheightin = () => {
+  meta2d.setValue({
+    id: pricex.value[0].id,
+    iconHeight: pictureHeight.value,
+  });
+};
+
+const saveScale = ref(false);
+const saveScalesw = () => {
+  if (saveScale.value === false) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      imageRatio: false,
+    });
+  } else {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      imageRatio: true,
+    });
+  }
+};
+
+const pictureleft = ref();
+const pictureleftin = () => {
+  meta2d.setValue({
+    id: pricex.value[0].id,
+    iconLeft: pictureleft.value,
+  });
+};
+
+const picturetop = ref();
+const picturetopin = () => {
+  meta2d.setValue({
+    id: pricex.value[0].id,
+    iconTop: picturetop.value,
+  });
+};
+
+const alignlist = [
+  {
+    value:0,
+    label:"居中"
   },
   {
     value:1,
-    label:"状态二"
+    label:"上"
+  },
+  {
+    value:2,
+    label:"下"
+  },
+  {
+    value:3,
+    label:"左"
+  },
+  {
+    value:4,
+    label:"右"
+  },
+  {
+    value:5,
+    label:"左上"
+  },
+  {
+    value:6,
+    label:"右上"
+  },
+  {
+    value:7,
+    label:"左下"
+  },
+  {
+    value:8,
+    label:"右下"
   }
 ]
 
-const statese = (e) => {
-  if(e === 0){
+const align = ref()
+const alignse = (e) => {
+  if(e == 0){
     meta2d.setValue({
       id:pricex.value[0].id,
-      showChild:0
+      iconAlign:"center"
     })
-    console.log(pricex.value[0]);
-    
+    align.value = alignlist[e].label
   }
-  if(e === 1){
+  if(e == 1){
     meta2d.setValue({
-    id:pricex.value[0].id,
-    showChild:1
-  })}
+      id:pricex.value[0].id,
+      iconAlign:"top"
+    })
+    align.value = alignlist[e].label
+  }
+  if(e == 2){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      iconAlign:"bottom"
+    })
+    align.value = alignlist[e].label
+  }
+  if(e == 3){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      iconAlign:"left"
+    })
+    align.value = alignlist[e].label
+  }
+  if(e == 4){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      iconAlign:"right"
+    })
+    align.value = alignlist[e].label
+  }
+  if(e == 5){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      iconAlign:"left-top"
+    })
+    align.value = alignlist[e].label
+  }
+  if(e == 6){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      iconAlign:"right-top"
+    })
+    align.value = alignlist[e].label
+  }
+  if(e == 7){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      iconAlign:"left-bottom"
+    })
+    align.value = alignlist[e].label
+  }
+  if(e == 8){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      iconAlign:"right-bottom"
+    })
+    align.value = alignlist[e].label
+  }
+
 }
+
+const websocketurl = ref("")
+const websocketconnect = () => {
+  meta2d.connectWebsocket(websocketurl.value);
+}
+const breakwebsocket = () => {
+  meta2d.closeWebsocket();
+  
+}
+
+
 </script>
 
 <template>
@@ -1632,16 +1840,20 @@ const statese = (e) => {
               <el-col :span="12">输入框</el-col>
               <el-col :span="12"><el-switch v-model="InputBox" /></el-col>
             </el-row>
-            <el-row  v-if="pennamevalue == 'combine'">
+            <el-row v-if="pennamevalue == 'combine'">
               <el-col :span="12">状态</el-col>
               <el-col :span="12">
-                <el-select v-model="statevalue" class="m-2" placeholder="Select" @change="statese">
+                <el-select
+                  v-model="statevalue"
+                  class="m-2"
+                  placeholder="Select"
+                  @change="statese"
+                >
                   <el-option
                     v-for="item in state"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
-                    
                   />
                 </el-select>
               </el-col>
@@ -2038,8 +2250,38 @@ const statese = (e) => {
             <!-- 图片选择 -->
             <el-row>
               <el-col :span="12">图片选择</el-col>
-              <el-col :span="12"></el-col>
+              <el-col :span="12">
+                <svg
+                  viewBox="0 0 1024 1024"
+                  xmlns="http://www.w3.org/2000/svg"
+                  data-v-ea893728=""
+                  style="width: 2em; height: 2em; margin-right: 8px"
+                  @click="dialogFormVisible = true"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M832 384H576V128H192v768h640V384zm-26.496-64L640 154.496V320h165.504zM160 64h480l256 256v608a32 32 0 0 1-32 32H160a32 32 0 0 1-32-32V96a32 32 0 0 1 32-32zm320 512V448h64v128h128v64H544v128h-64V640H352v-64h128z"
+                  ></path>
+                </svg>
+              </el-col>
             </el-row>
+            <el-dialog v-model="dialogFormVisible" title="选择图片">
+              <input
+                type="file"
+                id="fileImage"
+                name="fileImage"
+                @change="showImg"
+              />
+              <template #footer>
+                <span class="dialog-footer">
+                  <el-button @click="dialogFormVisible = false">取消</el-button>
+                  <el-button type="primary" @click="dialogFormVisibleif">
+                    确认
+                  </el-button>
+                </span>
+              </template>
+            </el-dialog>
+
             <!-- 图片地址 -->
             <el-row>
               <el-col :span="12">图片地址</el-col>
@@ -2048,52 +2290,133 @@ const statese = (e) => {
             <!-- 背景图片 -->
             <el-row>
               <el-col :span="12">背景图片</el-col>
-              <el-col :span="12"></el-col>
+              <el-col :span="12">
+                <svg
+                  viewBox="0 0 1024 1024"
+                  xmlns="http://www.w3.org/2000/svg"
+                  data-v-ea893728=""
+                  style="width: 2em; height: 2em; margin-right: 8px"
+                  @click="dialogFormVisiblebeij = true"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M832 384H576V128H192v768h640V384zm-26.496-64L640 154.496V320h165.504zM160 64h480l256 256v608a32 32 0 0 1-32 32H160a32 32 0 0 1-32-32V96a32 32 0 0 1 32-32zm320 512V448h64v128h128v64H544v128h-64V640H352v-64h128z"
+                  ></path>
+                </svg>
+              </el-col>
             </el-row>
+            <el-dialog v-model="dialogFormVisiblebeij" title="选择背景图片">
+              <input
+                type="file"
+                id="fileImage"
+                name="fileImage"
+                @change="showImgbeij"
+              />
+              <template #footer>
+                <span class="dialog-footer">
+                  <el-button @click="dialogFormVisiblebeij = false"
+                    >取消</el-button
+                  >
+                  <el-button type="primary" @click="dialogFormVisiblebeijif">
+                    确认
+                  </el-button>
+                </span>
+              </template>
+            </el-dialog>
             <!-- 背景图片地址 -->
             <el-row>
               <el-col :span="12">背景图片地址</el-col>
-              <el-col :span="12"><el-input v-model="pictureUrl" /></el-col>
+              <el-col :span="12"><el-input v-model="pictureUrlbeij" /></el-col>
             </el-row>
             <!-- 描绘图片 -->
             <el-row>
               <el-col :span="12">描绘图片</el-col>
-              <el-col :span="12"></el-col>
+              <el-col :span="12">
+                <svg
+                  viewBox="0 0 1024 1024"
+                  xmlns="http://www.w3.org/2000/svg"
+                  data-v-ea893728=""
+                  style="width: 2em; height: 2em; margin-right: 8px"
+                  @click="dialogFormVisiblemiaoh = true"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M832 384H576V128H192v768h640V384zm-26.496-64L640 154.496V320h165.504zM160 64h480l256 256v608a32 32 0 0 1-32 32H160a32 32 0 0 1-32-32V96a32 32 0 0 1 32-32zm320 512V448h64v128h128v64H544v128h-64V640H352v-64h128z"
+                  ></path>
+                </svg>
+              </el-col>
             </el-row>
+            <el-dialog v-model="dialogFormVisiblemiaoh" title="选择描绘图片">
+              <input
+                type="file"
+                id="fileImage"
+                name="fileImage"
+                @change="showImgmiaoh"
+              />
+              <template #footer>
+                <span class="dialog-footer">
+                  <el-button @click="dialogFormVisiblemiaoh = false"
+                    >取消</el-button
+                  >
+                  <el-button type="primary" @click="dialogFormVisiblemiaohif">
+                    确认
+                  </el-button>
+                </span>
+              </template>
+            </el-dialog>
             <!-- 描绘图片地址 -->
             <el-row>
               <el-col :span="12">描绘图片地址</el-col>
-              <el-col :span="12"><el-input v-model="pictureUrl" /></el-col>
+              <el-col :span="12"><el-input v-model="pictureUrlmiaoh" /></el-col>
             </el-row>
             <!-- 宽度 -->
             <el-row>
               <el-col :span="12">宽度</el-col>
-              <el-col :span="12"><el-input v-model="pictureUrl" /></el-col>
+              <el-col :span="12"
+                ><el-input v-model="pictureWidth" @input="pictureWidthin"
+              /></el-col>
             </el-row>
             <!-- 高度 -->
             <el-row>
               <el-col :span="12">高度</el-col>
-              <el-col :span="12"><el-input v-model="pictureUrl" /></el-col>
+              <el-col :span="12"
+                ><el-input v-model="pictureHeight" @input="pictureheightin"
+              /></el-col>
             </el-row>
             <!-- 保存比例 -->
             <el-row>
               <el-col :span="12">保存比例</el-col>
-              <el-col :span="12"><el-switch v-model="saveScale" /></el-col>
+              <el-col :span="12"
+                ><el-switch v-model="saveScale" @click="saveScalesw"
+              /></el-col>
             </el-row>
             <!-- 水平偏移 -->
             <el-row>
               <el-col :span="12">水平偏移</el-col>
-              <el-col :span="12"><el-input v-model="pictureUrl" /></el-col>
+              <el-col :span="12"
+                ><el-input v-model="pictureleft" @input="pictureleftin"
+              /></el-col>
             </el-row>
             <!-- 垂直偏移 -->
             <el-row>
               <el-col :span="12">垂直偏移</el-col>
-              <el-col :span="12"><el-input v-model="pictureUrl" /></el-col>
+              <el-col :span="12"
+                ><el-input v-model="picturetop" @input="picturetopin"
+              /></el-col>
             </el-row>
             <!-- 对齐方式 -->
             <el-row>
               <el-col :span="12">对齐方式</el-col>
-              <el-col :span="12"><el-input v-model="pictureUrl" /></el-col>
+              <el-col :span="12">
+                <el-select v-model="align" class="m-2" placeholder="Select"  @change="alignse">
+                  <el-option
+                    v-for="item in alignlist"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
+              </el-col>
             </el-row>
           </el-collapse-item>
           <el-collapse-item title="字体图标" name="5">
@@ -2227,14 +2550,14 @@ const statese = (e) => {
                 ><el-input v-model="item.params" placeholder="默认自身"
               /></el-col>
             </el-row>
-            <!-- <el-row v-if="item.action === 1">
+            <el-row v-if="item.action === 1">
                 <el-col :span="11">key</el-col>
                 <el-col :span="11">value</el-col>
                 <el-col :span="2"><el-icon :size="20" @click="addupdate"><CirclePlus /></el-icon></el-col>
               </el-row>
               <el-row v-for="value in item.value" :key="value">
 
-              </el-row> -->
+              </el-row>
             <el-row
               v-if="item.action === 2 || item.action === 3 || item.action === 4"
             >
@@ -2502,6 +2825,18 @@ const statese = (e) => {
           <el-collapse v-model="activeNametwo">
             <el-collapse-item title="websocket" name="1">
               <el-input v-model="websocketurl" />
+              <el-row>
+                <el-col :span="12"
+                  ><el-button type="primary" @click="breakwebsocket"
+                    >断开</el-button
+                  ></el-col
+                >
+                <el-col :span="12"
+                  ><el-button type="primary" @click="websocketconnect"
+                    >连接</el-button
+                  ></el-col
+                >
+              </el-row>
             </el-collapse-item>
             <el-collapse-item title="MQTT" name="2">
               <el-row>

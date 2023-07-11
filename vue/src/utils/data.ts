@@ -6,7 +6,7 @@ import { reactive } from "vue";
  * @Description:
  * @Author: G
  * @Date: 2021-10-13 11:23:17
- * @LastEditTime: 2023-06-29 16:17:01
+ * @LastEditTime: 2023-07-11 09:25:18
  */
 export const icons = [
   {
@@ -134,10 +134,21 @@ export const icons = [
   },
   {
     // 该图形能拖入画布，说明注册成功
-    key: 'pentagram',
+    key: 'circle',
     title: '企业图形库',
     data: {
       name: 'atlassian.away',
+      width: 100,
+      height: 100,
+      radio: false,
+    },
+  },
+  {
+    // 该图形能拖入画布，说明注册成功
+    key: 'pentagram',
+    title: 'test',
+    data: {
+      name: 'triangleOne',
       width: 100,
       height: 100,
       radio: false,

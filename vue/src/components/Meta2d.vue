@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: G
  * @Date: 2021-10-13 11:10:11
- * @LastEditTime: 2023-06-14 11:59:26
+ * @LastEditTime: 2023-07-11 09:08:03
 -->
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
@@ -10,10 +10,13 @@ import { onMounted, ref } from "vue";
 // import { Meta2d } from "../../../../packages/core";
 import { register as registerEcharts } from "@meta2d/chart-diagram";
 import { Pen, Meta2d } from "@meta2d/core";
+import {triangle,triangleAnchors} from "../diagram/triangleOne"
 // import {testttt} from "./testx";
 
 onMounted(() => {
   const meta2d = new Meta2d("meta2d");
+  meta2d.register({  triangleOne:triangle });
+  meta2d.registerAnchors({ triangleOne: triangleAnchors });
   registerEcharts();
 
   // 监听消息
