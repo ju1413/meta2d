@@ -11,6 +11,8 @@ declare module 'vue' {
     IconsLeft: typeof import('./src/components/IconsLeft.vue')['default']
     Meta2d: typeof import('./src/components/Meta2d.vue')['default']
     Meta2dTwo: typeof import('./src/components/Meta2dTwo.vue')['default']
+    Monacoeditor: typeof import('./src/components/monacoeditor.vue')['default']
+    MonacoEditor: typeof import('./src/components/monacoEditor.vue')['default']
     Test: typeof import('./src/components/test.vue')['default']
   }
 }

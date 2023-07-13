@@ -6,6 +6,7 @@ import { MqttClient } from "mqtt";
 import { Meta2d, getFromAnchor } from "@meta2d/core";
 import { getToAnchor } from "@meta2d/core";
 import { reactive } from "vue";
+import monacoEditor from "./monacoEditor.vue";
 
 //鼠标点击切换右边菜单
 const lengthx = ref();
@@ -60,11 +61,12 @@ const updateMouse = (e: MouseEvent) => {
   textareadata.value = pricex.value[0].text;
   cyclesNumber.value = pricex.value[0].animateCycle;
   autoPlaydata.value = pricex.value[0].autoPlay;
-  console.log(pricex.value);
+ 
 
   penid.value = pricex.value[0].id;
   tags.value = pricex.value[0].tags;
   events.value = pricex.value[0].events;
+  datalist.value = pricex.value[0].datalist;
   nextAnimatedata.value = pricex.value[0].nextAnimate;
   cyclesNumber.value = pricex.value[0].animateCycle;
   value.value = pricex.value[0].Animate;
@@ -77,7 +79,8 @@ const updateMouse = (e: MouseEvent) => {
   EndY.value = getToAnchor(pricex.value[0]).y;
   pictureHeight.value = pricex.value[0].iconHeight;
   pictureWidth.value = pricex.value[0].iconWidth;
-  console.log(pricex.value[0].id);
+  // console.log("当前点击的id========================", pricex.value[0].id);
+  // console.log("当前点击========================", pricex.value[0]);
 };
 onMounted(() => {
   document.addEventListener("click", updateMouse);
@@ -172,9 +175,9 @@ const activeNamesix = ref(["1", "2"]);
 const activeNameseven = ref(["1", "2"]);
 const activeNameEvent = ref(["1"]);
 
-const handleClick = (tab: TabsPaneContext, event: Event) => {
-  console.log(tab, event);
-};
+// const handleClick = (tab: TabsPaneContext, event: Event) => {
+//   console.log(tab, event);
+// };
 
 //网格开关
 const gridb = () => {
@@ -296,7 +299,7 @@ const flipVerticalswitch = () => {
 };
 
 const penFillet = ref();
-const lineWidthdata = ref("");
+const lineWidthdata = ref("1");
 const anchorRadiusdata = ref();
 const shadowBlur = ref();
 const shadowX = ref();
@@ -925,6 +928,7 @@ const addEvent = () => {
     value: "",
     params: pricex.value[0].id,
     where: "",
+    attributeListt: [{ menus: "", attributevalue: "" }],
   });
 };
 
@@ -1467,126 +1471,245 @@ const picturetopin = () => {
 
 const alignlist = [
   {
-    value:0,
-    label:"居中"
+    value: 0,
+    label: "居中",
   },
   {
-    value:1,
-    label:"上"
+    value: 1,
+    label: "上",
   },
   {
-    value:2,
-    label:"下"
+    value: 2,
+    label: "下",
   },
   {
-    value:3,
-    label:"左"
+    value: 3,
+    label: "左",
   },
   {
-    value:4,
-    label:"右"
+    value: 4,
+    label: "右",
   },
   {
-    value:5,
-    label:"左上"
+    value: 5,
+    label: "左上",
   },
   {
-    value:6,
-    label:"右上"
+    value: 6,
+    label: "右上",
   },
   {
-    value:7,
-    label:"左下"
+    value: 7,
+    label: "左下",
   },
   {
-    value:8,
-    label:"右下"
-  }
-]
+    value: 8,
+    label: "右下",
+  },
+];
 
-const align = ref()
+const align = ref();
 const alignse = (e) => {
-  if(e == 0){
+  if (e == 0) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      iconAlign:"center"
-    })
-    align.value = alignlist[e].label
+      id: pricex.value[0].id,
+      iconAlign: "center",
+    });
+    align.value = alignlist[e].label;
   }
-  if(e == 1){
+  if (e == 1) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      iconAlign:"top"
-    })
-    align.value = alignlist[e].label
+      id: pricex.value[0].id,
+      iconAlign: "top",
+    });
+    align.value = alignlist[e].label;
   }
-  if(e == 2){
+  if (e == 2) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      iconAlign:"bottom"
-    })
-    align.value = alignlist[e].label
+      id: pricex.value[0].id,
+      iconAlign: "bottom",
+    });
+    align.value = alignlist[e].label;
   }
-  if(e == 3){
+  if (e == 3) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      iconAlign:"left"
-    })
-    align.value = alignlist[e].label
+      id: pricex.value[0].id,
+      iconAlign: "left",
+    });
+    align.value = alignlist[e].label;
   }
-  if(e == 4){
+  if (e == 4) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      iconAlign:"right"
-    })
-    align.value = alignlist[e].label
+      id: pricex.value[0].id,
+      iconAlign: "right",
+    });
+    align.value = alignlist[e].label;
   }
-  if(e == 5){
+  if (e == 5) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      iconAlign:"left-top"
-    })
-    align.value = alignlist[e].label
+      id: pricex.value[0].id,
+      iconAlign: "left-top",
+    });
+    align.value = alignlist[e].label;
   }
-  if(e == 6){
+  if (e == 6) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      iconAlign:"right-top"
-    })
-    align.value = alignlist[e].label
+      id: pricex.value[0].id,
+      iconAlign: "right-top",
+    });
+    align.value = alignlist[e].label;
   }
-  if(e == 7){
+  if (e == 7) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      iconAlign:"left-bottom"
-    })
-    align.value = alignlist[e].label
+      id: pricex.value[0].id,
+      iconAlign: "left-bottom",
+    });
+    align.value = alignlist[e].label;
   }
-  if(e == 8){
+  if (e == 8) {
     meta2d.setValue({
-      id:pricex.value[0].id,
-      iconAlign:"right-bottom"
-    })
-    align.value = alignlist[e].label
+      id: pricex.value[0].id,
+      iconAlign: "right-bottom",
+    });
+    align.value = alignlist[e].label;
   }
+};
 
-}
-
-const websocketurl = ref("")
+const websocketurl = ref("");
 const websocketconnect = () => {
   meta2d.connectWebsocket(websocketurl.value);
-}
+};
 const breakwebsocket = () => {
   meta2d.closeWebsocket();
-  
-}
+};
 
+const attributelist = [
+  {
+    value: 0,
+    label: "背景颜色",
+    attribute: "background",
+  },
+  {
+    value: 1,
+    label: "颜色",
+    attribute: "color",
+  },
+  {
+    value: 2,
+    label: "文字",
+    attribute: "text",
+  },
+  {
+    value: 3,
+    label: "宽度",
+    attribute: "width",
+  },
+  {
+    value: 4,
+    label: "高度",
+    attribute: "height",
+  },
+  {
+    value: 5,
+    label: "显示",
+    attribute: "visible",
+  },
+  {
+    value: 6,
+    label: "进度值",
+    attribute: "progress",
+  },
+  {
+    value: 7,
+    label: "值",
+    attribute: "value",
+  },
+  {
+    value: 8,
+    label: "状态",
+    attribute: "showChild",
+  },
+];
+
+// const addupdate = () => {
+//   events.value.attributeListt.push({
+//     menus: "",
+//     attributevalue: "",
+//   });
+// };
+
+const monaco = ref(false);
+// const valueme = ref("");
+const language = ref("typescript");
+const hightChange = ref<any>(false);
+const editorMounted = (editor: any) => {
+  console.log("editor实例加载完成", editor);
+};
+const monacoyes = () => {
+  monaco.value = false;
+};
+
+const typesvalue = ref()
+const ejectdatalist = ref(false);
+const formLabelWidth = "140px";
+const dataform : any = ref({
+  displayName:'',
+  attributeName:'',
+  types:typesvalue.value,
+  typeslist:[{
+      value:0,
+      label:"文本"
+    },
+    {
+      value:1,
+      label:"数字"
+    },
+    {
+      value:2,
+      label:"颜色"
+    },
+    {
+      value:3,
+      label:"多行文本"
+    },
+    {
+      value:4,
+      label:"下拉框"
+    },
+    {
+      value:5,
+      label:"开关"
+    },
+    {
+      value:6,
+      label:"JSON"
+    },
+    {
+      value:7,
+      label:"滑块"
+    },],
+  prompt:'',
+  minvalue:'',
+  maxvalue:'',
+  step:'',
+  accuracy:'',
+});
+const datalist :any = ref([]);
+const adddatalist = () => {
+  datalist.value.push({
+    datalistName:dataform.value.displayName,
+    datalistValue:'',
+  })
+  console.log(dataform.value);
+  console.log(typesvalue.value);
+  ejectdatalist.value = false
+}
 
 </script>
 
 <template>
   <div class="beyond" v-if="lengthx >= 1">
-    <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+    <el-tabs v-model="activeName" class="demo-tabs">
       <!-- 外观 -->
       <el-tab-pane name="first" label="外观" class="tab-pane">
         <el-collapse v-model="activeNamefour">
@@ -1961,7 +2084,7 @@ const breakwebsocket = () => {
             <el-row>
               <el-col :span="12">线条宽度</el-col>
               <el-col :span="12"
-                ><el-input v-model="lineWidthdata" @input="updateData"
+                ><el-input v-model="lineWidthdata" @input="updatelineWidthdata"
               /></el-col>
             </el-row>
             <!-- 背景 -->
@@ -2408,7 +2531,12 @@ const breakwebsocket = () => {
             <el-row>
               <el-col :span="12">对齐方式</el-col>
               <el-col :span="12">
-                <el-select v-model="align" class="m-2" placeholder="Select"  @change="alignse">
+                <el-select
+                  v-model="align"
+                  class="m-2"
+                  placeholder="Select"
+                  @change="alignse"
+                >
                   <el-option
                     v-for="item in alignlist"
                     :key="item.value"
@@ -2505,11 +2633,11 @@ const breakwebsocket = () => {
         </div>
 
         <el-collapse
-          v-for="(item, index) in events"
-          :key="index"
+          v-for="(item, ind) in events"
+          :key="ind"
           v-model="activeNameEvent"
         >
-          <el-collapse-item :title="'事件' + (index + 1)">
+          <el-collapse-item :title="'事件' + (ind + 1)">
             <el-row>
               <el-col :span="12">事件类型</el-col>
               <el-col :span="12">
@@ -2538,6 +2666,30 @@ const breakwebsocket = () => {
                 </el-select>
               </el-col>
             </el-row>
+            <el-row>
+              <el-col :span="12">JavaScript</el-col>
+              <el-col :span="12">
+                <el-button @click="monaco = true">...</el-button>
+              </el-col>
+            </el-row>
+            <el-dialog v-model="monaco" title="typescript">
+              <monacoEditor
+                v-model="item.value"
+                :language="language"
+                :hight-change="hightChange"
+                width="100%"
+                height="100%"
+                @editor-mounted="editorMounted"
+              />
+              <template #footer>
+                <span class="dialog-footer">
+                  <el-button @click="monaco = false">取消</el-button>
+                  <el-button type="primary" @click="monacoyes">
+                    确认
+                  </el-button>
+                </span>
+              </template>
+            </el-dialog>
             <el-row v-if="item.action === 0">
               <el-col :span="12">链接地址</el-col>
               <el-col :span="12"
@@ -2550,14 +2702,38 @@ const breakwebsocket = () => {
                 ><el-input v-model="item.params" placeholder="默认自身"
               /></el-col>
             </el-row>
-            <el-row v-if="item.action === 1">
+            <div v-if="item.action === 1">
+              <el-row>
                 <el-col :span="11">key</el-col>
                 <el-col :span="11">value</el-col>
-                <el-col :span="2"><el-icon :size="20" @click="addupdate"><CirclePlus /></el-icon></el-col>
+                <el-col :span="2"
+                  ><el-icon :size="20" @click="addupdate"
+                    ><CirclePlus /></el-icon
+                ></el-col>
               </el-row>
-              <el-row v-for="value in item.value" :key="value">
-
+              <el-row
+                v-for="(itemt, index) in events[ind].attributeListt"
+                :key="index"
+              >
+                <el-col :span="12">
+                  <el-select
+                    v-model="itemt.menus"
+                    class="m-2"
+                    placeholder="Select"
+                  >
+                    <el-option
+                      v-for="item in attributelist"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    />
+                  </el-select>
+                </el-col>
+                <el-col :span="12">
+                  <el-input v-model="itemt.attributevalue" />
+                </el-col>
               </el-row>
+            </div>
             <el-row
               v-if="item.action === 2 || item.action === 3 || item.action === 4"
             >
@@ -2712,17 +2888,95 @@ const breakwebsocket = () => {
             <el-row>
               <el-col :span="12">组合</el-col>
               <el-col :span="12">
-                <button id="combination" @click="combinationbu">组合</button>
+                <el-button id="combination" @click="combinationbu"
+                  >组合</el-button
+                >
               </el-col>
             </el-row>
           </el-collapse-item>
-          <el-collapse-item title="数据" name="2"> </el-collapse-item>
+          <el-collapse-item title="数据" name="2">
+            <div v-for="(item, ind) in datalist" :key="ind">
+              <el-row>
+                <el-col :span="12">{{ item.datalistName }}</el-col>
+                <el-col :span="12">
+                <el-input v-model="item.datalistValue"/>
+                </el-col>
+              </el-row>
+            </div>
+            <el-button style="width: 95%" @click="ejectdatalist = true"
+              ><svg
+                viewBox="0 0 1024 1024"
+                xmlns="http://www.w3.org/2000/svg"
+                data-v-ea893728=""
+                style="width: 1em; height: 1em; margin-right: 8px"
+              >
+                <path
+                  fill="currentColor"
+                  d="M480 480V128a32 32 0 0 1 64 0v352h352a32 32 0 1 1 0 64H544v352a32 32 0 1 1-64 0V544H128a32 32 0 0 1 0-64h352z"
+                ></path>
+              </svg>
+              添加数据
+            </el-button>
+            <el-dialog v-model="ejectdatalist" title="添加数据">
+              <el-form :model="dataform">
+                <el-form-item label="显示名称" :label-width="formLabelWidth">
+                  <el-input v-model="dataform.displayName" autocomplete="off" />
+                </el-form-item>
+                <el-form-item label="属性名" :label-width="formLabelWidth">
+                  <el-input v-model="dataform.attributeName" autocomplete="off" />
+                </el-form-item>
+                <el-form-item label="类型" :label-width="formLabelWidth">
+                  <el-select v-model="typesvalue" class="m-2" placeholder="Select">
+                    <el-option
+                      v-for="item in dataform.typeslist"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    />
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="提示文字" :label-width="formLabelWidth">
+                  <el-input v-model="dataform.prompt" autocomplete="off" />
+                </el-form-item>
+                <el-form-item label="最小值" :label-width="formLabelWidth" v-if="typesvalue == 1 && typesvalue ==7">
+                  <el-input v-model="dataform.minvalue" autocomplete="off" />
+                </el-form-item>
+                <el-form-item label="最大值" :label-width="formLabelWidth">
+                  <el-input v-model="dataform.maxvalue" autocomplete="off" />
+                </el-form-item>
+                <el-form-item label="步长" :label-width="formLabelWidth">
+                  <el-input v-model="dataform.step" autocomplete="off" />
+                </el-form-item>
+                <el-form-item label="精度" :label-width="formLabelWidth">
+                  <el-input v-model="dataform.accuracy" autocomplete="off" />
+                </el-form-item>
+                <!-- <div>
+                  <el-form-item label="选项名" :label-width="formLabelWidth">
+                  <el-input v-model="dataform.accuracy" autocomplete="off" />
+                </el-form-item>
+                <el-form-item label="选项值" :label-width="formLabelWidth">
+                  <el-input v-model="dataform.accuracy" autocomplete="off" />
+                </el-form-item>
+                </div>
+                <el-button>新增选项</el-button>
+                <el-button>删除选项</el-button> -->
+              </el-form>
+              <template #footer>
+                <span class="dialog-footer">
+                  <el-button @click="ejectdatalist = false">取消</el-button>
+                  <el-button type="primary" @click="adddatalist">
+                    确认
+                  </el-button>
+                </span>
+              </template>
+            </el-dialog>
+          </el-collapse-item>
         </el-collapse>
       </el-tab-pane>
     </el-tabs>
   </div>
   <div class="beyond" v-else>
-    <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+    <el-tabs v-model="activeName" class="demo-tabs">
       <!-- 图纸 -->
       <el-tab-pane name="first" label="图纸" class="tab-pane">
         <el-collapse v-model="activeNameone">

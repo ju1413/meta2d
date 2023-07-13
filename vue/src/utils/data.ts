@@ -75,6 +75,7 @@ export const icons = [
       lineCapvalue:'',
       gradientFromColorssw:false,
       iconAlign: "left-top",
+      datalist:[]
       // title: '# 矩形',
     },
   },
