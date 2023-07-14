@@ -126,6 +126,23 @@
                 }
               }
             })
+            monaco.languages.registerCompletionItemProvider('json',{
+              provideCompletionItems(){
+                const suggestions:any = [];
+                if(JsonWorker.keywords){
+                  JsonWorker.keywords.forEach((item:any)=>{
+                  suggestions.push({
+                    label: item,
+                    kind: monaco.languages.CompletionItemKind.Keyword,
+                    insertText: item,
+                  });
+                })
+              }
+                return{
+                  suggestions,
+                }
+              }
+            })
             editor = monaco.editor.create(codeEditBox.value, {
               value: props.modelValue,
               language: props.language,
@@ -194,7 +211,7 @@
     .codeEditBox {
       width: 100%;
       flex: 1;
-      min-height: 100px;
+      min-height: 310px;
       // height: 200px;
       overflow-y: auto;
     }

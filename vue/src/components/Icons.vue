@@ -61,7 +61,6 @@ const updateMouse = (e: MouseEvent) => {
   textareadata.value = pricex.value[0].text;
   cyclesNumber.value = pricex.value[0].animateCycle;
   autoPlaydata.value = pricex.value[0].autoPlay;
- 
 
   penid.value = pricex.value[0].id;
   tags.value = pricex.value[0].tags;
@@ -920,7 +919,7 @@ const autoPlaydatasw = () => {
   }
 };
 
-const events: any = ref([]);
+const events : any = ref([]);
 const addEvent = () => {
   events.value.push({
     name: "",
@@ -1649,61 +1648,101 @@ const monacoyes = () => {
   monaco.value = false;
 };
 
-const typesvalue = ref()
+const monacoTwo = ref(false);
+const languageTwo = ref("json");
+const hightChangeTwo = ref<any>(false);
+const editorMountedTwo = (editor: any) => {
+  console.log("editor实例加载完成", editor);
+};
+const monacoTwoyes = () => {
+  monacoTwo.value = false;
+};
+
+const typesvalue = ref();
 const ejectdatalist = ref(false);
 const formLabelWidth = "140px";
-const dataform : any = ref({
-  displayName:'',
-  attributeName:'',
-  types:typesvalue.value,
-  typeslist:[{
-      value:0,
-      label:"文本"
+const dataform: any = ref({
+  displayName: "",
+  attributeName: "",
+  types: "",
+  typeslist: [
+    {
+      value: 0,
+      label: "文本",
     },
     {
-      value:1,
-      label:"数字"
+      value: 1,
+      label: "数字",
     },
     {
-      value:2,
-      label:"颜色"
+      value: 2,
+      label: "颜色",
     },
     {
-      value:3,
-      label:"多行文本"
+      value: 3,
+      label: "多行文本",
+    },
+    // {
+    //   value: 4,
+    //   label: "下拉框",
+    // },
+    {
+      value: 5,
+      label: "开关",
     },
     {
-      value:4,
-      label:"下拉框"
+      value: 6,
+      label: "JSON",
     },
     {
-      value:5,
-      label:"开关"
+      value: 7,
+      label: "滑块",
     },
-    {
-      value:6,
-      label:"JSON"
-    },
-    {
-      value:7,
-      label:"滑块"
-    },],
-  prompt:'',
-  minvalue:'',
-  maxvalue:'',
-  step:'',
-  accuracy:'',
+  ],
+  prompt: "",
+  minvalue: "",
+  maxvalue: "",
+  step: "",
+  accuracy: "",
 });
-const datalist :any = ref([]);
+const datalist: any = ref([]);
 const adddatalist = () => {
   datalist.value.push({
-    datalistName:dataform.value.displayName,
-    datalistValue:'',
-  })
+    datalistName: dataform.value.displayName,
+    datalistValue: false,
+    datalistTypes: dataform.value.types,
+  });
   console.log(dataform.value);
   console.log(typesvalue.value);
-  ejectdatalist.value = false
+  console.log(datalist.value);
+
+  ejectdatalist.value = false;
+};
+
+const typeslist = (e) => {
+  if (e === 1 || e === 7) {
+    console.log("1");
+    typesvalue.value = 1;
+  } else {
+    typesvalue.value = 0;
+  }
+};
+
+
+
+// const delectIcon = ref(false)
+const delectIconyes = (ind : number) => {
+    events.value.splice(ind,1)
+  // delectIcon.value = false
+  // console.log(ind);
+  // console.log(n);
+  
 }
+
+const delectData = (ind : number) =>{
+  datalist.value.splice(ind,1)
+}
+
 
 </script>
 
@@ -2637,7 +2676,44 @@ const adddatalist = () => {
           :key="ind"
           v-model="activeNameEvent"
         >
-          <el-collapse-item :title="'事件' + (ind + 1)">
+          <el-collapse-item>
+            <template #title>
+              事件{{ ind + 1 }}
+              <svg
+                viewBox="0 0 1024 1024"
+                xmlns="http://www.w3.org/2000/svg"
+                data-v-ea893728=""
+                style="width: 1em; height: 1em; margin-left: 170px"
+                @click.stop="delectIconyes(ind)"
+              >
+                <path
+                  fill="currentColor"
+                  d="M160 256H96a32 32 0 0 1 0-64h256V95.936a32 32 0 0 1 32-32h256a32 32 0 0 1 32 32V192h256a32 32 0 1 1 0 64h-64v672a32 32 0 0 1-32 32H192a32 32 0 0 1-32-32V256zm448-64v-64H416v64h192zM224 896h576V256H224v640zm192-128a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32zm192 0a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32z"
+                ></path>
+              </svg>
+            </template>
+            <!-- <el-dialog
+              v-model="delectIcon"
+              width="30%"
+              center
+            >
+              <span>
+                是否删除
+              </span>
+              <template #footer>
+                <span class="dialog-footer">
+                  <el-button @click="delectIcon = false"
+                    >取消</el-button
+                  >
+                  <el-button
+                    type="primary"
+                    @click.stop="delectIconyes(events.ind)"
+                  >
+                    确认
+                  </el-button>
+                </span>
+              </template>
+            </el-dialog> -->
             <el-row>
               <el-col :span="12">事件类型</el-col>
               <el-col :span="12">
@@ -2666,19 +2742,23 @@ const adddatalist = () => {
                 </el-select>
               </el-col>
             </el-row>
-            <el-row>
+            <el-row v-if="item.action === 5">
               <el-col :span="12">JavaScript</el-col>
               <el-col :span="12">
                 <el-button @click="monaco = true">...</el-button>
               </el-col>
             </el-row>
-            <el-dialog v-model="monaco" title="typescript">
+            <el-dialog
+              v-model="monaco"
+              title="typescript"
+              style="height: 500px"
+            >
               <monacoEditor
                 v-model="item.value"
                 :language="language"
                 :hight-change="hightChange"
                 width="100%"
-                height="100%"
+                height="500px"
                 @editor-mounted="editorMounted"
               />
               <template #footer>
@@ -2897,9 +2977,57 @@ const adddatalist = () => {
           <el-collapse-item title="数据" name="2">
             <div v-for="(item, ind) in datalist" :key="ind">
               <el-row>
-                <el-col :span="12">{{ item.datalistName }}</el-col>
-                <el-col :span="12">
-                <el-input v-model="item.datalistValue"/>
+                <el-col :span="8">{{ item.datalistName }}</el-col>
+                <el-col
+                  :span="8"
+                  v-if="
+                    item.datalistTypes == 0 ||
+                    (item.datalistTypes == 1 && item.datalistTypes != ' ')
+                  "
+                >
+                  <el-input v-model="item.datalistValue" />
+                </el-col>
+                <el-col :span="8" v-if="item.datalistTypes == 3">
+                  <el-input
+                    v-model="item.datalistValue"
+                    :rows="2"
+                    type="textarea"
+                    placeholder="Please input"
+                  />
+                </el-col>
+                <el-col :span="8" v-if="item.datalistTypes == 2">
+                  <el-color-picker v-model="item.datalistValue" />
+                </el-col>
+                <el-col :span="8" v-if="item.datalistTypes == 5">
+                  <el-switch v-model="item.datalistValue" />
+                </el-col>
+                <el-col :span="8" v-if="item.datalistTypes == 6">
+                  <el-button @click="monacoTwo = true">...</el-button>
+                </el-col>
+                <el-dialog v-model="monacoTwo" title="typescript">
+                  <monacoEditor
+                    v-model="item.datalistValue"
+                    :language="languageTwo"
+                    :hight-change="hightChangeTwo"
+                    width="100%"
+                    height="100%"
+                    @editor-mounted="editorMountedTwo"
+                  />
+                  <template #footer>
+                    <span class="dialog-footer">
+                      <el-button @click="monacoTwo = false">取消</el-button>
+                      <el-button type="primary" @click="monacoTwoyes">
+                        确认
+                      </el-button>
+                    </span>
+                  </template>
+                </el-dialog>
+                <el-col :span="8" v-if="item.datalistTypes == 7">
+                  <el-slider v-model="item.datalistValue" />
+                </el-col>
+                <el-col :span="8">
+                  <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-ea893728="" style="width: 1em; height: 1em; margin-left: 16px" @click="delectData(ind)"><path fill="currentColor" d="M160 256H96a32 32 0 0 1 0-64h256V95.936a32 32 0 0 1 32-32h256a32 32 0 0 1 32 32V192h256a32 32 0 1 1 0 64h-64v672a32 32 0 0 1-32 32H192a32 32 0 0 1-32-32V256zm448-64v-64H416v64h192zM224 896h576V256H224v640zm192-128a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32zm192 0a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32z"></path></svg>
+                  <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-ea893728="" style="width: 1em; height: 1em; margin-left: 8px"><path fill="currentColor" d="M715.648 625.152 670.4 579.904l90.496-90.56c75.008-74.944 85.12-186.368 22.656-248.896-62.528-62.464-173.952-52.352-248.96 22.656L444.16 353.6l-45.248-45.248 90.496-90.496c100.032-99.968 251.968-110.08 339.456-22.656 87.488 87.488 77.312 239.424-22.656 339.456l-90.496 90.496zm-90.496 90.496-90.496 90.496C434.624 906.112 282.688 916.224 195.2 828.8c-87.488-87.488-77.312-239.424 22.656-339.456l90.496-90.496 45.248 45.248-90.496 90.56c-75.008 74.944-85.12 186.368-22.656 248.896 62.528 62.464 173.952 52.352 248.96-22.656l90.496-90.496 45.248 45.248zm0-362.048 45.248 45.248L398.848 670.4 353.6 625.152 625.152 353.6z"></path></svg>
                 </el-col>
               </el-row>
             </div>
@@ -2923,10 +3051,18 @@ const adddatalist = () => {
                   <el-input v-model="dataform.displayName" autocomplete="off" />
                 </el-form-item>
                 <el-form-item label="属性名" :label-width="formLabelWidth">
-                  <el-input v-model="dataform.attributeName" autocomplete="off" />
+                  <el-input
+                    v-model="dataform.attributeName"
+                    autocomplete="off"
+                  />
                 </el-form-item>
                 <el-form-item label="类型" :label-width="formLabelWidth">
-                  <el-select v-model="typesvalue" class="m-2" placeholder="Select">
+                  <el-select
+                    v-model="dataform.types"
+                    class="m-2"
+                    placeholder="Select"
+                    @change="typeslist"
+                  >
                     <el-option
                       v-for="item in dataform.typeslist"
                       :key="item.value"
@@ -2938,16 +3074,32 @@ const adddatalist = () => {
                 <el-form-item label="提示文字" :label-width="formLabelWidth">
                   <el-input v-model="dataform.prompt" autocomplete="off" />
                 </el-form-item>
-                <el-form-item label="最小值" :label-width="formLabelWidth" v-if="typesvalue == 1 && typesvalue ==7">
+                <el-form-item
+                  label="最小值"
+                  :label-width="formLabelWidth"
+                  v-if="typesvalue == 1"
+                >
                   <el-input v-model="dataform.minvalue" autocomplete="off" />
                 </el-form-item>
-                <el-form-item label="最大值" :label-width="formLabelWidth">
+                <el-form-item
+                  label="最大值"
+                  :label-width="formLabelWidth"
+                  v-if="typesvalue == 1"
+                >
                   <el-input v-model="dataform.maxvalue" autocomplete="off" />
                 </el-form-item>
-                <el-form-item label="步长" :label-width="formLabelWidth">
+                <el-form-item
+                  label="步长"
+                  :label-width="formLabelWidth"
+                  v-if="typesvalue == 1"
+                >
                   <el-input v-model="dataform.step" autocomplete="off" />
                 </el-form-item>
-                <el-form-item label="精度" :label-width="formLabelWidth">
+                <el-form-item
+                  label="精度"
+                  :label-width="formLabelWidth"
+                  v-if="typesvalue == 1"
+                >
                   <el-input v-model="dataform.accuracy" autocomplete="off" />
                 </el-form-item>
                 <!-- <div>
