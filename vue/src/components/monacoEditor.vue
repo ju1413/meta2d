@@ -15,9 +15,6 @@
       import TsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
       import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
       import * as monaco from 'monaco-editor'
-      // import { language as sqlLanguage } from 'monaco-editor/esm/vs/basic-languages/sql/sql.js';
-      // import { language as tsLanguage } from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
-      // import { language as yamlLanguage } from 'monaco-editor/esm/vs/basic-languages/yaml/yaml.js';
       import 'monaco-editor/esm/vs/basic-languages/sql/sql.contribution'
       import { editorProps } from '../utils/monacoEditorType'
       export default defineComponent({

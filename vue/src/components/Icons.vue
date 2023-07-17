@@ -919,7 +919,7 @@ const autoPlaydatasw = () => {
   }
 };
 
-const events : any = ref([]);
+const events: any = ref([]);
 const addEvent = () => {
   events.value.push({
     name: "",
@@ -1101,17 +1101,19 @@ const lineCapSelect = (e) => {
   }
 };
 
-const gradientFromColors = ref(false);
+const gradientFromColors: any = ref(false);
 const gradientFromColorssw = () => {
   if (gradientFromColors.value === true) {
     meta2d.setValue({
       id: pricex.value[0].id,
       gradientFromColorssw: true,
+      strokeType: 1,
     });
   } else {
     meta2d.setValue({
       id: pricex.value[0].id,
       gradientFromColorssw: false,
+      strokeType: 0,
     });
   }
 };
@@ -1630,13 +1632,6 @@ const attributelist = [
   },
 ];
 
-// const addupdate = () => {
-//   events.value.attributeListt.push({
-//     menus: "",
-//     attributevalue: "",
-//   });
-// };
-
 const monaco = ref(false);
 // const valueme = ref("");
 const language = ref("typescript");
@@ -1728,22 +1723,128 @@ const typeslist = (e) => {
   }
 };
 
-
-
 // const delectIcon = ref(false)
-const delectIconyes = (ind : number) => {
-    events.value.splice(ind,1)
+const delectIconyes = (ind: number) => {
+  events.value.splice(ind, 1);
   // delectIcon.value = false
   // console.log(ind);
   // console.log(n);
-  
+};
+
+const delectData = (ind: number) => {
+  datalist.value.splice(ind, 1);
+};
+
+const GradientStart = ref();
+const GradientEnd = ref();
+const GradientAngle = ref();
+const GradientStartpi = () => {
+  meta2d.setValue({
+    id: pricex.value[0].id,
+    lineGradientFromColor: GradientStart.value,
+  });
+};
+const GradientEndpi = () => {
+  meta2d.setValue({
+    id: pricex.value[0].id,
+    lineGradientToColor: GradientEnd.value,
+  });
+};
+const GradientAnglepi = () => {
+  meta2d.setValue({
+    id: pricex.value[0].id,
+    lineGradientAngle: GradientAngle.value,
+  });
+};
+
+const backgroundGradientvalue = ref(0);
+const backgroundGradient = [
+  {
+    value: 0,
+    label: "纯色背景",
+  },
+  {
+    value: 1,
+    label: "线性渐变",
+  },
+  {
+    value: 2,
+    label: "发散渐变",
+  },
+];
+const backgroundGradientse = () => {
+  if (backgroundGradientvalue.value == 0) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      bkType: 0,
+    });
+  }
+  if (backgroundGradientvalue.value == 1) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      bkType: 1,
+    });
+  }
+  if (backgroundGradientvalue.value == 2) {
+    meta2d.setValue({
+      id: pricex.value[0].id,
+      bkType: 2,
+    });
+  }
+};
+
+const backgroundGradientStart = ref();
+const backgroundGradientEnd = ref();
+const backgroundGradientAngle = ref();
+const GradientRadius = ref();
+const backgroundGradientStartpi = () => {
+  meta2d.setValue({
+    id: pricex.value[0].id,
+    gradientFromColor: backgroundGradientStart.value,
+  });
+};
+const backgroundGradientEndpi = () => {
+  meta2d.setValue({
+    id: pricex.value[0].id,
+    gradientToColor: backgroundGradientEnd.value,
+  });
+};
+const backgroundGradientAnglein = () => {
+  meta2d.setValue({
+    id: pricex.value[0].id,
+    gradientAngle: backgroundGradientAngle.value,
+  });
+};
+const GradientRadiusin = () => {
+  meta2d.setValue({
+    id: pricex.value[0].id,
+    gradientRadius: GradientRadius.value,
+  });
+  console.log(pricex.value[0]);
+};
+
+const httpList: any = ref([]);
+const addHttp = () => {
+  httpList.value.push({
+    httpurl: "",
+    timeinterval: "",
+    requesth: "",
+  });
+  console.log(httpList);
+};
+const languageTh = ref("json");
+const requestHeader = ref(false);
+const requestHeaderyes = () => {
+  requestHeader.value = false;
+};
+const httpconnect = (index : number) => {
+  console.log(index);
+
+  meta2d.connectHttp();
 }
-
-const delectData = (ind : number) =>{
-  datalist.value.splice(ind,1)
+const httpbreak = () => {
+  meta2d.closeHttp();
 }
-
-
 </script>
 
 <template>
@@ -2084,6 +2185,27 @@ const delectData = (ind : number) =>{
                 ></el-switch>
               </el-col>
             </el-row>
+            <el-row v-if="gradientFromColors == true">
+              <el-col :span="12">渐变起始颜色</el-col>
+              <el-col :span="12">
+                <el-color-picker
+                  v-model="GradientStart"
+                  @change="GradientStartpi"
+              /></el-col>
+            </el-row>
+            <el-row v-if="gradientFromColors == true">
+              <el-col :span="12">渐变结束颜色</el-col>
+              <el-col :span="12">
+                <el-color-picker v-model="GradientEnd" @change="GradientEndpi"
+              /></el-col>
+            </el-row>
+            <el-row v-if="gradientFromColors == true">
+              <el-col :span="12">渐变角度</el-col>
+              <el-col :span="12">
+                <!-- <el-color-picker v-model="GradientAngle" @change="GradientAnglepi"/> -->
+                <el-input v-model="GradientAngle" @input="GradientAnglepi" />
+              </el-col>
+            </el-row>
             <!-- 颜色 -->
             <el-row v-if="gradientFromColors == false">
               <el-col :span="12">颜色</el-col>
@@ -2091,16 +2213,16 @@ const delectData = (ind : number) =>{
                 ><el-color-picker v-model="pencolordata" @change="pencolor"
               /></el-col>
             </el-row>
-            <el-row v-if="gradientFromColors == true">
+            <!-- <el-row v-if="gradientFromColors == true">
               <el-col :span="12">线条渐变色</el-col>
               <el-col :span="12"
                 ><el-color-picker v-model="color" show-alpha
               /></el-col>
-            </el-row>
-            <el-row v-if="gradientFromColors == true">
+            </el-row> -->
+            <!-- <el-row v-if="gradientFromColors == true">
               <el-col :span="12">平滑度</el-col>
               <el-col :span="12"><el-input v-model="smoothness" /></el-col>
-            </el-row>
+            </el-row> -->
             <!-- 浮动颜色 -->
             <el-row>
               <el-col :span="12">浮动颜色</el-col>
@@ -2130,9 +2252,14 @@ const delectData = (ind : number) =>{
             <el-row>
               <el-col :span="12">背景</el-col>
               <el-col :span="12">
-                <el-select v-model="value" class="m-2" placeholder="Select">
+                <el-select
+                  v-model="backgroundGradientvalue"
+                  class="m-2"
+                  placeholder="Select"
+                  @chang="backgroundGradientse"
+                >
                   <el-option
-                    v-for="item in options"
+                    v-for="item in backgroundGradient"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -2141,13 +2268,58 @@ const delectData = (ind : number) =>{
               </el-col>
             </el-row>
             <!-- 背景颜色 -->
-            <el-row>
+            <el-row v-if="backgroundGradientvalue == 0">
               <el-col :span="12">背景颜色</el-col>
               <el-col :span="12"
                 ><el-color-picker
                   v-model="backgrounddata"
                   @change="backgroundco"
               /></el-col>
+            </el-row>
+            <el-row
+              v-if="
+                backgroundGradientvalue == 1 || backgroundGradientvalue == 2
+              "
+            >
+              <el-col :span="12">背景渐变起始颜色</el-col>
+              <el-col :span="12">
+                <el-color-picker
+                  v-model="backgroundGradientStart"
+                  @change="backgroundGradientStartpi"
+                />
+              </el-col>
+            </el-row>
+            <el-row
+              v-if="
+                backgroundGradientvalue == 1 || backgroundGradientvalue == 2
+              "
+            >
+              <el-col :span="12">背景渐变结束颜色</el-col>
+              <el-col :span="12">
+                <el-color-picker
+                  v-model="backgroundGradientEnd"
+                  @change="backgroundGradientEndpi"
+                />
+              </el-col>
+            </el-row>
+            <el-row
+              v-if="
+                backgroundGradientvalue == 1 || backgroundGradientvalue == 2
+              "
+            >
+              <el-col :span="12">背景线性渐变角度</el-col>
+              <el-col :span="12">
+                <el-input
+                  v-model="backgroundGradientAngle"
+                  @input="backgroundGradientAnglein"
+                />
+              </el-col>
+            </el-row>
+            <el-row v-if="backgroundGradientvalue == 2">
+              <el-col :span="12">发散渐变半径</el-col>
+              <el-col :span="12">
+                <el-input v-model="GradientRadius" @input="GradientRadiusin" />
+              </el-col>
             </el-row>
             <!-- 浮动背景颜色 -->
             <el-row>
@@ -3026,8 +3198,29 @@ const delectData = (ind : number) =>{
                   <el-slider v-model="item.datalistValue" />
                 </el-col>
                 <el-col :span="8">
-                  <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-ea893728="" style="width: 1em; height: 1em; margin-left: 16px" @click="delectData(ind)"><path fill="currentColor" d="M160 256H96a32 32 0 0 1 0-64h256V95.936a32 32 0 0 1 32-32h256a32 32 0 0 1 32 32V192h256a32 32 0 1 1 0 64h-64v672a32 32 0 0 1-32 32H192a32 32 0 0 1-32-32V256zm448-64v-64H416v64h192zM224 896h576V256H224v640zm192-128a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32zm192 0a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32z"></path></svg>
-                  <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-ea893728="" style="width: 1em; height: 1em; margin-left: 8px"><path fill="currentColor" d="M715.648 625.152 670.4 579.904l90.496-90.56c75.008-74.944 85.12-186.368 22.656-248.896-62.528-62.464-173.952-52.352-248.96 22.656L444.16 353.6l-45.248-45.248 90.496-90.496c100.032-99.968 251.968-110.08 339.456-22.656 87.488 87.488 77.312 239.424-22.656 339.456l-90.496 90.496zm-90.496 90.496-90.496 90.496C434.624 906.112 282.688 916.224 195.2 828.8c-87.488-87.488-77.312-239.424 22.656-339.456l90.496-90.496 45.248 45.248-90.496 90.56c-75.008 74.944-85.12 186.368-22.656 248.896 62.528 62.464 173.952 52.352 248.96-22.656l90.496-90.496 45.248 45.248zm0-362.048 45.248 45.248L398.848 670.4 353.6 625.152 625.152 353.6z"></path></svg>
+                  <svg
+                    viewBox="0 0 1024 1024"
+                    xmlns="http://www.w3.org/2000/svg"
+                    data-v-ea893728=""
+                    style="width: 1em; height: 1em; margin-left: 16px"
+                    @click="delectData(ind)"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M160 256H96a32 32 0 0 1 0-64h256V95.936a32 32 0 0 1 32-32h256a32 32 0 0 1 32 32V192h256a32 32 0 1 1 0 64h-64v672a32 32 0 0 1-32 32H192a32 32 0 0 1-32-32V256zm448-64v-64H416v64h192zM224 896h576V256H224v640zm192-128a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32zm192 0a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32z"
+                    ></path>
+                  </svg>
+                  <svg
+                    viewBox="0 0 1024 1024"
+                    xmlns="http://www.w3.org/2000/svg"
+                    data-v-ea893728=""
+                    style="width: 1em; height: 1em; margin-left: 8px"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M715.648 625.152 670.4 579.904l90.496-90.56c75.008-74.944 85.12-186.368 22.656-248.896-62.528-62.464-173.952-52.352-248.96 22.656L444.16 353.6l-45.248-45.248 90.496-90.496c100.032-99.968 251.968-110.08 339.456-22.656 87.488 87.488 77.312 239.424-22.656 339.456l-90.496 90.496zm-90.496 90.496-90.496 90.496C434.624 906.112 282.688 916.224 195.2 828.8c-87.488-87.488-77.312-239.424 22.656-339.456l90.496-90.496 45.248 45.248-90.496 90.56c-75.008 74.944-85.12 186.368-22.656 248.896 62.528 62.464 173.952 52.352 248.96-22.656l90.496-90.496 45.248 45.248zm0-362.048 45.248 45.248L398.848 670.4 353.6 625.152 625.152 353.6z"
+                    ></path>
+                  </svg>
                 </el-col>
               </el-row>
             </div>
@@ -3297,6 +3490,62 @@ const delectData = (ind : number) =>{
                 >
               </el-row>
             </el-collapse-item>
+            <el-button @click="addHttp" type="primary" style="width: 95%"
+              >添加http通信</el-button
+            >
+            <div v-for="(item, index) in httpList" key="index">
+              <el-collapse-item>
+                <template #title> http{{ index + 1 }} </template>
+                <el-row>
+                  <el-col :span="12">URL地址</el-col>
+                  <el-col :span="12">
+                    <el-input v-model="item.httpurl" />
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12">时间间隔</el-col>
+                  <el-col :span="12">
+                    <el-input v-model="item.timeinterval" />
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12">请求头</el-col>
+                  <el-col :span="12">
+                    <el-button @click="requestHeader = true">...</el-button>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12">
+                  <el-button @click="httpbreak">断开</el-button>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-button type="primary" @click="httpconnect(index)">连接</el-button>
+                  </el-col>
+                </el-row>
+                <el-dialog
+                  v-model="requestHeader"
+                  title="请求头配置"
+                  style="height: 500px"
+                >
+                  <monacoEditor
+                    v-model="item.requesth"
+                    :language="languageTh"
+                    :hight-change="hightChange"
+                    width="100%"
+                    height="500px"
+                    @editor-mounted="editorMounted"
+                  />
+                  <template #footer>
+                    <span class="dialog-footer">
+                      <el-button @click="requestHeader = false">取消</el-button>
+                      <el-button type="primary" @click="requestHeaderyes">
+                        确认
+                      </el-button>
+                    </span>
+                  </template>
+                </el-dialog>
+              </el-collapse-item>
+            </div>
           </el-collapse>
         </div>
       </el-tab-pane>
