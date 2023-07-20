@@ -2881,7 +2881,7 @@ const paddingBin = () => {
             type="primary"
             icon="el-icon-plus"
             @click="addEvent"
-            style="width: 220px; margin-left: 15px"
+            style="width: 220px; margin-left: 15px; margin-top:10px"
             >添加事件</el-button
           >
         </div>
@@ -3122,7 +3122,7 @@ const paddingBin = () => {
                 </el-select>
               </el-col>
             </el-row>
-            <el-row justify="space-evenly">
+            <el-row justify="space-evenly" style="margin-top:10px">
               <el-col :span="7"
                 ><el-button type="primary" @click="PlayAnimation"
                   >播放</el-button
@@ -3155,7 +3155,7 @@ const paddingBin = () => {
 
       <el-tab-pane label="数据" name="fourth">
         <el-collapse v-model="activeNameseven">
-          <el-row>
+          <el-row style="margin-top:10px">
             <el-col :span="12"><span style="font-size: 15px">id</span></el-col>
             <el-col :span="12"><el-input v-model="penid" /></el-col>
           </el-row>
@@ -3180,7 +3180,7 @@ const paddingBin = () => {
                 <el-input v-model="pentag" @keyup.enter="addpentag" />
               </el-col>
             </el-row>
-            <el-row>
+            <el-row style="margin-top:10px">
               <el-col :span="12">组合</el-col>
               <el-col :span="12">
                 <el-button id="combination" @click="combinationbu"
@@ -3433,10 +3433,10 @@ const paddingBin = () => {
                   @change="gridcoloroevent"
               /></el-col>
             </el-row>
-            <el-row>
+            <!-- <el-row>
               <el-col :span="12">默认颜色</el-col>
               <el-col :span="12"><el-color-picker v-model="color2" /></el-col>
-            </el-row>
+            </el-row> -->
             <el-row>
               <el-col :span="12">背景颜色</el-col>
               <el-col :span="12"
@@ -3467,7 +3467,7 @@ const paddingBin = () => {
           <el-collapse v-model="activeNametwo">
             <el-collapse-item title="websocket" name="1">
               <el-input v-model="websocketurl" />
-              <el-row>
+              <el-row style="margin-top:10px">
                 <el-col :span="12"
                   ><el-button type="primary" @click="breakwebsocket"
                     >断开</el-button
@@ -3520,7 +3520,7 @@ const paddingBin = () => {
                   <el-input v-model="mqttTopics" placeholder="多个用逗号隔开" />
                 </el-col>
               </el-row>
-              <el-row>
+              <el-row style="margin-top:10px">
                 <el-col :span="12"
                   ><el-button type="primary" @click="breakmqtt"
                     >断开</el-button
@@ -3533,7 +3533,7 @@ const paddingBin = () => {
                 >
               </el-row>
             </el-collapse-item>
-            <el-button @click="addHttp" type="primary" style="width: 95%"
+            <el-button @click="addHttp" type="primary" style="width: 95%;margin-top:10px"
               >添加http通信</el-button
             >
             <div v-for="(item, index) in https" key="index">
@@ -3570,7 +3570,7 @@ const paddingBin = () => {
                     <el-button @click="requestHeader = true">...</el-button>
                   </el-col>
                 </el-row>
-                <el-row>
+                <el-row style="margin-top:10px">
                   <el-col :span="12">
                   <el-button @click="httpbreak">断开</el-button>
                   </el-col>
@@ -3623,7 +3623,7 @@ const paddingBin = () => {
               </el-col>
             </el-row>
             <el-row> </el-row>
-            <el-row>
+            <el-row style="margin-top:10px">
               <el-col :span="1"></el-col>
               <el-clo :span="20">
                 <el-button

@@ -170,4 +170,7 @@ i.iconfont {
   font-size: 20px;
   font-weight: 500;
 }
+.el-tabs__header{
+  margin: 0 0 0px;
+}
 </style>
