@@ -111,18 +111,16 @@ const iflock = () => {
   console.log(lockstate.value);
   
 }
-function myLineFn(store:Meta2dStore,pen:Pen,mousedwon?:Point) {
-  if (!pen.calculative.worldAnchors) {
-    const rect = pen.calculative.worldRect;
-    pen.calculative.worldAnchors = [rect];
-    console.log(pen.calculative.worldAnchors);
-    
-  }
-}
+// function myLineFn(store:Meta2dStore,pen:Pen,mousedwon?:Point) {
+//   if (!pen.calculative.worldAnchors) {
+//     pen.calculative.worldAnchors = [];
+//   }
+// }
 
 const combinationbu = () => {
-  meta2d.addDrawLineFn('newLineName',myLineFn)
-  meta2d.drawLine('newLineName')
+  // meta2d.addDrawLineFn('newLineName',myLineFn)
+  // meta2d.drawLine('newLineName')
+  meta2d.toggleAnchorMode();
   // console.log(pen.calculative.worldAnchors);
 }
 
