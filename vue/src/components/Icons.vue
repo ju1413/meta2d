@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { nextTick, ref } from "vue";
+import { nextTick, ref,reactive } from "vue";
 import type { TabsPaneContext } from "element-plus";
 import { onMounted, onUnmounted } from "vue";
 import { MqttClient } from "mqtt";
 import { Meta2d, getFromAnchor } from "@meta2d/core";
 import { getToAnchor } from "@meta2d/core";
-import { reactive } from "vue";
 import monacoEditor from "./monacoEditor.vue";
 
 //鼠标点击切换右边菜单
@@ -78,8 +77,12 @@ const updateMouse = (e: MouseEvent) => {
   EndY.value = getToAnchor(pricex.value[0]).y;
   pictureHeight.value = pricex.value[0].iconHeight;
   pictureWidth.value = pricex.value[0].iconWidth;
+  paddingB.value = pricex.value[0].paddingBottom;
+  paddingT.value = pricex.value[0].paddingTop;
+  paddingL.value = pricex.value[0].paddingLeft;
+  paddingR.value = pricex.value[0].paddingRight;
   // console.log("当前点击的id========================", pricex.value[0].id);
-  // console.log("当前点击========================", pricex.value[0]);
+  console.log("当前点击========================", pricex.value[0]);
 };
 onMounted(() => {
   document.addEventListener("click", updateMouse);
@@ -173,10 +176,6 @@ const activeNamefive = ref([]);
 const activeNamesix = ref(["1", "2"]);
 const activeNameseven = ref(["1", "2"]);
 const activeNameEvent = ref(["1"]);
-
-// const handleClick = (tab: TabsPaneContext, event: Event) => {
-//   console.log(tab, event);
-// };
 
 //网格开关
 const gridb = () => {
@@ -1731,6 +1730,11 @@ const delectIconyes = (ind: number) => {
   // console.log(n);
 };
 
+const delecthttps = (index:number) =>{
+  https.value.splice(index,1)
+}
+
+
 const delectData = (ind: number) => {
   datalist.value.splice(ind, 1);
 };
@@ -1823,28 +1827,67 @@ const GradientRadiusin = () => {
   console.log(pricex.value[0]);
 };
 
-const httpList: any = ref([]);
+const https: any = ref([]);
+// const requesthead :any = reactive({})
 const addHttp = () => {
-  httpList.value.push({
+  https.value.push({
     httpurl: "",
     timeinterval: "",
-    requesth: "",
+    requesth:'{}',
   });
-  console.log(httpList);
+  console.log(https.value[0].requesth);
 };
 const languageTh = ref("json");
 const requestHeader = ref(false);
-const requestHeaderyes = () => {
+
+const requestHeaderyes = (index:number) => {
   requestHeader.value = false;
 };
 const httpconnect = (index : number) => {
-  console.log(index);
-
+  const obj = JSON.parse(https.value[index].requesth)
+  console.log(obj);
+  meta2d.store.data.http = https.value[index].httpurl;
+  meta2d.store.data.httpTimeInterval = https.value[index].timeinterval;
+  meta2d.store.data.httpHeaders = obj;
   meta2d.connectHttp();
 }
 const httpbreak = () => {
   meta2d.closeHttp();
 }
+
+const paddingL = ref()
+const paddingLin = () => {
+  meta2d.setValue({
+    id:pricex.value[0].id,
+    paddingLeft:paddingL.value
+  })
+}
+
+const paddingR = ref()
+const paddingRin = ()=>{
+  meta2d.setValue({
+    id:pricex.value[0].id,
+    paddingRight:paddingR.value
+  })
+}
+const paddingT = ref()
+const paddingTin = () => {
+  meta2d.setValue({
+    id:pricex.value[0].id,
+    paddingTop:paddingT.value
+  })
+}
+
+const paddingB = ref()
+const paddingBin = () => {
+  meta2d.setValue({
+    id:pricex.value[0].id,
+    paddingBottom:paddingB.value
+  })
+}
+
+
+
 </script>
 
 <template>
@@ -2030,28 +2073,28 @@ const httpbreak = () => {
             <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">内边距-左</el-col>
               <el-col :span="12"
-                ><el-input v-model.number="paddingLeft" placeholder=""
+                ><el-input v-model.number="paddingL" @input="paddingLin"
               /></el-col>
             </el-row>
             <!-- 内边距——右 -->
             <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">内边距-右</el-col>
               <el-col :span="12"
-                ><el-input v-model.number="paddingRight" placeholder=""
+                ><el-input v-model.number="paddingR" @input="paddingRin"
               /></el-col>
             </el-row>
             <!-- 内边距——上 -->
             <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">内边距-上</el-col>
               <el-col :span="12"
-                ><el-input v-model.number="paddingUp" placeholder=""
+                ><el-input v-model.number="paddingT"  @input="paddingTin"
               /></el-col>
             </el-row>
             <!-- 内边距——下 -->
             <el-row v-show="pennamevalue != 'line'">
               <el-col :span="12">内边距-下</el-col>
               <el-col :span="12"
-                ><el-input v-model.number="paddingBelow" placeholder=""
+                ><el-input v-model.number="paddingB" @input="paddingBin"
               /></el-col>
             </el-row>
             <!-- 进度 -->
@@ -3493,9 +3536,22 @@ const httpbreak = () => {
             <el-button @click="addHttp" type="primary" style="width: 95%"
               >添加http通信</el-button
             >
-            <div v-for="(item, index) in httpList" key="index">
+            <div v-for="(item, index) in https" key="index">
               <el-collapse-item>
-                <template #title> http{{ index + 1 }} </template>
+                <template #title> http{{ index + 1 }} 
+                  <svg
+                viewBox="0 0 1024 1024"
+                xmlns="http://www.w3.org/2000/svg"
+                data-v-ea893728=""
+                style="width: 1em; height: 1em; margin-left: 170px"
+                @click.stop="delecthttps(index)"
+              >
+                <path
+                  fill="currentColor"
+                  d="M160 256H96a32 32 0 0 1 0-64h256V95.936a32 32 0 0 1 32-32h256a32 32 0 0 1 32 32V192h256a32 32 0 1 1 0 64h-64v672a32 32 0 0 1-32 32H192a32 32 0 0 1-32-32V256zm448-64v-64H416v64h192zM224 896h576V256H224v640zm192-128a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32zm192 0a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32z"
+                ></path>
+              </svg>
+                </template>
                 <el-row>
                   <el-col :span="12">URL地址</el-col>
                   <el-col :span="12">
@@ -3538,7 +3594,7 @@ const httpbreak = () => {
                   <template #footer>
                     <span class="dialog-footer">
                       <el-button @click="requestHeader = false">取消</el-button>
-                      <el-button type="primary" @click="requestHeaderyes">
+                      <el-button type="primary" @click="requestHeaderyes(index)">
                         确认
                       </el-button>
                     </span>

@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
+import {Pen , Point} from "@meta2d/core"
+import {Meta2dStore} from "@meta2d/core"
+
+
 const isPenActive = ref(false);
 const isPencilActive = ref(false);
 const isMagnifierActive = ref(false);
@@ -107,10 +111,20 @@ const iflock = () => {
   console.log(lockstate.value);
   
 }
-// const zuhe = ref()
-// const combinationbu = () => {
-//   zuhe.value = meta2d.combine('',0)
-// }
+function myLineFn(store:Meta2dStore,pen:Pen,mousedwon?:Point) {
+  if (!pen.calculative.worldAnchors) {
+    const rect = pen.calculative.worldRect;
+    pen.calculative.worldAnchors = [rect];
+    console.log(pen.calculative.worldAnchors);
+    
+  }
+}
+
+const combinationbu = () => {
+  meta2d.addDrawLineFn('newLineName',myLineFn)
+  meta2d.drawLine('newLineName')
+  // console.log(pen.calculative.worldAnchors);
+}
 
 
 const onKeyDown = (e) => {
@@ -179,7 +193,7 @@ onUnmounted(() => {
       <button id="minimap" :class="{ active: isMinimapActive }" @click="onToggleMinimap">缩略图</button>
       <!-- <button id="help" @click="onHelp">帮助</button> -->
       <button id="lock" :class="{ active: lockstate }" @click="iflock">{{ bun }}</button>
-      <!-- <button id ="combination"  @click="combinationbu">组合</button> -->
+      <button id ="combination"  @click="combinationbu">锚点</button>
     </div>
   </div>
 </template>
