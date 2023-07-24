@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: G
  * @Date: 2021-10-13 11:10:11
- * @LastEditTime: 2023-07-24 13:58:57
+ * @LastEditTime: 2023-07-24 17:27:02
 -->
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
@@ -37,20 +37,13 @@ const visible = ref(false);
 const currentPen = ref<Pen>({});
 
 
-const test = () => {
-  console.log("===========================");
-  let obj = {fromArrow : "triangleSolid"}
-  console.log(obj);
-  
-  meta2d.setOptions(obj);
-}
+
 
 </script>
 
 <template>
   <div class="main">
     <div class="meta2d" id="meta2d"></div>
-    <button @click="test">1111111111111</button>
   </div>
 
   <a-modal v-model:visible="visible" :title="currentPen.text">
