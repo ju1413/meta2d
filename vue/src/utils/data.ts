@@ -6,7 +6,7 @@ import { reactive } from "vue";
  * @Description:
  * @Author: G
  * @Date: 2021-10-13 11:23:17
- * @LastEditTime: 2023-07-19 09:36:00
+ * @LastEditTime: 2023-07-21 09:21:13
  */
 export const icons = [
   {
@@ -17,7 +17,6 @@ export const icons = [
       text: '矩形',
       width: 100,
       height: 100,
-      radio: false,
       rotate: 0,
       progress: 0,
       color:'',

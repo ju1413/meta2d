@@ -2,23 +2,27 @@
  * @Description: 
  * @Author: G
  * @Date: 2021-10-13 11:10:11
- * @LastEditTime: 2023-07-11 09:08:03
+ * @LastEditTime: 2023-07-24 13:58:57
 -->
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 // 测试本地使用
 // import { Meta2d } from "../../../../packages/core";
 import { register as registerEcharts } from "@meta2d/chart-diagram";
-import { Pen, Meta2d } from "@meta2d/core";
+import { Pen, Meta2d ,Options } from "@meta2d/core";
 import {triangle,triangleAnchors} from "../diagram/triangleOne"
 // import {testttt} from "./testx";
 
+const options : Options = {};
 onMounted(() => {
-  const meta2d = new Meta2d("meta2d");
+  const meta2d = new Meta2d("meta2d",options);
   meta2d.register({  triangleOne:triangle });
   meta2d.registerAnchors({ triangleOne: triangleAnchors });
   registerEcharts();
 
+const { color, activeColor, grid, gridColor, gridSize, rule, ruleColor ,fromArrow } = meta2d.getOptions();
+// let obj = {fromArrow : "triangleSolid"}
+// meta2d.getOptions(obj);
   // 监听消息
   meta2d.on("showDialog", ({ pen }: { pen: Pen }) => {
     currentPen.value = pen;
@@ -32,16 +36,21 @@ onMounted(() => {
 const visible = ref(false);
 const currentPen = ref<Pen>({});
 
-// function testa(){
 
-// const z =  testttt();
+const test = () => {
+  console.log("===========================");
+  let obj = {fromArrow : "triangleSolid"}
+  console.log(obj);
+  
+  meta2d.setOptions(obj);
+}
 
-// }
 </script>
 
 <template>
-  <div class="main" @click.left="testa">
+  <div class="main">
     <div class="meta2d" id="meta2d"></div>
+    <button @click="test">1111111111111</button>
   </div>
 
   <a-modal v-model:visible="visible" :title="currentPen.text">

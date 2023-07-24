@@ -81,8 +81,16 @@ const updateMouse = (e: MouseEvent) => {
   paddingT.value = pricex.value[0].paddingTop;
   paddingL.value = pricex.value[0].paddingLeft;
   paddingR.value = pricex.value[0].paddingRight;
+  shadowColordata.value = pricex.value[0].shadowColor;
+  shadowBlur.value = pricex.value[0].shadowBlur;
+  shadowX.value = pricex.value[0].shadowOffsetX
+  shadowY.value = pricex.value[0].shadowOffsetY
+  // characterShadow.value = pricex.value[0].textHasShadow
   // console.log("当前点击的id========================", pricex.value[0].id);
   console.log("当前点击========================", pricex.value[0]);
+  console.log(layoutwidth.value);
+  console.log(spacing.value);
+  
 };
 onMounted(() => {
   document.addEventListener("click", updateMouse);
@@ -108,7 +116,7 @@ const gridsize = ref();
 //网格角度
 const gridrotate = ref();
 //布局大小
-const layoutwidth = ref(undefined);
+const layoutwidth = ref();
 //布局间隔
 const spacing = ref();
 //tabs默认显示栏位
@@ -234,10 +242,14 @@ const rulecolorevent = () => {
 
 //布局
 const startlayout = () => {
-  let width: number = layoutwidth.value;
-  let spac: number = spacing.value;
-
-  meta2d.layout(undefined, width, spac);
+  if(spacing.value === ''){
+    spacing.value = 30
+  }
+  if(layoutwidth.value == ''){
+    layoutwidth.value = undefined
+  }
+  meta2d.centerView();
+  meta2d.layout(undefined, layoutwidth.value, spacing.value);
 };
 //锁定宽高比
 const lockAspectRatiob = () => {
@@ -384,6 +396,9 @@ const updateshadowY = () => {
 };
 
 const updatecharacterSize = () => {
+  if(characterSize.value === ''){
+    characterSize.value = 24
+  }
   meta2d.setValue({
     id: pricex.value[0].id,
     fontSize: characterSize.value,
@@ -1887,12 +1902,104 @@ const paddingBin = () => {
 }
 
 
+const characterShadow = ref(false);
+const characterShadowcl = () => {
+  if(characterShadow.value == false){
+    characterShadow.value = false
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      textHasShadow: false
+    })
+  }else{
+    characterShadow.value = true
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      textHasShadow: true
+    })
+  }
+}
+const textAlignsvalue = ref()
+const textBaselinesvalue = ref()
+const textAligns = [
+  {
+    value:0,
+    label:"左对齐"
+  },
+  {
+    value:1,
+    label:"居中"
+  },
+  {
+    value:2,
+    label:"右对齐"
+  },
+]
+const textBaselines = [
+  {
+    value:0,
+    label:"上对齐"
+  },
+  {
+    value:1,
+    label:"居中"
+  },
+  {
+    value:2,
+    label:"下对齐"
+  }
+]
+
+const textAlignch = (e:number) => {
+  if(e == 0){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      textAlign:'left'
+    })
+  }
+  if(e == 1){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      textAlign:'center'
+    })
+  }
+  if(e == 2){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      textAlign:'right'
+    })
+  }
+}
+const textBaselinesch = (e : number) =>{
+  if(e == 0){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      textBaseline:'top'
+    })
+  }
+  if(e == 1){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      textBaseline:'middle'
+    })
+  }
+  if(e == 2){
+    meta2d.setValue({
+      id:pricex.value[0].id,
+      textBaseline:'bottom'
+    })
+  }
+}
+
+
+
+
+
 
 </script>
 
 <template>
   <div class="beyond" v-if="lengthx >= 1">
-    <el-tabs v-model="activeName" class="demo-tabs">
+    <el-tabs v-model="activeName" class="demo-tabs" :stretch = true>
       <!-- 外观 -->
       <el-tab-pane name="first" label="外观" class="tab-pane">
         <el-collapse v-model="activeNamefour">
@@ -2443,7 +2550,7 @@ const paddingBin = () => {
             <el-row>
               <el-col :span="12">文字阴影</el-col>
               <el-col :span="12">
-                <el-switch v-model="characterShadow"
+                <el-switch v-model="characterShadow" @click="characterShadowcl"
               /></el-col>
             </el-row>
           </el-collapse-item>
@@ -2457,7 +2564,7 @@ const paddingBin = () => {
             <el-row>
               <el-col :span="12">字体大小</el-col>
               <el-col :span="12"
-                ><el-input v-model="characterSize" @input="updatecharacterSize"
+                ><el-input v-model="characterSize" @change="updatecharacterSize"
               /></el-col>
             </el-row>
             <!-- 文字颜色 -->
@@ -2512,9 +2619,9 @@ const paddingBin = () => {
             <el-row>
               <el-col :span="12">水平对齐</el-col>
               <el-col :span="12">
-                <el-select v-model="value" class="m-2" placeholder="Select">
+                <el-select v-model="textAlignsvalue" class="m-2" placeholder="Select" @change="textAlignch">
                   <el-option
-                    v-for="item in options"
+                    v-for="item in textAligns"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -2526,9 +2633,9 @@ const paddingBin = () => {
             <el-row>
               <el-col :span="12">垂直对齐</el-col>
               <el-col :span="12">
-                <el-select v-model="value" class="m-2" placeholder="Select">
+                <el-select v-model="textBaselinesvalue" class="m-2" placeholder="Select" @change="textBaselinesch">
                   <el-option
-                    v-for="item in options"
+                    v-for="item in textBaselines"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -2881,7 +2988,7 @@ const paddingBin = () => {
             type="primary"
             icon="el-icon-plus"
             @click="addEvent"
-            style="width: 220px; margin-left: 15px; margin-top:10px"
+            style="width: 200px; margin-left: 15px; margin-top:10px"
             >添加事件</el-button
           >
         </div>
@@ -2898,7 +3005,7 @@ const paddingBin = () => {
                 viewBox="0 0 1024 1024"
                 xmlns="http://www.w3.org/2000/svg"
                 data-v-ea893728=""
-                style="width: 1em; height: 1em; margin-left: 170px"
+                style="width: 1em; height: 1em; margin-left: 150px"
                 @click.stop="delectIconyes(ind)"
               >
                 <path
@@ -2907,28 +3014,6 @@ const paddingBin = () => {
                 ></path>
               </svg>
             </template>
-            <!-- <el-dialog
-              v-model="delectIcon"
-              width="30%"
-              center
-            >
-              <span>
-                是否删除
-              </span>
-              <template #footer>
-                <span class="dialog-footer">
-                  <el-button @click="delectIcon = false"
-                    >取消</el-button
-                  >
-                  <el-button
-                    type="primary"
-                    @click.stop="delectIconyes(events.ind)"
-                  >
-                    确认
-                  </el-button>
-                </span>
-              </template>
-            </el-dialog> -->
             <el-row>
               <el-col :span="12">事件类型</el-col>
               <el-col :span="12">
@@ -3364,7 +3449,7 @@ const paddingBin = () => {
     </el-tabs>
   </div>
   <div class="beyond" v-else>
-    <el-tabs v-model="activeName" class="demo-tabs">
+    <el-tabs v-model="activeName" class="demo-tabs" :stretch = true>
       <!-- 图纸 -->
       <el-tab-pane name="first" label="图纸" class="tab-pane">
         <el-collapse v-model="activeNameone">
@@ -3613,13 +3698,13 @@ const paddingBin = () => {
             <el-row>
               <el-col :span="12"> 最大宽度 </el-col>
               <el-col :span="12">
-                <el-input v-model="layoutwidth" />
+                <el-input v-model.number="layoutwidth" />
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="12"> 间距 </el-col>
               <el-col :span="12">
-                <el-input v-model="spacing" />
+                <el-input v-model.number="spacing" />
               </el-col>
             </el-row>
             <el-row> </el-row>

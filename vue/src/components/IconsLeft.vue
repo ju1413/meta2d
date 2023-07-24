@@ -1,13 +1,15 @@
 <template>
   <div class="aside">
     <div class="icon-list">
-      <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+      <el-input v-model="selectassembly" id="assemblyinput" placeholder="搜索" style="width: 226px; height: 34px; margin: 16px; border-radius: 2px 2px 2px 2px;"/>
+      <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick" :stretch = true>
+        <el-tab-pane label="图纸" name="test"></el-tab-pane>
         <el-tab-pane label="系统组件" name="first">
           <svg
             viewBox="0 0 1024 1024"
             xmlns="http://www.w3.org/2000/svg"
             data-v-ea893728=""
-            style="width: 1em; height: 1em; margin-right: 8px"
+            style="width: 1em; height: 1em; margin-right: 8px;margin-top: 15px;"
             @click="CreateComponent"
           >
             <path
