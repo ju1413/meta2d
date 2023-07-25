@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: G
  * @Date: 2021-10-13 11:10:11
- * @LastEditTime: 2023-07-24 17:27:02
+ * @LastEditTime: 2023-07-25 15:32:35
 -->
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
@@ -21,8 +21,6 @@ onMounted(() => {
   registerEcharts();
 
 const { color, activeColor, grid, gridColor, gridSize, rule, ruleColor ,fromArrow } = meta2d.getOptions();
-// let obj = {fromArrow : "triangleSolid"}
-// meta2d.getOptions(obj);
   // 监听消息
   meta2d.on("showDialog", ({ pen }: { pen: Pen }) => {
     currentPen.value = pen;

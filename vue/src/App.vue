@@ -145,7 +145,7 @@ i.iconfont {
 .main {
   height: calc(100% - 51px);
   padding-left: 258px;
-  padding-right:258px;
+  padding-right:259px;
   /* padding-top: 5px; */
 }
 
@@ -155,7 +155,7 @@ i.iconfont {
   margin-top: 1px;
 }
 .beyond{
-  width: 258px;
+  width: 259px;
   height: calc(100% - 51px);
   float: right;
   border-left: 1px solid #ccc;
@@ -230,5 +230,9 @@ opacity: 1;
 }
 .element.style{
   width: 1404px;
+}
+.el-row{
+  margin-bottom: 12px !important;
+  margin-top: 12px !important;
 }
 </style>

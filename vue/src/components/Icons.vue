@@ -3628,7 +3628,7 @@ const textBaselinesch = (e : number) =>{
                 viewBox="0 0 1024 1024"
                 xmlns="http://www.w3.org/2000/svg"
                 data-v-ea893728=""
-                style="width: 1em; height: 1em; margin-left: 170px"
+                style="width: 1em; height: 1em; margin-left: 150px"
                 @click.stop="delecthttps(index)"
               >
                 <path
